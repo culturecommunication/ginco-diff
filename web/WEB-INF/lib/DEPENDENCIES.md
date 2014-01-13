@@ -1,0 +1,26 @@
+### Arbre des dépendances ###
+
+- commons-collections-3.2.1.jar
+- commons-email-1.3.2.jar
+	- javax.mail-1.5.1.jar
+- commons-io-2.4.jar
+- commons-lang-3-3.1.jar
+- commons-validator-1.4.0.jar
+- jersey-1.1.5.1 :
+	- asm-3.1.jar
+	- jersey-core-1.1.5.1.jar
+	- jersey-multipart-1.1.5.1.jar
+	- jersey-server-1.1.5.1.jar
+	- jsr311-api-1.1.1.jar
+	- mimepull-1.3.jar
+- log4j-1.2.15.jar
+- recaptcha4j-0.0.7.jar
+- sesame-2.6.5 :
+	- commons-codec-1.4.jar
+	- commons-httpclient-3.1.jar
+	- commons-logging-1.1.1.jar
+	- openrdf-sesame-2.6.5-onejar.jar
+	- slf4j-api-1.6.1.jar
+	- slf4j-log4j12-1.6.1.jar
+- velocity-1.6.3-dep.jar
+	- velocity-tools-generic-1.4.jar

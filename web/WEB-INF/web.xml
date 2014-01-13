@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+This software is governed by the CeCILL-B license under French law and
+abiding by the rules of distribution of free software. You can use,
+modify and/or redistribute the software under the terms of the CeCILL-B
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info".
+
+As a counterpart to the access to the source code and rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty and the software's author, the holder of the
+economic rights, and the successive licensors have only limited
+liability.
+
+In this respect, the user's attention is drawn to the risks associated
+with loading, using, modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean that it is complicated to manipulate, and that also
+therefore means that it is reserved for developers and experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and, more generally, to use and operate it in the
+same conditions as regards security.
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL-B license and that you accept its terms.
+-->
+
+<web-app version="2.4"
+    xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://java.sun.com/xml/ns/j2ee
+          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <!-- ===== Web application description ===== -->
+
+  <display-name>@app.name@</display-name>
+  <description>
+    @app.long.name@
+  </description>
+
+  <!-- ===== Application level configuration parameters ===== -->
+
+  <!-- Path to Velocity templates (relative to classpath) -->
+  <context-param>
+    <param-name>velocity.templates.path</param-name>
+    <param-value>WEB-INF/templates</param-value>
+  </context-param>
+  <context-param>
+    <param-name>org.apache.velocity.toolbox</param-name>
+    <param-value>/WEB-INF/tools.xml</param-value>
+  </context-param>
+  <context-param>
+    <param-name>velocity.templates.encoding</param-name>
+    <param-value>UTF-8</param-value>
+  </context-param>
+  <context-param>
+    <param-name>velocity.templates.update.check</param-name>
+    <param-value>-1</param-value>
+  </context-param>
+  <context-param>
+    <description>Noms des ressources contenant les libellés de l'interface ($text dans les templates).</description>
+    <param-name>velocity.template.text.bundles</param-name>
+    <param-value>fr.gouv.culture.thesaurus.service.thesaurus-labels</param-value>
+  </context-param>
+  <context-param>
+    <description>Noms des ressources contenant les liens et url ($banner dans les templates).</description>
+    <param-name>velocity.template.text.bundles.banner</param-name>
+    <param-value>fr.gouv.culture.thesaurus.service.banner-urls</param-value>
+  </context-param>
+  <context-param>
+    <description>Noms des ressources contenant la configuration des recherches dans les corpus ouverts ($open-searches dans les templates).</description>
+    <param-name>velocity.template.text.bundles.open-searches</param-name>
+    <param-value>fr.gouv.culture.thesaurus.service.open-searches</param-value>
+  </context-param>
+  
+  <context-param>
+    <description>Langue de l'interface utilisateur.</description>
+    <param-name>velocity.template.text.locale</param-name>
+    <param-value>fr</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>thesaurus.entries.base.uri</param-name>
+    <param-value>http://data.culture.fr/thesaurus/resource/</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>thesaurus.rdf.repository.url</param-name>
+    <param-value>http://localhost:8080/openrdf-sesame</param-value>
+  </context-param>
+  <context-param>
+    <param-name>thesaurus.rdf.repository.id</param-name>
+    <param-value>thesaurus</param-value>
+  </context-param>
+
+
+  <context-param>
+    <description>Taille max (en nombre de caractères) de la chaîne représentant la première 
+       occurrence du texte recherche dans le libellé correspondant à la requête 
+       de l'utilisateur.</description>
+    <param-name>thesaurus.service.matchingLabel.firstOccurrenceWidth</param-name>
+    <param-value>150</param-value>
+  </context-param>
+  <context-param>
+	<description>Taille max (en nombre de caractères) de la chaîne représentant le contexte 
+	de l'occurrence affichée du texte recherchée.</description>
+    <param-name>thesaurus.service.matchingLabel.contextLength</param-name>
+    <param-value>30</param-value>
+  </context-param>
+  
+  <context-param>
+  	<description>Adresse "from" par défaut des emails envoyés par l'application.</description>
+  	<param-name>thesaurus.email.from</param-name>
+  	<param-value>thesaurus@culture.fr</param-value>
+  </context-param>
+  
+  <!-- Formulaire de contact -->
+<!--   <context-param> -->
+<!--     <description>Nombre maximum de pièce-jointes (3 par défaut).</description> -->
+<!--   	<param-name>thesaurus.contact.nbAttachments</param-name> -->
+<!--     <param-value></param-value> -->
+<!--   </context-param> -->
+<!--   <context-param> -->
+<!--     <description>Taille maximum des pièce-jointes cumulées (1 048 576 = 1Mo par défaut).</description> -->
+<!--   	<param-name>thesaurus.contact.attachmentsMaxSize</param-name> -->
+<!--     <param-value></param-value> -->
+<!--   </context-param> -->
+<!--   <context-param> -->
+<!--     <description>Clé privée pour activer reCaptcha (https://www.google.com/recaptcha).</description> -->
+<!--   	<param-name>thesaurus.contact.reCaptchaPrivateKey</param-name> -->
+<!--     <param-value></param-value> -->
+<!--   </context-param> -->
+<!--   <context-param> -->
+<!--     <description>Clé publique pour activer reCaptcha (https://www.google.com/recaptcha).</description> -->
+<!--   	<param-name>thesaurus.contact.reCaptchaPublicKey</param-name> -->
+<!--     <param-value></param-value> -->
+<!--   </context-param> -->
+
+  <!-- ===== Lifecycle event listeners ===== -->
+
+  <!-- Listener for Log4J loggin framework initialisation and shutdown -->
+  <listener>
+    <listener-class>
+      com.atosorigin.log4j.servlet.Log4jServletContextListener
+    </listener-class>
+  </listener>
+
+  <!-- ===== Filters definition & URL mapping ===== -->
+
+  <!-- Jersey (JAS-RS framework) entry point configuration -->
+  <!-- Note: Using Jersey as a filter is required as:
+              1. There is no way to have the Jersey servlet not handling the
+                 requests passed on to it (for example /css/...)
+              2. It is not possible to use several servlet-mappings as
+                 any prefix declared in a servlet-mapping (e.g. /resource)
+                 directly impacts the URI of the deployed resources.
+   -->
+  <filter>
+    <filter-name>Jersey</filter-name>
+    <filter-class>
+      com.sun.jersey.spi.container.servlet.ServletContainer
+    </filter-class>
+    <!-- Configuration of the JAX-RS application -->
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>fr.gouv.culture.thesaurus.resources.ThesaurusApplication</param-value>
+    </init-param>
+    <!-- Prevent Jersey from serving static files -->
+    <init-param>
+      <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
+      <param-value>(/(images|css|js|(WEB-INF/jsp))/.*)|(.*\.html)</param-value>
+    </init-param>
+    <!-- Support GZip content encoding in requests -->
+    <init-param>
+      <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+      <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter</param-value>
+    </init-param>
+    <!-- Honor GZip accepted encoding in response -->
+    <init-param>
+      <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+      <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter</param-value>
+    </init-param>
+  </filter>
+
+  <!-- Client-side cache management filter -->
+  <filter>
+    <filter-name>CacheForWeek</filter-name>
+    <filter-class>
+      fr.gouv.culture.thesaurus.util.web.ResponseHeaderFilter
+    </filter-class>
+    <init-param>
+      <param-name>Cache-Control</param-name>
+      <param-value>public, max-age=604800</param-value>
+    </init-param>
+  </filter>
+
+	<!-- Vocabulary auto-load (directory lookup) -->
+<!--   	<filter> -->
+<!--     	<description>Activer ce filter permet de scruter (tâche de fond) les dépôts de vocabulaires (fichiers *.rdf) dans un répertoire, pour les importer de façon automatique.</description> -->
+<!--     	<filter-name>VocabularyAutoload</filter-name> -->
+<!--     	<filter-class>fr.gouv.culture.thesaurus.util.web.VocabularyAutoloadFilter</filter-class> -->
+<!--     	<init-param> -->
+<!--     		<description>Répertoire à scruter. Les sous-répertoires ne sont pas pris en compte.</description> -->
+<!--       		<param-name>lookupDirectory</param-name> -->
+<!--       		<param-value>/thw/lookup</param-value> -->
+<!-- 	    </init-param> -->
+<!-- 	    <init-param> -->
+<!-- 	    	<description>Adresse email de destination des rapports d'erreurs.</description> -->
+<!-- 	      	<param-name>emailTo</param-name> -->
+<!-- 	      	<param-value></param-value> -->
+<!-- 	    </init-param> -->
+<!--   	</filter> -->
+  
+  <!-- Route all service calls to Jersey -->
+  <filter-mapping>
+    <filter-name>Jersey</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Cache all static resource for a week -->
+  <filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>/images/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.html</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.css</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>CacheForWeek</filter-name>
+    <url-pattern>*.js</url-pattern>
+  </filter-mapping>
+
+  <!-- ===== Servlets definition & URL mapping ===== -->
+
+  <!-- None. Tomcat default servlet will take care of static files. -->
+
+  <!-- ===== Security constraints ===== -->
+
+  <!-- Access control for thesaurus update service -->
+  <security-role>
+  	<role-name>admin-thesaurus</role-name>
+  </security-role>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Administration des thesaurus</web-resource-name>
+      <url-pattern>/admin/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+        <role-name>admin-thesaurus</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <login-config>
+    <auth-method>DIGEST</auth-method>
+    <realm-name>Administration des thesaurus</realm-name>
+  </login-config>
+
+</web-app>

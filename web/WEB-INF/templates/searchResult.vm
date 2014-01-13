@@ -1,0 +1,180 @@
+#**
+This software is governed by the CeCILL-B license under French law and
+abiding by the rules of distribution of free software. You can use,
+modify and/or redistribute the software under the terms of the CeCILL-B
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info".
+
+As a counterpart to the access to the source code and rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty and the software's author, the holder of the
+economic rights, and the successive licensors have only limited
+liability.
+
+In this respect, the user's attention is drawn to the risks associated
+with loading, using, modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean that it is complicated to manipulate, and that also
+therefore means that it is reserved for developers and experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and, more generally, to use and operate it in the
+same conditions as regards security.
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL-B license and that you accept its terms.
+*#
+
+#**
+ * Search Results Velocity Template
+ * 
+ * This page displays the result of the user search.
+ * Available parameters are :
+ * - baseUri        Base URL of the web application
+ * - locale         User locale
+ * - resolver       UriResolver for RDF URI translation
+ * - it             Search results
+ * - query          Search query
+ *
+ * Version: $Id$
+ *#
+ #** PAGER_WINDOW : amplitude de la fenêtre de pagination. *#
+ #set($PAGER_WINDOW = 11)
+ #** insertSortCommands : insertion des liens vers la page de recherche avec les tris sur le champ spécifié *#
+ #macro(insertSortCommands $sortField $sortFieldCaption $originalQuery)
+ 	#**
+ 	 * sortField : Nom du champ de tri
+ 	 * sortFieldCaption : Libellé du champ de tri pour afficher dans l'infobulle
+ 	 *#
+ 	#set($ascLink = "?start=${originalQuery.start}&num=${originalQuery.rows}&sort=${sortField}:ASC")
+ 	#set($descLink = "?start=${originalQuery.start}&num=${originalQuery.rows}&sort=${sortField}:DESC")
+ 	<span class="sortCommands">
+ 		<a class="ascOrderLink" href="${esc.html($ascLink)}" title="Cliquez ici pour afficher les résultats triés par ${esc.html($sortFieldCaption)} (ordre croissant)"><span>asc</span></a>
+ 		<a class="descOrderLink" href="${esc.html($descLink)}" title="Cliquez ici pour afficher les résultats triés par ${esc.html($sortFieldCaption)} (ordre décroissant)"><span>desc</span></a>
+ 	</span>
+ #end
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" #namespaces_decl() xml:lang="fr">
+  <head>
+	#if($query)
+    <title>Résultats de la recherche ${esc.html($query.query)} (page ${it.page})</title>
+    #else
+    <title>Résultats de la recherche</title>
+    #end
+	#parse( "/head_commons.vm" )
+	#head_links()
+  </head>
+  
+      #body_class()
+      #parse( "menu_banner.vm" )
+ <div id="ThesaurusW">
+	#*************************************************************** EN-TETE *#
+	#if($query)
+  		<h1>Résultats de la recherche pour <em>${esc.html($query.query)}</em></h1>
+  	#else
+  		<h1>Résultats de la recherche</h1>
+  	#end
+    <div id="subheader">
+		<a href="${baseUri}/">Accueil</a>
+    </div>
+
+	#********************************************* RÉSULTATS DE LA RECHERCHE *#
+  	<div class="searchConcepts">
+		#renderInlineFindConceptForm($query.query)
+
+        <div class="stats">
+			#if($query.query)
+        		<span class="resultsCount">${it.totalConcepts} résultats</span>
+        		<span class="searchExecutionTime"> (${queryExecutionTime} ms)</span>
+        	#else
+        		<span class="resultsCount">0 résultat</span>
+        	#end
+        </div>
+
+		#if($it.pageResults.size() > 0)
+			<table class="results" summary="Cette table fournit l'ensemble des concepts correspondant à la recherche du libellé ${esc.html($query.query)}">
+				<caption>Résultats de la recherche de concepts avec <em>${esc.html($query.query)}</em></caption>
+
+				<thead>
+					<tr>
+						<th class="prefLabel">Concept #insertSortCommands("CONCEPT_PREFLABEL", "libellé", $query)</th>
+						<th class="matchingLabel">Correspondance #insertSortCommands("MATCHING_LABEL", "correspondance", $query)</th>
+						<th class="schemeTitle">Thésaurus #insertSortCommands("SCHEME_TITLE", "vocabulaire d'origine", $query)</th>
+					</tr>
+				</thead>
+				<tbody>
+	  				#foreach($concept in $it.pageResults)
+					<tr class="resultConcept">
+						<td class="prefLabel">
+							<a href="${esc.html($resolver.toUrl($concept.conceptUri))}">${esc.html($concept.conceptPrefLabel)}</a>
+						</td>
+						<td class="matchingLabel">
+							${concept.firstMatchingOccurrence}
+						</td>
+						<td class="schemeTitle">
+							<a href="${esc.html($resolver.toUrl($concept.schemeUri))}">${esc.html($concept.schemeTitle)}</a>
+						</td>
+					</tr>
+	  				#end
+				</tbody>
+			</table>
+	  	
+			#******************************************************** PAGINATION *#
+			#set($pagesCount = ($it.totalConcepts + $query.rows - 1) / $query.rows)
+	
+			#set($currentPage = $it.page)
+			#if($currentPage < 1)
+				#set($currentPage = 1)
+			#elseif($currentPage > $pagesCount)
+				#set($currentPage = $pagesCount + 1)
+			#end
+	
+			#set($pagerMin = $currentPage - $PAGER_WINDOW / 2)
+			#if($pagerMin < 1)
+				#set($pagerMin = 1)
+			#end
+			#set($pagerMax = $pagerMin + $PAGER_WINDOW - 1)
+			#if($pagerMax > $pagesCount)
+				#set($pagerMax = $pagesCount)
+			#end
+	
+			<div class="pager">
+				<span>Pages</span>
+				<ol>
+					#if($currentPage > 1)
+						#set($previousPageStart = ($currentPage - 2) * $query.rows)
+						<li><a href="?start=${previousPageStart}&num=${query.rows}"><span class="previousPageLink">Précédent ◄</span></a></li>
+					#end
+					#foreach ($page in [$pagerMin..$pagerMax])
+						#set($pageStart = ($page - 1) * $query.rows)
+						<li>
+							#if($page == $currentPage)
+								<span class="pageNumber selectedPage">$page</span>
+							#else
+								<a href="?start=${pageStart}&num=${query.rows}"><span class="pageNumber">$page</span></a>
+							#end
+						</li>
+					#end
+					#if($currentPage < $pagesCount)
+						#set($nextPageStart = $currentPage * $query.rows)
+						<li><a href="?start=${nextPageStart}&num=${query.rows}"><span class="nextPageLink">► Suivant</span></a></li>
+					#end
+				</ol>
+			</div>
+		#else
+			<div class="search-noresult">
+				#if($query.query)
+					Aucun résultat trouvé pour <em>${esc.html($query.query)}</em>.
+				#else
+					Aucun résultat trouvé.
+				#end
+			</div>
+		#end
+  	</div>
+	
+	#********************************************************** PIED DE PAGE *#
+  	</div> 
+  </body>
+</html>

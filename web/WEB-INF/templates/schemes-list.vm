@@ -1,0 +1,67 @@
+#**
+This software is governed by the CeCILL-B license under French law and
+abiding by the rules of distribution of free software. You can use,
+modify and/or redistribute the software under the terms of the CeCILL-B
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info".
+
+As a counterpart to the access to the source code and rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty and the software's author, the holder of the
+economic rights, and the successive licensors have only limited
+liability.
+
+In this respect, the user's attention is drawn to the risks associated
+with loading, using, modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean that it is complicated to manipulate, and that also
+therefore means that it is reserved for developers and experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and, more generally, to use and operate it in the
+same conditions as regards security.
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL-B license and that you accept its terms.
+*#
+
+#**
+Template Velocity de la page d'entrée ("/") du thésaurus.
+Cette page liste les thésaurus disponibles dans le triple store RDF.
+Paramètres :
+ - baseUri    - URL de base du site
+ - locale     - Locale pour l'affichage (format date, ordre tri...)
+ - resolver   - UriResolver permettant la traduction entre URI RDF et URL
+ - it         - List<Entry> contenant les thésaurus disponibles
+*#
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" #namespaces_decl() xml:lang="fr">
+  <head>
+    <title>$esc.html($text.homepage.title)</title>
+    #parse( "/head_commons.vm" )
+    #head_links()
+  </head>
+  
+  #body_class()
+  #parse( "menu_banner.vm" )
+    <div id="ThesaurusW">
+	    <h1>$esc.html($text.homepage.title)</h1>
+		    
+	    <div id="subheader">
+	    	<a href="${baseUri}/">Accueil</a>
+	    </div>
+	    
+	    <p>Les différents thésaurus disponibles sont :
+	    </p>
+	    <ul>
+		#foreach ($item in $it)
+	      <li><a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a></li>
+		#end
+	    </ul>
+	      
+		#footer($item.getOrganisation() $item.getOrganisationHomepage() $item.getSeeMoreUrl())
+	</div>
+  </body>
+</html>
