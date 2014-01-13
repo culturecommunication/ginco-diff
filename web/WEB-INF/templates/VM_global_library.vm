@@ -1,0 +1,453 @@
+#**
+This software is governed by the CeCILL-B license under French law and
+abiding by the rules of distribution of free software. You can use,
+modify and/or redistribute the software under the terms of the CeCILL-B
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info".
+
+As a counterpart to the access to the source code and rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty and the software's author, the holder of the
+economic rights, and the successive licensors have only limited
+liability.
+
+In this respect, the user's attention is drawn to the risks associated
+with loading, using, modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean that it is complicated to manipulate, and that also
+therefore means that it is reserved for developers and experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and, more generally, to use and operate it in the
+same conditions as regards security.
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL-B license and that you accept its terms.
+*#
+
+#** LAYOUT ------------------------------------------------------------------------------------- *#
+
+#macro( namespaces_decl )
+      xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:dct="http://purl.org/dc/terms/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:foaf="http://xmlns.com/foaf/0.1/"
+#end
+
+#macro( head_links $dataUri )
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <link type="text/css" rel="stylesheet" href="${baseUri}/css/principal.css"/>
+#if( $dataUri )
+    <link rel="alternate" type="application/rdf+xml" href="$dataUri"
+          title="Structured Descriptor Document (RDF/XML format)"/>
+#end
+#end
+
+#macro( footer_start )
+    <div id="footer">
+      <ul>
+#end
+
+#macro( footer_end $organisationName $organisationHomepage $seeMoreUrl $scheme $organisationMbox)
+		#if ($seeMoreUrl)
+         <li><a href="$seeMoreUrl">En savoir plus</a></li>
+        #elseif ($text.resource.learnMore.url.exists)
+         <li><a href="${baseUri}${text.resource.learnMore.url}">$esc.html($text.resource.learnMore)</a></li>
+        #end        
+         <li><a href="${baseUri}/sparql">$esc.html($text.sparqlEndpoint)</a></li>
+         
+        #if ($organisationName && $organisationHomepage)
+         <li><a href="$organisationHomepage" title="$esc.html($text.resource.creator.webpage.tooltip.insert($organisationName))">$esc.html($text.resource.creator.webpage)</a></li>
+        #{else}
+        <li><a href="$esc.html($text.resource.creator.default.url)" title="$esc.html($text.resource.creator.webpage.tooltip.insert($text.resource.creator.default.name))">$esc.html($text.resource.creator.webpage)</a></li>
+        #end
+        
+        #if($scheme && $organisationMbox)
+        <li><a href="$resolver.toUrl("../contact", $scheme.uri)">$esc.html($text.resource.contact)</a></li>
+        #end
+      </ul>
+    </div>
+#end
+
+#macro( footer $organisationName $organisationHomepage $seeMoreUrl )
+#footer_start()
+#footer_end($organisationName $organisationHomepage $seeMoreUrl )
+#end
+
+
+#** WIDGETS ------------------------------------------------------------------------------------ *#
+
+#macro( renderInlineFindConceptForm $queryValue )
+	<form action="${baseUri}/search" method="get" name="searchConcept">
+		<div class="searchConceptInlineForm">
+			<label>
+				<span>Chercher le concept</span>
+				<input type="text" name="query"
+					#if($queryValue)
+						value="${esc.html($queryValue)}"
+					#end
+					/>
+			</label>
+			<input type="submit" value="Chercher" />
+		</div>
+	</form>
+#end
+
+
+#** CONCEPT ------------------------------------------------------------------------------------ *#
+
+#**
+ * Affiche une date.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param value
+ *			Date à afficher (ou null pour ne rien afficher)
+ * @param dateFormat
+ *			Format d'affichage de la date
+ * @param locale
+ * 			Langage pour l'affichage de la date
+ *#
+#macro( show_single_property_as_date $name $value $dateFormat $locale )
+#if( $value )
+      <h2>$esc.html($name)</h2>
+      <p>$esc.html($date.format($dateFormat, null, $value, $locale))</span></p>
+#end
+#end
+
+#**
+ * Affiche les valeurs de la propriété sous forme de date. Si cette propriété ne possède aucune
+ * valeur, rien n'est affiché.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param values
+ *			Collection de Date à afficher
+ * @param dateFormat
+ *			Format d'affichage de la date
+ * @param locale
+ * 			Langage pour l'affichage de la date
+ *#
+#macro( show_property_as_date $name $values $dateFormat $locale )
+#if( !$values.isEmpty() )
+      <h2>$esc.html($name)</h2>
+      <ul>
+#foreach( $item in $values )
+		#if( $item.value != "" )
+      	<li><span class="lit-value">$esc.html($date.format($dateFormat, null, $item, $locale))</span></li>
+      	#end
+#end
+      </ul>
+#end
+#end
+
+#**
+ * Affiche les valeurs de la propriété sous forme de date/heure. Si cette propriété ne possède aucune
+ * valeur, rien n'est affiché.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param values
+ *			Collection de Date à afficher
+ * @param dateFormat
+ *			Format d'affichage de la date
+ * @param timeFormat
+ *			Format d'affichage du temps
+ * @param locale
+ * 			Langage pour l'affichage de la date
+ *#
+#macro( show_property_as_datetime $name $values $dateFormat $timeFormat $locale )
+#if( !$values.isEmpty() )
+      <h2>$esc.html($name)</h2>
+      <ul>
+#foreach( $item in $values )
+		#if( $item.value != "" )
+      	<li><span class="lit-value">$esc.html($date.format($dateFormat, $timeFormat, $item, $locale))</span></li>
+      	#end
+#end
+      </ul>
+#end
+#end
+
+#**
+ * Affiche les valeurs de la propriété. Si cette propriété ne possède aucune valeur, rien n'est 
+ * affiché.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param values
+ *			Collection de LocalizedString à afficher
+ * @param locale
+ * 			Langage préférentiel pour affichage du libellé
+ *#
+#macro( show_inline_property $name $values $locale )
+#if( !$values.isEmpty() )
+      <h2>$esc.html($name)</h2>
+      <ul>
+#foreach( $item in $sorter.sortStrings($values, [$locale, null]))
+		#if( $item.value != "" )
+      	<li><span class="lit-value">$esc.html($item.value)</span></li>
+      	#end
+#end
+      </ul>
+#end
+#end
+
+#**
+ * Affiche les valeurs de la propriété, ainsi que la langue. Si cette propriété ne possède aucune valeur, rien n'est 
+ * affiché. Cette fonction affiche également le code de langue de la ressource.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param values
+ *			Collection de LocalizedString à afficher
+ * @param locale
+ * 			Langage préférentiel pour affichage du libellé
+ *#
+#macro( show_inline_property_with_lang $name $values $locale )
+#if( !$values.isEmpty() )
+	<h2>$esc.html($name)</h2>
+	<ul>
+#foreach( $item in $sorter.sortStrings($values, [$locale, null]))
+		#if( $item.value != "" )
+		<li><span class="lit-lang">#if($item.language)($lang.format($esc.html($item.language)))#end</span> <span class="lit-value">$esc.html($item.value)</span></li>
+		#end
+#end
+	</ul>
+#end
+#end
+
+#**
+ * Affiche les valeurs de la propriété. Si cette propriété ne possède aucune valeur, rien n'est 
+ * affiché. Cette méthode est similaire à la macro show_inline_property_with_lang en englobant le résultat
+ * d'une div clé / valeur.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param values
+ *			Collection de LocalizedString à afficher
+ * @param locale
+ * 			Langage préférentiel pour affichage du libellé
+ * @param css
+ *			Classe CSS du conteneur
+ *#
+#macro( show_property $name $values $locale $css $resourceprefix )
+#if( !$values.isEmpty() )
+      <div class="key-value $!css">
+        <h2 class="key">$esc.html($name)</h2>
+        <ul class="value">
+          #foreach ( $item in $sorter.sortStrings($values, [$locale, null]) )
+	          #if( $item.value != "" )
+	          	<li><span class="lit-lang">#if($item.language)($lang.format($esc.html($item.language)))#end</span> <span class="lit-value">#if($resourceprefix)$text.get("${resourceprefix}${item.value}")#else$esc.html($item.value)#end</span></li>
+	          #end
+          #end
+        </ul>
+      </div>
+#end
+#end
+
+#**
+ * Affiche les valeurs de la propriété sans utiliser de liste. 
+ * Si cette propriété ne possède aucune valeur, rien n'est affiché. 
+ *
+ * @param name
+ *			Libellé de la section
+ * @param values
+ *			Collection de LocalizedString à afficher
+ * @param locale
+ * 			Langage préférentiel pour affichage du libellé
+ * @param css
+ *			Classe CSS du conteneur
+ *#
+#macro( show_block_property $name $values $locale $css )
+#if( !$values.isEmpty() )
+      <div class="key-value $!css">
+        <h2>$esc.html($name)</h2>        
+          #foreach ( $item in $sorter.sortStrings($values, [$locale, null]) )
+          	#if( $item.value != "" )
+	          <span>$esc.html($item.value)</span>
+	        #end
+          #end        
+      </div>
+#end
+#end
+
+#**
+ * Affiche les propriétés de type Lien vers une autre ressource.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param entries
+ *			Collection de Entry à afficher
+ * @param locale
+ * 			Langage préférentiel pour affichage du libellé (ou null si aucun)
+ * @param css
+ *			Classe CSS du conteneur
+ *#
+#macro( linked_entries $name $entries $locale $css )
+## Assign local variable to prevent multiple evaluation of entries argument.
+#set( $l = $entries )
+#if( !$l.isEmpty() )
+      <div class="key-value $!css">
+        <h2 class="key">$esc.html($name)</h2>
+        <ul class="value">
+#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null]) )
+		#if( $item.getLabel($locale).value != "" )
+          <li>
+             <a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
+          </li>
+        #end
+#end
+        </ul>
+      </div>
+#end
+#end
+
+#**
+ * Affiche les propriétés de type text vers une autre ressource.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param entries
+ *			Collection de Entry à afficher
+ * @param locale
+ * 			Langage préférentiel pour affichage du libellé (ou null si aucun)
+ * @param css
+ *			Classe CSS du conteneur
+ *#
+#macro( label_entries $name $entries $locale $css )
+## Assign local variable to prevent multiple evaluation of entries argument.
+#set( $l = $entries )
+#if( !$l.isEmpty() )
+      <div class="key-value $!css">
+        <h2 class="key">$esc.html($name)</h2>
+        <ul class="value">
+#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null]) )
+		#if( $item.getLabel($locale).value != "" )
+          <li>$esc.html($item.getLabel($locale).value)</li>
+        #end
+#end
+        </ul>
+      </div>
+#end
+#end
+
+#**
+ * Affiche les propriétés de type Lien vers une autre ressource.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param entries
+ *			Map de Collection et Entry à afficher
+ * @param locale
+ * 			Langage préférentiel pour affichage du libellé (ou null si aucun)
+ *#
+#macro( linked_entries_by_collection $name $map $locale )
+## Assign local variable to prevent multiple evaluation of entries argument.
+#set( $m = $map )
+#if( !$m.isEmpty() )
+      <div class="key-value">
+        <h2 class="key">$esc.html($name)</h2>
+        <div class="value">
+#foreach( $collection in $sorter.sortEntriesByLabel($m.keySet(), [$locale, null]) )
+#if( $collection )
+			<h3 class="concept-collection">&lt; $esc.html($collection.getLabel($locale).value) &gt;</h3>
+#end
+			<ul>
+#foreach( $item in $sorter.sortEntriesByLabel($m.get($collection), [$locale, null]) )
+				<li>
+					<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
+				</li>
+#end
+			</ul>
+#end
+		</div>
+      </div>
+#end
+#end
+
+#**
+ * Affiche les propriétés de type Lien vers une ressource externe.
+ * La propriété est uniquement l'URI de la ressource externe.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param uris
+ *			Collection de String à afficher
+ * @param css
+ *			Classe CSS du conteneur
+ *#
+#macro( linked_uris $name $uris $css )
+## Assign local variable to prevent multiple evaluation of uri argument.
+#set( $l = $uris )
+#if( !$l.isEmpty() )
+      <div class="key-value $!css">
+        <h2 class="key">$esc.html($name)</h2>
+        <ul class="value">
+#foreach( $item in $sort.sort($l) )
+          <li>
+             <a href="$esc.html($item)">$esc.html($item)</a>
+          </li>
+#end
+        </ul>
+      </div>
+#end
+#end
+
+#**
+ * Affiche les liens vers d'autres ressources.
+ *
+ * @param name
+ *			Libellé de la section
+ * @param resources
+ *			Collection de chaînes de caractères représentant les URI externes à afficher
+ *#
+#macro( linked_external_resources $name $resources )
+#if( !$resources.isEmpty() )
+       <div class="relation">
+        <h2>$esc.html($name)</h2>
+        <ul>
+			#foreach( $item in $resources )
+				<li><a href="$item">$esc.html($item)</a></li>
+			#end
+        </ul>
+      </div>
+#end
+#end
+
+
+#**
+ * ajoute la balise body
+ *#
+#macro ( body_class )
+<!--[if lt IE 7 ]><body id="culture" class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><body id="culture" class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><body id="culture" class="no-js ie8"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<body id="culture" class="no-js external">
+<!--<![endif]-->
+#end
+
+#**
+ * Affiche les recherche dans des corpus ouverts pour un terme
+ *
+ * @param label
+ *			Libellé à rechercher
+ *#
+#macro( show_open_searches $label )
+<ul class="open-searches">
+#foreach($i in [0..10])
+	#if( $open-searches.get("search-${i}.name").getExists() )
+		#set ( $search-name = $open-searches.get("search-${i}.name"))
+		#set ( $search-icon = $open-searches.get("search-${i}.icon"))
+		#set ( $search-url = $open-searches.get("search-${i}.url").insert($esc.url($label)))
+		#set ( $search-title = $open-searches.get("link.title").insert($label, $search-name))
+		<li><a href="$search-url" title="$search-title" target="blank">
+			<img src="$search-icon" />
+		</a></li>
+	#end
+#end
+</ul>
+#end

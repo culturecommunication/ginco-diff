@@ -1,0 +1,98 @@
+#**
+This software is governed by the CeCILL-B license under French law and
+abiding by the rules of distribution of free software. You can use,
+modify and/or redistribute the software under the terms of the CeCILL-B
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info".
+
+As a counterpart to the access to the source code and rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty and the software's author, the holder of the
+economic rights, and the successive licensors have only limited
+liability.
+
+In this respect, the user's attention is drawn to the risks associated
+with loading, using, modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean that it is complicated to manipulate, and that also
+therefore means that it is reserved for developers and experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and, more generally, to use and operate it in the
+same conditions as regards security.
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL-B license and that you accept its terms.
+*#
+
+#**
+Template Velocity de la page de mise à jour ("/load") des thésaurus.
+Cette page liste les thésaurus existants dans le triple store RDF et
+présente un formulaire de chargement de fichier RDF.
+Paramètres:
+ - baseUri    - URL de base du site
+ - locale     - Locale pour l'affichage (format date, ordre tri...)
+ - resolver   - UriResolver permettant la traduction entre URI RDF et URL
+ - it         - List<Entry> contenant les thésaurus existants
+ - message    - Message d'erreur résultant du précédent chargement,
+                "OK" si succès.
+*#
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" #namespaces_decl() xml:lang="fr">
+	<head>
+    	<title>Mise à jour des thésaurus</title>
+    	#parse( "/head_commons.vm" )
+		#head_links()
+		<script src="${baseUri}/js/admin.js" type="text/javascript"></script>
+  	</head>
+  	
+	  #body_class()
+	  #parse( "menu_banner.vm" )
+	   <div id="ThesaurusW">
+	    <h1>Mise à jour des thésaurus</h1>
+	    <div id="subheader" class="row">
+	    	<a href="${baseUri}/">Accueil</a>
+	    </div>
+	    <div>
+	    	#if( $it && $it.size() > 0 )
+				<p>Thésaurus existants&nbsp;:</p>
+				<form action="admin" method="post">
+					<ul class="twoColumnsList">
+					#foreach ($item in $it)
+						<li>
+					    	<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
+							## Reset lastUpdate to force Velocity to take null values into account
+							#set( $lastUpdate = false )
+							#set( $lastUpdate = $item.getModifiedDate() )
+							#if( $lastUpdate )
+					        	(dernière mise à jour&nbsp;: $esc.html($date.format("long", null, $lastUpdate, $locale)))
+							#end
+							<button name="deleteScheme" value="$esc.html($item.Uri)" title="Supprimer le référentiel &quot;$esc.html($item.getLabel($locale).value)&quot;" onclick="return Referentiel_ConfirmDeletion(&quot;$esc.html($esc.javascript($item.getLabel($locale).value))&quot;);">Supprimer</button>		
+				        </li>
+					#end
+					</ul>
+				</form>
+			#end
+	    </div>
+	    <div>
+		#if( $status )
+			#if( $status == "500" )
+			      <h3>Echec de la mise à jour</h3>
+			#end
+			<h3>$esc.html($message)</h3>			
+		#end
+	    </div>
+	    <div>
+			<form action="admin" method="post" enctype="multipart/form-data">
+		        <label for="file">Fichier thésaurus&nbsp;: </label><br />
+		        <input type="file" name="file" id="file"/><br />
+		        <input type="submit" value="Mettre à jour le thésaurus" />
+		    </form>
+	    </div>
+
+	 #footer()	 
+	  </div>
+	</body>
+</html>

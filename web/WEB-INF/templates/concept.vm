@@ -1,0 +1,135 @@
+#**
+This software is governed by the CeCILL-B license under French law and
+abiding by the rules of distribution of free software. You can use,
+modify and/or redistribute the software under the terms of the CeCILL-B
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info".
+
+As a counterpart to the access to the source code and rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty and the software's author, the holder of the
+economic rights, and the successive licensors have only limited
+liability.
+
+In this respect, the user's attention is drawn to the risks associated
+with loading, using, modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean that it is complicated to manipulate, and that also
+therefore means that it is reserved for developers and experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and, more generally, to use and operate it in the
+same conditions as regards security.
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL-B license and that you accept its terms.
+*#
+
+﻿#**
+Template Velocity de la page d'affichage d'une entrée d'un thésaurus
+(Concept SKOS) : "/page/<id Concept>". 
+Paramètres:
+ - baseUri    - URL de base du site
+ - locale     - Locale pour l'affichage (format date, ordre tri...)
+ - resolver   - UriResolver permettant la traduction entre URI RDF et URL
+ - it         - L'objet Concept chargé depuis le triple store RDF
+ - prefixes   - Gestionnaire de préfixes
+*#
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+#set( $prefLabel = $esc.html($it.getLabel($locale).value) )
+#set( $rdfData   = $resolver.toUrl('../data', $id) )
+
+<html xmlns="http://www.w3.org/1999/xhtml" #namespaces_decl() xml:lang="fr">
+	<head>
+		<title>$prefLabel | $esc.html($it.conceptScheme.getLabel($locale).value)</title>
+		#parse( "/head_commons.vm" )
+		#head_links( $rdfData )
+	</head>
+	
+	  #body_class()
+      #parse( "menu_banner.vm" )
+         <div id="ThesaurusW">
+			<h1>$prefLabel</h1>
+	
+		    <div id="subheader">
+		    	<a href="${baseUri}/">Accueil</a> | URI&nbsp;: 
+		    	<span id="uri"><a href="$resolver.toUrl($it.uri)">$it.uri</a></span>
+		      	| Type : <span><a href="http://www.w3.org/2004/02/skos/core#Concept">Concept</a></span>
+		    </div>
+		    
+		    <ul id="breadcrumb">
+		    	#set( $l = $it.getParentConcepts() )
+			    #foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null]) )
+					#if( $item.getLabel($locale).value != "" )
+			        <li><a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>&gt;</li>
+			        #end
+				#end
+				<li>$sorter.sortStrings($it.getProperties($prefixes.expandUri("skos:prefLabel")), [$locale, null]).get(0).value</li>
+		    </ul>
+		
+			#** Colonne de droite **#
+		    <div id="metadata">
+				#** Vocabulaire source **#
+				<div class="topRightPanel">
+				    <h2>$esc.html($text.property.inScheme)</h2>
+				    <p>
+						#foreach($scheme in $it.conceptSchemes)
+							<a href="$resolver.toUrl($scheme.uri)">
+								$esc.html($scheme.getLabel($locale).value)
+							</a>
+						#end
+				    </p>
+				</div>
+				#linked_entries( $text.property.topAncestor   	$it.getTopAncestors()   $locale "right" )
+				#show_single_property_as_date( $text.property.created         $it.createdDate      "long"      $locale )
+				#show_single_property_as_date( $text.property.modified         $$it.modifiedDate      "long"      $locale )
+		    	#label_entries( $text.property.conceptGroups 	$it.getConceptGroups()   $locale "right")
+				#show_property( $text.property.definition 	$it.getProperties($prefixes.expandUri("skos:definition"))   $locale "right")
+				#show_property( $text.property.historyNote    	$it.getProperties($prefixes.expandUri("skos:historyNote"))  $locale	"right")
+				#show_property( $text.property.changeNote    	$it.getProperties($prefixes.expandUri("skos:changeNote"))  $locale	"right")
+				#linked_uris( $text.property.focus  $it.getFocus() "right")
+			
+				#** Recherches dans les corpus ouverts **#
+				#show_open_searches( $sorter.sortStrings($it.getProperties($prefixes.expandUri("skos:prefLabel")), [$locale, null]).get(0).value )
+				
+		    </div>	
+		
+			#** Colonne de gauche **#
+			<div class="keys-values">
+				#show_property( $text.property.prefLabel    $it.getProperties($prefixes.expandUri("skos:prefLabel"))  	$locale  )
+				#show_property( $text.property.notation    	$it.getProperties($prefixes.expandUri("skos:notation"))  $locale	"right")
+				#show_property( $text.property.status    	$it.getProperties($prefixes.expandUri("iso-thes:status"))  $locale	"right" "property.status.")
+				#show_property( $text.property.scopeNote    	$it.getProperties($prefixes.expandUri("skos:scopeNote"))  $locale )
+				#show_property( $text.property.altLabel     $it.getProperties($prefixes.expandUri("skos:altLabel"))   	$locale "non-pref" )
+				#linked_entries( $text.property.broader   		$it.getBroaderConcepts()   $locale )
+				#linked_entries_by_collection( $text.property.narrower  $it.getNarrowerConceptsByCollection()  $locale )
+				#linked_entries_by_collection( $text.property.related   $it.getRelatedConceptsByCollection()   $locale )
+				#show_property( $text.property.example    	$it.getProperties($prefixes.expandUri("skos:example"))    	$locale )			
+			</div>
+			
+			#if( ($it.getAssociations($prefixes.expandUri("skos:exactMatch")) && !$it.getAssociations($prefixes.expandUri("skos:exactMatch")).isEmpty()) ||
+				($it.getAssociations($prefixes.expandUri("skos:closeMatch")) && !$it.getAssociations($prefixes.expandUri("skos:closeMatch")).isEmpty()) || 
+				($it.getAssociations($prefixes.expandUri("skos:broadMatch")) && !$it.getAssociations($prefixes.expandUri("skos:broadMatch")).isEmpty()) || 
+				($it.getAssociations($prefixes.expandUri("skos:relatedMatch")) && !$it.getAssociations($prefixes.expandUri("skos:relatedMatch")).isEmpty()))
+			<div class="alignments">
+			#** AFFICHAGE DES ALIGNEMENTS ****#		
+				#linked_external_resources( $text.property.exactMatch    $it.getAssociations($prefixes.expandUri("skos:exactMatch")) )
+				#linked_external_resources( $text.property.closeMatch    $it.getAssociations($prefixes.expandUri("skos:closeMatch")) )
+				#linked_external_resources( $text.property.broadMatch    $it.getAssociations($prefixes.expandUri("skos:broadMatch")) )
+				#linked_external_resources( $text.property.relatedMatch  $it.getAssociations($prefixes.expandUri("skos:relatedMatch")) )
+			</div>
+			#end
+		
+		#footer_start()
+			<li>$esc.html($text.resource.data)<ul class="sublinks">
+				<li><a href="${rdfData}">$esc.html($text.resource.data.rdf)</a></li>
+				<li><a href="${rdfData}?format=N3">$esc.html($text.resource.data.n3)</a></li>
+				<li><a href="${rdfData}?format=TURTLE">$esc.html($text.resource.data.turtle)</a></li>
+			</ul></li>
+			
+		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() $it.getConceptScheme() $it.getOrganisationMbox())
+</div>
+	</body>
+</html>

@@ -1,0 +1,517 @@
+/*
+* This software is governed by the CeCILL-B license under French law and
+* abiding by the rules of distribution of free software. You can use,
+* modify and/or redistribute the software under the terms of the CeCILL-B
+* license as circulated by CEA, CNRS and INRIA at the following URL
+* "http://www.cecill.info".
+*
+* As a counterpart to the access to the source code and rights to copy,
+* modify and redistribute granted by the license, users are provided only
+* with a limited warranty and the software's author, the holder of the
+* economic rights, and the successive licensors have only limited
+* liability.
+*
+* In this respect, the user's attention is drawn to the risks associated
+* with loading, using, modifying and/or developing or reproducing the
+* software by the user in light of its specific status of free software,
+* that may mean that it is complicated to manipulate, and that also
+* therefore means that it is reserved for developers and experienced
+* professionals having in-depth computer knowledge. Users are therefore
+* encouraged to load and test the software's suitability as regards their
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and, more generally, to use and operate it in the
+* same conditions as regards security.
+*
+* The fact that you are presently reading this means that you have had
+* knowledge of the CeCILL-B license and that you accept its terms.
+*/
+
+body {
+	background: none;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	width: 960px;
+}
+
+body#ThesaurusW {
+	/*     font:13px/1.5 Helvetica,Arial,'Liberation Sans',FreeSans,sans-serif; */
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px/1.5;
+}
+
+#ThesaurusW *,#ThesaurusW li {
+	/*     font-family: "Helvetica Neue", "Lucida Grande", Helvetica, Arial, Verdana, sans-serif; */
+	font-family: Arial, Helvetica, sans-serif;
+	color: #666;
+	text-align: left;
+}
+
+#ThesaurusW li {
+	line-height: 1.5em;
+}
+
+#ThesaurusW a,#ThesaurusW a span {
+	text-decoration: none;
+	color: #63f;
+}
+
+#ThesaurusW h1 {
+	font-size: 2.2em;
+	font-family: Georgia, serif;
+	color: #4E443C;
+	font-variant: small-caps;
+	text-transform: none;
+	font-weight: 100;
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+#ThesaurusW h2 {
+	font-size: 1em;
+	line-height: 1em;
+}
+
+#ThesaurusW h3 {
+	font-size: 0.8em
+}
+
+#ThesaurusW ul {
+	list-style: square;
+	line-height: 1.5em;
+}
+
+#webSiteTitle {
+	line-height: 100%;
+	margin-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #c9c9c9;
+}
+
+#subheader {
+	font-size: 23px;
+	font-family: Georgia, serif;
+	font-size: .8em;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	padding-bottom: 4px;
+}
+#subheader, #ThesaurusW .noSubheader { 
+	margin-bottom: 10px;
+	border-bottom: 1px solid #c9c9c9;
+}
+
+#subheader a,#footer a {
+	text-decoration: none;
+	color: inherit;
+}
+
+#subheader span {
+	font-size: 0.7em
+}
+
+#metadata {
+	float: right;
+	margin-top: 0px;
+	width: 300px;
+	margin-left: 30px;
+}
+
+#metadata h2:first-child {
+	margin-top: 0px;
+}
+
+#topConceptList, #conceptGroupList {
+	-moz-column-count: 3;
+	-moz-column-gap: 50px;
+	-webkit-column-count: 3;
+	-webkit-column-gap: 50px;
+	width: 100%;
+	padding-left: 20px;
+	padding-right: 0;
+}
+
+#footer {
+	margin-top: 10px;
+	border-top: 1px solid #c9c9c9;
+	width: 960px;
+	clear: both;
+}
+
+#footer ul {
+	margin-top: 3px
+}
+
+#footer ul li {
+	display: inline;
+	list-style-type: none;
+	margin-right: 20px;
+}
+
+#sommaire {
+	float: right;
+	border: thin solid #c9c9c9;
+	width: 250px;
+	margin-left: 20px;
+	margin-bottom: 10px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	padding-top: 3px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 10px;
+}
+
+#sommaire h1 {
+	text-align: center;
+	font-size: 1.3em;
+	margin-top: 4px;
+}
+
+#sommaire a {
+	color: inherit;
+}
+
+#texte h1 {
+	font-variant: normal;
+}
+
+#texte p,#content p, #content div {
+	text-align: justify;
+}
+
+#content h2 {
+	font-size: 2.2em;
+	font-family: Georgia, serif;
+	color: #4E443C;
+	font-weight: 400;
+	margin-bottom: 0;
+	margin-top: 25px;
+}
+
+#content h3 {
+	font-size: 1.8em;
+	font-family: Georgia, serif;
+	color: #4E443C;
+	font-weight: 300;
+	margin-bottom: 0;
+	margin-top: 15px;
+}
+
+#content h4 {
+	font-size: 1.3em;
+	font-family: Georgia, serif;
+	color: #4E443C;
+	font-weight: 200;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.vedette,.kvVedette li {
+	text-transform: uppercase;
+}
+.non-pref {
+	font-style: italic;
+}
+
+.clear {
+	clear: right
+}
+
+input[type=submit] {
+	border: #666 1px solid;
+	color: #666;
+	cursor: pointer;
+	background: white;
+	text-align: center;
+}
+
+input[type=submit]:hover,input[type=submit]:focus {
+	background: #ccc;
+}
+
+input[type=submit]:active {
+	background: #666;
+	color: white;
+}
+
+.topRightPanel {
+	padding-bottom: 20px;
+}
+
+.alignments {
+	border-top: 1px solid #c9c9c9;
+	clear: right;
+}
+
+/******************************************* PRESENTATION DE RESOURCES */
+.keys-values {
+	width: 500px;
+}
+
+.key-value {
+	clear: left;
+	padding-bottom: 5px;
+}
+
+.key {
+	float: left;
+	margin-top: 0;
+	padding-top: 0;
+	padding-bottom: 30px;
+	width: 35%;
+}
+
+ul.value,div.value {
+	margin-left: 0;
+	margin-top: 0;
+	padding-top: 0;
+	padding-left: 35%;
+}
+
+div.value ul,div.value li {
+	margin-left: 0;
+	padding-left: 0%;
+}
+
+.right .key {
+	margin-top: 0;
+	padding-top: 0;
+	padding-bottom: 0px;
+	width: 100%;
+}
+
+.right .value {
+	clear: left;
+	margin-left: 0;
+	margin-top: 0;
+	padding-top: 0;
+	padding-left: 2em;
+}
+
+.concept-collection {
+	margin-left: 2em;
+	font-style: italic;
+}
+
+.relation {
+	clear: left;
+}
+
+/******************************************* PAGE D'ACCUEIL */
+.searchConceptBox {
+	margin: 1em 2em;
+}
+
+/****************************************** SPARQL ENDPOINT */
+.sparqlCode {
+	background-color: #cccccc;
+	padding: 0.4em;
+}
+
+.sparqlCode code {
+	font-family: monospace;
+	font-size: 10pt;
+}
+
+/************************************************ RECHERCHE */
+.searchConcepts .searchConceptInlineForm {
+	float: right;
+}
+
+/******************************************* ADMINISTRATION */
+.twoColumnsList {
+	width: 80%;
+}
+
+.twoColumnsList li {
+	clear: both;
+}
+
+.twoColumnsList button {
+	float: right;
+}
+
+/*********************************** RESULTATS DE RECHERCHE */
+.searchConcepts .stats {
+	padding: 0.35em 0;
+}
+
+.searchConcepts .sortCommands .ascOrderLink,.searchConcepts .sortCommands .descOrderLink
+	{
+	display: inline-block;
+	background-image: url(../images/icons.png);
+	background-repeat: no-repeat;
+	width: 18px;
+	height: 18px;
+}
+
+.searchConcepts .sortCommands .ascOrderLink {
+	background-position: -4px -4px;
+}
+
+.searchConcepts .sortCommands .descOrderLink {
+	background-position: -22px -4px;
+}
+
+.searchConcepts .sortCommands span {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.search-noresult {
+	margin: 1em 0;
+}
+
+.searchConcepts .results {
+	border: #ccc solid 1px;
+	border-collapse: collapse;
+	margin: 2em 0;
+	width: 100%;
+}
+
+.searchConcepts .results caption {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.searchConcepts .results th {
+	background: #666;
+	color: white;
+	padding: 0.4em 1em;
+}
+
+.searchConcepts .results th span {
+	color: white;
+	font-size: .85em;
+}
+
+.searchConcepts .results .prefLabel {
+	width: 20%;
+}
+
+.searchConcepts .results .matchingLabel {
+	width: 45%;
+}
+
+.searchConcepts .results .schemeTitle {
+	width: 35%;
+}
+
+.searchConcepts .results  tr:nth-child(even) {
+	background: white;
+}
+
+.searchConcepts .results  tr:nth-child(odd) {
+	background: #eee;
+}
+
+.searchConcepts .results  td {
+	padding: 0.4em 1em;
+}
+
+.searchConcepts .results em {
+	background: #ffc;
+	font-weight: bold;
+	font-style: normal;
+}
+
+.searchConcepts .pager {
+	line-height: 2em;
+	padding: 0 0 0 8em;
+}
+
+.searchConcepts .pager span {
+	padding: .6em;
+}
+
+.searchConcepts .pager ol {
+	display: inline;
+}
+
+.searchConcepts .pager li {
+	display: inline;
+}
+
+.searchConcepts .pager a span {
+	border: 1px solid #ccc;
+	color: #666;
+}
+
+.searchConcepts .pager a:hover span {
+	background: #ccc;
+}
+
+.searchConcepts .pager .selectedPage {
+	font-weight: bold;
+	background: #666;
+	color: white;
+}
+
+/* Recherche dans les corpus ouverts */
+.open-searches {
+	padding-left: 0;
+}
+.open-searches li {
+	list-style: none;
+	display: inline-block;
+	margin-right: 20px;
+}
+.open-searches li {
+	display: inline-block;
+}
+.open-searches li img {
+	height: 36px;
+}
+
+
+
+/* Liens dans le footer */
+#footer ul { vertical-align: top;}
+#footer ul li { position: relative; }
+#footer ul.sublinks {
+	display: inline-block;
+	position: absolute;
+	top: 20px;
+	left: 0px;
+	padding-left: 20px;
+}
+#footer ul.sublinks li {
+	list-style: circle;
+	display: list-item;
+}
+
+
+/* Fil d'ariane */
+#breadcrumb { padding-left: 0; font-size: 0.8em; margin-top: 0; }
+#breadcrumb li { list-style: none; display: inline; padding-right: 10px; }
+#breadcrumb li a { padding-right: 10px; }
+
+/* Contact */
+#ThesaurusW .success { margin-bottom: 3em; color: #00CC00; }
+
+#errors { padding-left: 0; margin-bottom: 3em; }
+#errors, #errors li { color: #CC0000;  }
+#errors li { padding-left: 3em; list-style-position: inside; }
+
+.form-item { clear: left; padding-top: 0.5em; }
+.form-item label { float: left; width: 20%; }
+.form-item input, .form-item textarea { float: left; width: 40%; }
+.form-item.message textarea { height: 10em; }
+.form-item.copy input { width: auto; }
+
+#contact .form-item.submit { text-align: center; }
+.form-item.submit input { float: none; width: auto;}
+
+#contact .limit { font-size: 0.8em; }
+
+
