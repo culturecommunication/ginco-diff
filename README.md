@@ -97,3 +97,13 @@ Valeur par défaut : "<lookupDirectory>/success"
 Ce répertoire est créé s’il n’existe pas. Il doit être accessible en écriture.
 Les fichiers déplacés sont renommés avec une extension correspondant à un numéro de lot (numéro identique pour tous les fichiers traités lors de la scrutation) et un fichier de log portant ce même numéro de lot est créé dans le répertoire.
 Valeur par défaut : "<lookupDirectory>/failure"
+
+##### Fonctionnement :
+
+Lorsque qu'il est activé, le mécanisme de chargement automatique des vocabulaires scrute, à intervalle régulier (cf. paramètre _refresh_), le répertoire configuré (cf. paramètre _lookupDirectory_).
+Les fichiers situés dans ce répertoire (sans tenir compte des sous-répertoires) et dont le nom se termine par ".rdf" (sans tenir compte de la casse) sont alors importés en tant que vocabulaires, de façon séquentielle.
+
+Tant qu'un fichier "lock.txt" est présent dans le répertoire, l'import n'a pas lieu. Cela permet de "verouiller" le mécanisme, le temps d'y déposer des fichiers par exemple.
+
+Une fois traités, les fichiers sont renommés avec un numéro de traitement (à la fin du nom) et déplacés dans les répertoires de succès ou d'échec (cf. paramètres _successDirectory_ et _failureDirectory_). 
+Dans le cas d'un échec, les logs du traitement sont également écrits dans un fichier portant le même numéro de traitement que le fichier dans le répertoire d'echec, et un email contenant ces logs est envoyé (cf. paramètre _emailTo_).
