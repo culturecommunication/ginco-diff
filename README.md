@@ -33,18 +33,21 @@ Pour déployer l'application, vous devez disposer d'un serveur Apache Tomcat 6.
 4. Copier les 2 war "/lib/sesame/openrdf-sesame.war" et "/lib/sesame/openrdf-workbench.war" dans le repertoire "/webapps" de Tomcat.
 5. Ajouter une __Resource__ de type __javax.mail.Session__ avec le nom JNDI __mail/thesaurus__ au context du war de l'application. Par exemple, créer le fichier "/conf/Catalina/localhost/thesaurus.xml" dans Tomcat avec le contenu suivant :
 
-<pre>
-    <?xml version="1.0" encoding="UTF-8"?>
-    <Context>
-    	<Resource name="mail/thesaurus" auth="Container"
+    <pre>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;Context&gt;
+    	&lt;Resource name="mail/thesaurus" auth="Container"
                 type="javax.mail.Session"
-                mail.smtp.host="127.0.0.1"/>
-    </Context>
-</pre>
+                mail.smtp.host="127.0.0.1"/&gt;
+    &lt;/Context&gt;
+    </pre>
+
+NB : Si la Session email n'est pas trouvée au démarrage de l'application, un warning (non bloquant) apparait dans les logs. L'application fonctionne alors, à l'exception du formulaire de contact et des logs d'erreurs par email.
 
 ### Configurer SESAME
 
 Avant de pouvoir utiliser l'application, il faut créer le répository sesame :
+
 1. Accéder à l’URL http://localhost:8080/openrdf-workbench (remplacer "localhost" et "8080" si besoin en fonction de votre serveur).
 2. Cliquer sur le lien __New repository__
 3. Choisir le type __Native Java Store__, l'ID __thesaurus__ et un title (champ est libre).
@@ -78,6 +81,7 @@ Valuer par défaut : 1 048 576 (= 1Mo).
 
 Pour activer le chargement automatique des vocabulaires depuis un répertoire, il faut décommenter la partie du fichier "web.xml" correspondant au filter * VocabularyAutoload *.
 Ce filter admet plusieurs paramètres de configuration (init-param) :
+
 - __lookupDirectory__ : Obligatoire.
 Répertoire à scruter. 
 Ce répertoire doit exister et être accessible en écriture à l’application (déplacement des fichiers traités). 
