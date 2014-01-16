@@ -91,4 +91,3 @@ Valeur par défaut : "<lookupDirectory>/success"
 Ce répertoire est créé s’il n’existe pas. Il doit être accessible en écriture.
 Les fichiers déplacés sont renommés avec une extension correspondant à un numéro de lot (numéro identique pour tous les fichiers traités lors de la scrutation) et un fichier de log portant ce même numéro de lot est créé dans le répertoire.
 Valeur par défaut : "<lookupDirectory>/failure"
-
