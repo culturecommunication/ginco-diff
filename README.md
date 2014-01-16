@@ -33,12 +33,14 @@ Pour déployer l'application, vous devez disposer d'un serveur Apache Tomcat 6.
 4. Copier les 2 war "/lib/sesame/openrdf-sesame.war" et "/lib/sesame/openrdf-workbench.war" dans le repertoire "/webapps" de Tomcat.
 5. Ajouter une __Resource__ de type __javax.mail.Session__ avec le nom JNDI __mail/thesaurus__ au context du war de l'application. Par exemple, créer le fichier "/conf/Catalina/localhost/thesaurus.xml" dans Tomcat avec le contenu suivant :
 
-	<?xml version="1.0" encoding="UTF-8"?>
-	<Context>
-		<Resource name="mail/thesaurus" auth="Container"
-	            type="javax.mail.Session"
-	            mail.smtp.host="127.0.0.1"/>
-	</Context>
+<pre>
+    <?xml version="1.0" encoding="UTF-8"?>
+    <Context>
+    	<Resource name="mail/thesaurus" auth="Container"
+                type="javax.mail.Session"
+                mail.smtp.host="127.0.0.1"/>
+    </Context>
+</pre>
 
 ### Configurer SESAME
 
