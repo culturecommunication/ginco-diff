@@ -11,6 +11,8 @@ Développement
 2. Ajoutez les facets "Dynamic Web Module 2.4" et "Java 1.6". Configurez le répertoire "/web" comme racine du contenu web et "/web/WEB-INF/classes" comme répertoire de compilation.
 3. Ajoutez le JAR "/lib/javax.mail-1.5.1.jar" au Classpath
 4. Ajoutez la librairie JUnit 4 (ou le JAR "/lib/junit-4.10.jar") au Classpath
+5. Ajoutez la librairie servlet-api.jar au Classpath
+6. Ajoutez le répertoire test/java au Buildpath
 
 NB : la webapp se déploie sur une serveur Tomcat dans Eclipse en respectant la configuration décrite au paragraphe "Déploiement".
 
@@ -50,7 +52,7 @@ Avant de pouvoir utiliser l'application, il faut créer le répository sesame :
 
 1. Accéder à l’URL http://localhost:8080/openrdf-workbench (remplacer "localhost" et "8080" si besoin en fonction de votre serveur).
 2. Cliquer sur le lien __New repository__
-3. Choisir le type __Native Java Store__, l'ID __thesaurus__ et un title (champ est libre).
+3. Choisir le type __Native Java Store__, l'ID __thesaurus__ et un title (le contenu de ce champ est libre).
 4. Cliquer sur __Next__, puis sur __Create__.
 5. Vous pouvez maintenant utiliser l'application !
 
@@ -103,7 +105,7 @@ Valeur par défaut : "<lookupDirectory>/failure"
 Lorsque qu'il est activé, le mécanisme de chargement automatique des vocabulaires scrute, à intervalle régulier (cf. paramètre _refresh_), le répertoire configuré (cf. paramètre _lookupDirectory_).
 Les fichiers situés dans ce répertoire (sans tenir compte des sous-répertoires) et dont le nom se termine par ".rdf" (sans tenir compte de la casse) sont alors importés en tant que vocabulaires, de façon séquentielle.
 
-Tant qu'un fichier "lock.txt" est présent dans le répertoire, l'import n'a pas lieu. Cela permet de "verouiller" le mécanisme, le temps d'y déposer des fichiers par exemple.
+Tant qu'un fichier "lock.txt" est présent dans le répertoire, l'import n'a pas lieu. Cela permet de "verrouiller" le mécanisme, le temps d'y déposer des fichiers par exemple.
 
 Une fois traités, les fichiers sont renommés avec un numéro de traitement (à la fin du nom) et déplacés dans les répertoires de succès ou d'échec (cf. paramètres _successDirectory_ et _failureDirectory_). 
-Dans le cas d'un échec, les logs du traitement sont également écrits dans un fichier portant le même numéro de traitement que le fichier dans le répertoire d'echec, et un email contenant ces logs est envoyé (cf. paramètre _emailTo_).
+Dans le cas d'un échec, les logs du traitement sont également écrits dans un fichier portant le même numéro de traitement que le fichier dans le répertoire d'échec, et un email contenant ces logs est envoyé (cf. paramètre _emailTo_).
