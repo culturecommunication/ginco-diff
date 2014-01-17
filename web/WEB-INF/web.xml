@@ -114,7 +114,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
   <context-param>
   	<description>Adresse "from" par défaut des emails envoyés par l'application.</description>
   	<param-name>thesaurus.email.from</param-name>
-  	<param-value>thesaurus@culture.fr</param-value>
+  	<param-value>ne-pas-repondre@default-thesaurus.fr</param-value>
   </context-param>
   
   <!-- Formulaire de contact -->
