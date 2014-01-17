@@ -120,7 +120,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
   <property name="app.version"          value="0.1"/>
   <property name="app.path"             value="/${app.name}"/>
   <property name="app.long.name"
-            value="Thésaurus pour l'indexation des archives locales publiées par les Archives de France"/>
+            value="Application pour l'indexation de vocabulaires au format SKOS"/>
 
   <property name="build.home"           location="${basedir}/build"/>
   <property name="dist.home"            location="${basedir}/dist"/>
