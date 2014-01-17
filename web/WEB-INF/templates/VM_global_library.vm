@@ -268,7 +268,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
           #foreach ( $item in $sorter.sortStrings($values, [$locale, null]) )
           	#if( $item.value != "" )
 	          <span>$esc.html($item.value)</span>
-	        #end
+	        #end	
           #end        
       </div>
 #end
@@ -353,7 +353,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
         <div class="value">
 #foreach( $collection in $sorter.sortEntriesByLabel($m.keySet(), [$locale, null]) )
 #if( $collection )
-			<h3 class="concept-collection">&lt; $esc.html($collection.getLabel($locale).value) &gt;</h3>
+			<h3 class="concept-collection">&lt;&nbsp;$esc.html($collection.getLabel($locale).value)&nbsp;&gt;</h3>
 #end
 			<ul>
 #foreach( $item in $sorter.sortEntriesByLabel($m.get($collection), [$locale, null]) )
