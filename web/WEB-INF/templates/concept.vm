@@ -99,8 +99,8 @@ Paramètres:
 			#** Colonne de gauche **#
 			<div class="keys-values">
 				#show_property( $text.property.prefLabel    $it.getProperties($prefixes.expandUri("skos:prefLabel"))  	$locale  )
-				#show_property( $text.property.notation    	$it.getProperties($prefixes.expandUri("skos:notation"))  $locale	"right")
-				#show_property( $text.property.status    	$it.getProperties($prefixes.expandUri("iso-thes:status"))  $locale	"right" "property.status.")
+				#show_property( $text.property.notation    	$it.getProperties($prefixes.expandUri("skos:notation"))  $locale )
+				#show_property( $text.property.status    	$it.getProperties($prefixes.expandUri("iso-thes:status"))  $locale	"" "property.status.")
 				#show_property( $text.property.scopeNote    	$it.getProperties($prefixes.expandUri("skos:scopeNote"))  $locale )
 				#show_property( $text.property.altLabel     $it.getProperties($prefixes.expandUri("skos:altLabel"))   	$locale "non-pref" )
 				#linked_entries( $text.property.broader   		$it.getBroaderConcepts()   $locale )
