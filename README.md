@@ -109,3 +109,17 @@ Tant qu'un fichier "lock.txt" est présent dans le répertoire, l'import n'a pas
 
 Une fois traités, les fichiers sont renommés avec un numéro de traitement (à la fin du nom) et déplacés dans les répertoires de succès ou d'échec (cf. paramètres _successDirectory_ et _failureDirectory_). 
 Dans le cas d'un échec, les logs du traitement sont également écrits dans un fichier portant le même numéro de traitement que le fichier dans le répertoire d'échec, et un email contenant ces logs est envoyé (cf. paramètre _emailTo_).
+
+#### Recherches dans les corpus ouverts
+
+Sur la page d'un concept, il est possible d'afficher des liens permettant d'effectuer des recherches sur ce concept dans des corpus ouverts.
+Par défaut, l'application est configurée pour ces recherches dans _Wikimedia Commons_ et _Wiktionnaire_.
+
+Le paramétrage de ces liens se fait dans "fr/gouv/culture/thesaurus/service/open-searches_fr.properties", sous la forme de 3 clés à compléter pour chaque lien :
+- __search-x.name__ : le nom du corpus ouvert
+- __search-x.icon__ : l'URL de l'image à afficher
+- __search-x.url__ : l'URL du lien. Cette URL peut (doit!) être paramétrée avec :
+	- __{0}__ : le libellé préférentiel du concept
+ 
+_NB_ : le "x" dans le nom des clés doit être remplacé par un chiffre (search-1.name, search-2.name, etc.).
+
