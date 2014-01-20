@@ -52,11 +52,10 @@ Paramètres:
        <div id="ThesaurusW">
 		    <h1 class="noSubheader">$title</h1>
 		    
-		    <ul id="breadcrumb">
-		    	<li><a href="${baseUri}/">Accueil</a>&gt;</li>
-		    	<li><a href="$resolver.toUrl($it.uri)">$esc.html($it.getLabel($locale).value)</a>&gt;</li>
-			    <li>$esc.html($text.contact.breadcrumb)</li>
-		    </ul>
+		    <div id="subheader">
+		    	<a href="${baseUri}/">Accueil</a> | 
+		    	<a href="$resolver.toUrl($it.uri)">$esc.html($it.getLabel($locale).value)</a>
+		    </div>
 		    
 		    #if($success)
 		    <p class="success">$esc.html($text.get("$success"))</p>
