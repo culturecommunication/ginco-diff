@@ -117,7 +117,7 @@ Par défaut, l'application est configurée pour ces recherches dans _Wikimedia C
 
 Le paramétrage de ces liens se fait dans "fr/gouv/culture/thesaurus/service/open-searches_fr.properties", sous la forme de 3 clés à compléter pour chaque lien :
 - __search-x.name__ : le nom du corpus ouvert
-- __search-x.icon__ : l'URL de l'image à afficher
+- __search-x.icon__ : l'URL de l'image à afficher 
 - __search-x.url__ : l'URL du lien. Cette URL peut (doit!) être paramétrée avec :
 	- __{0}__ : le libellé préférentiel du concept
  
