@@ -50,6 +50,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Classe fournissant des méthodes utilitaires pour la gestion des emails.
+ * 
+ * @author dhazard
  */
 public class MailUtil {
 
