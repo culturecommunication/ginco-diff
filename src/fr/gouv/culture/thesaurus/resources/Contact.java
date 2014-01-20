@@ -246,10 +246,11 @@ public class Contact extends BaseResource
         	
         	if(errors.isEmpty()){
         		// Envoi de l'email
-	            MailUtil mailUtil = MailUtil.getSimpleMail(from, to, subject, message);
+        		String fullfrom = name + " <"+from+"> ";        				
+	            MailUtil mailUtil = MailUtil.getSimpleMail(fullfrom, to, subject, message);
 	            if(copy){
 	            	mailUtil.setCc(new LinkedList<String>());
-	            	mailUtil.getCc().add(from);
+	            	mailUtil.getCc().add(fullfrom);
 	            }
 	            
 	            if(files != null){
