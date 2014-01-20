@@ -92,6 +92,7 @@ Paramètres:
 		    </ul>
 		    
 		    #** Groupes de concepts *#
+		    #if(!$it.getConceptGroups($locale).isEmpty())
 		   <h2 class="clear">$esc.html($text.property.conceptGroups)</h2>
 		    <ul id="conceptGroupList">
 				#set( $conceptGroups = $it.getConceptGroups($locale) )
@@ -101,6 +102,7 @@ Paramètres:
 					</li>
 				#end
 		    </ul>
+		    #end
 		    
 	    #footer_start()
 		 <li>$esc.html($text.resource.data)<ul class="sublinks">
