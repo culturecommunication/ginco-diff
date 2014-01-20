@@ -296,7 +296,7 @@ public class VocabularyAutoload implements Runnable {
 		if(hasErrors){
 			try {
 				// On écrit le fichier avec le log d'erreur dans le répertoire d'erreur			
-				FileUtils.writeStringToFile(new File(failureDir, lotID + ".log"), logWriter.toString(), "UTF-8");
+				FileUtils.writeStringToFile(new File(failureDir, lotID + ".log.html"), logWriter.toString(), "UTF-8");
 			} catch (IOException ex) {
 				log.warn("Ecriture du fichier de log impossible.", ex);
 			}
