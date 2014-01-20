@@ -474,6 +474,7 @@ div.value ul,div.value li {
 
 
 /* Liens dans le footer */
+#footer { padding-bottom: 100px; }
 #footer ul { vertical-align: top;}
 #footer ul li { position: relative; }
 #footer ul.sublinks {
