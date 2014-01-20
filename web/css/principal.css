@@ -463,14 +463,12 @@ div.value ul,div.value li {
 }
 .open-searches li {
 	list-style: none;
-	display: inline-block;
+	display: inline;
 	margin-right: 20px;
-}
-.open-searches li {
-	display: inline-block;
 }
 .open-searches li img {
 	height: 36px;
+	border: none;
 }
 
 
