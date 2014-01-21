@@ -1190,28 +1190,6 @@ public class SesameThesaurus implements ThesaurusService {
 
 		final Map<String, Concept> concepts = constructResourcesFromQuery(
 				Concept.class, query);
-//		if (!concepts.isEmpty()) {
-//			// Recherche des collections associées aux concepts trouvés.
-//			final GraphQuery collectionsQuery = getConstructQuery(
-//					SparqlQueries.DescribeCollectionsFromRelatedSkosConcepts.QUERY,
-//					cnx);
-//			collectionsQuery
-//					.setBinding(
-//							SparqlQueries.DescribeParentSkosConcepts.STARTING_CONCEPT_URI,
-//							uri);
-//
-//			final Map<String, ConceptCollection> collections = constructResourcesFromQuery(
-//					ConceptCollection.class, collectionsQuery);
-//			for (final ConceptCollection collection : collections.values()) {
-//				for (final String conceptUri : collection.getMembers()) {
-//					final Concept concept = concepts.get(conceptUri);
-//
-//					if (concept != null) {
-//						concept.addCollection(collection);
-//					}
-//				}
-//			}
-//		}
 
 		return concepts.values();
 	}

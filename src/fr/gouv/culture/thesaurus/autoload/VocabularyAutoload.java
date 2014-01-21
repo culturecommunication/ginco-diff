@@ -217,6 +217,8 @@ public class VocabularyAutoload implements Runnable {
 					if (log.isDebugEnabled()) {
 						log.debug("Lock posé : pas de traitement.");
 					}
+					log.removeAppender(appender);
+					appender.close();
 					return;
 				}
 
