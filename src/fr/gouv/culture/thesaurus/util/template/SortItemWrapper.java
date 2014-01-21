@@ -135,30 +135,32 @@ public final class SortItemWrapper<T> implements Comparable<SortItemWrapper<T>> 
 	 */
 	private int compareLanguage(final String firstLang, final String secondLang) {
 		int langComparison = TextUtils.compareStrings(firstLang, secondLang);
-		if (langComparison != 0 && prioritizedLanguages != null) {
-			// Les langues sont différentes, on recherche si parmi celles-ci
-			// l'une d'entre elles est prioritaire.
-			int match = -1;
-			for (int prioritizedLangId = 0; match == -1
-					&& prioritizedLangId < prioritizedLanguages.length; prioritizedLangId++) {
-				final String prioritizedLang = prioritizedLanguages[prioritizedLangId];
-				if (StringUtils.equals(prioritizedLang, firstLang)) {
-					match = 0;
-				} else if (StringUtils.equals(prioritizedLang, secondLang)) {
-					match = 1;
+		if (langComparison != 0) {
+			if (prioritizedLanguages != null) {
+				// Les langues sont différentes, on recherche si parmi celles-ci
+				// l'une d'entre elles est prioritaire.
+				int match = -1;
+				for (int prioritizedLangId = 0; match == -1
+						&& prioritizedLangId < prioritizedLanguages.length; prioritizedLangId++) {
+					final String prioritizedLang = prioritizedLanguages[prioritizedLangId];
+					if (StringUtils.equals(prioritizedLang, firstLang)) {
+						match = 0;
+					} else if (StringUtils.equals(prioritizedLang, secondLang)) {
+						match = 1;
+					}
 				}
-			}
-
-			if (match == 0) {
-				langComparison = -1;
-			} else if (match == 1) {
-				langComparison = 1;
-			}
-		} else {
-			if (firstLang == null) {
-				langComparison = 1;
-			} else if (secondLang == null) {
-				langComparison = -1;
+	
+				if (match == 0) {
+					langComparison = -1;
+				} else if (match == 1) {
+					langComparison = 1;
+				}
+			} else {
+				if (firstLang == null) {
+					langComparison = 1;
+				} else if (secondLang == null) {
+					langComparison = -1;
+				}
 			}
 		}
 

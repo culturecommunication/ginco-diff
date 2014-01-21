@@ -84,7 +84,7 @@ Paramètres:
 		    <h2 class="clear">$esc.html($text.property.topConcept)</h2>
 		    <ul id="topConceptList">
 				#set( $topConcepts = $it.getTopConcepts($locale) )
-				#foreach ($item in $sorter.sortEntriesByLabel($topConcepts, [$locale, null]))
+				#foreach ($item in $sorter.sortEntriesByLabel($topConcepts, [$locale, null], false))
 					<li>
 				    	<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
 					</li>
@@ -96,7 +96,7 @@ Paramètres:
 		   <h2 class="clear">$esc.html($text.property.conceptGroups)</h2>
 		    <ul id="conceptGroupList">
 				#set( $conceptGroups = $it.getConceptGroups($locale) )
-				#foreach ($item in $sorter.sortEntriesByLabel($conceptGroups, [$locale, null]))
+				#foreach ($item in $sorter.sortEntriesByLabel($conceptGroups, [$locale, null], false))
 					<li>
 				    	$esc.html($item.getLabel($locale).value)
 					</li>

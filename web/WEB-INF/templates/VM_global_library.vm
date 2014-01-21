@@ -293,7 +293,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
       <div class="key-value $!css">
         <h2 class="key">$esc.html($name)</h2>
         <ul class="value">
-#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null]) )
+#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null], false) )
 		#if( $item.getLabel($locale).value != "" )
           <li>
              <a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
@@ -324,7 +324,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
       <div class="key-value $!css">
         <h2 class="key">$esc.html($name)</h2>
         <ul class="value">
-#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null]) )
+#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null], false) )
 		#if( $item.getLabel($locale).value != "" )
           <li>$esc.html($item.getLabel($locale).value)</li>
         #end
@@ -351,12 +351,12 @@ knowledge of the CeCILL-B license and that you accept its terms.
       <div class="key-value">
         <h2 class="key">$esc.html($name)</h2>
         <div class="value">
-#foreach( $collection in $sorter.sortEntriesByLabel($m.keySet(), [$locale, null]) )
+#foreach( $collection in $sorter.sortEntriesByLabel($m.keySet(), [$locale, null], false) )
 #if( $collection )
 			<h3 class="concept-collection">&lt;&nbsp;$esc.html($collection.getLabel($locale).value)&nbsp;&gt;</h3>
 #end
 			<ul>
-#foreach( $item in $sorter.sortEntriesByLabel($m.get($collection), [$locale, null]) )
+#foreach( $item in $sorter.sortEntriesByLabel($m.get($collection), [$locale, null], false) )
 				<li>
 					<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
 				</li>
