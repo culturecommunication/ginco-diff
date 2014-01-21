@@ -58,7 +58,7 @@ Paramètres:
 	    <div>
 	    	#if( $it && $it.size() > 0 )
 				<p>Thésaurus existants&nbsp;:</p>
-				<form action="admin" method="post">
+				<form action="${baseUri}/admin" method="post">
 					<ul class="twoColumnsList">
 					#foreach ($item in $it)
 						<li>
@@ -85,7 +85,7 @@ Paramètres:
 		#end
 	    </div>
 	    <div>
-			<form action="admin" method="post" enctype="multipart/form-data">
+			<form action="${baseUri}/admin" method="post" enctype="multipart/form-data">
 		        <label for="file">Fichier thésaurus&nbsp;: </label><br />
 		        <input type="file" name="file" id="file"/><br />
 		        <input type="submit" value="Mettre à jour le thésaurus" />
