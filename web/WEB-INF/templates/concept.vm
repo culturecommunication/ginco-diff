@@ -61,7 +61,7 @@ Paramètres:
 		    
 		    <ul id="breadcrumb">
 		    	#set( $l = $it.getParentConcepts() )
-			    #foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null]) )
+			    #foreach( $item in $l )
 					#if( $item.getLabel($locale).value != "" )
 			        <li><a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>&gt;</li>
 			        #end
