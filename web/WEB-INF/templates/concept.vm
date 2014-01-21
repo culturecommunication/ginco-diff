@@ -128,7 +128,7 @@ Paramètres:
 				<li><a href="${rdfData}?format=TURTLE">$esc.html($text.resource.data.turtle)</a></li>
 			</ul></li>
 			
-		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() $it.getConceptScheme() $it.getOrganisationMbox())
+		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it.getConceptScheme() $it.getOrganisationMbox())
 </div>
 	</body>
 </html>

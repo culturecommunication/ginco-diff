@@ -132,7 +132,7 @@ Paramètres:
 				<li><a href="${rdfData}?includeSchemes=true&format=N3">$esc.html($text.conceptScheme.download.n3)</a></li>
 				<li><a href="${rdfData}?includeSchemes=true&format=Turtle">$esc.html($text.conceptScheme.download.turtle)</a></li>
 		</ul></li>
-		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() $it $it.getOrganisationMbox())
+		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it $it.getOrganisationMbox())
 		     </div>
 	</body>
 </html>

@@ -50,7 +50,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
       <ul>
 #end
 
-#macro( footer_end $organisationName $organisationHomepage $seeMoreUrl $scheme $organisationMbox)
+#macro( footer_end $organisationName $organisationHomepage $seeMoreUrl $defaultOrganisation $scheme $organisationMbox)
 		#if ($seeMoreUrl)
          <li><a href="$seeMoreUrl">En savoir plus</a></li>
         #elseif ($text.resource.learnMore.url.exists)
@@ -60,7 +60,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
          
         #if ($organisationName && $organisationHomepage)
          <li><a href="$organisationHomepage" title="$esc.html($text.resource.creator.webpage.tooltip.insert($organisationName))">$esc.html($text.resource.creator.webpage)</a></li>
-        #{else}
+        #elseif ($defaultOrganisation)
         <li><a href="$esc.html($text.resource.creator.default.url)" title="$esc.html($text.resource.creator.webpage.tooltip.insert($text.resource.creator.default.name))">$esc.html($text.resource.creator.webpage)</a></li>
         #end
         
@@ -71,9 +71,9 @@ knowledge of the CeCILL-B license and that you accept its terms.
     </div>
 #end
 
-#macro( footer $organisationName $organisationHomepage $seeMoreUrl )
+#macro( footer $organisationName $organisationHomepage $seeMoreUrl $defaultOrganisation)
 #footer_start()
-#footer_end($organisationName $organisationHomepage $seeMoreUrl )
+#footer_end($organisationName $organisationHomepage $seeMoreUrl $defaultOrganisation)
 #end
 
 
