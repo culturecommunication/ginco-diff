@@ -1204,8 +1204,10 @@ public class SesameThesaurus implements ThesaurusService {
 
 		final Map<String, Concept> concepts = constructResourcesFromQuery(
 				Concept.class, query);
-
-		return concepts.values();
+		
+		List<Concept> results = new LinkedList<Concept>(concepts.values());
+		Collections.reverse(results);
+		return results;
 	}
 	
 	/**
