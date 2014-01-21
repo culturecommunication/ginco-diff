@@ -88,7 +88,6 @@ Paramètres:
 		    	#label_entries( $text.property.conceptGroups 	$it.getConceptGroups()   $locale "right")
 				#show_property( $text.property.definition 	$it.getProperties($prefixes.expandUri("skos:definition"))   $locale "right")
 				#show_property( $text.property.historyNote    	$it.getProperties($prefixes.expandUri("skos:historyNote"))  $locale	"right")
-				#show_property( $text.property.changeNote    	$it.getProperties($prefixes.expandUri("skos:changeNote"))  $locale	"right")
 				#linked_uris( $text.property.focus  $it.getFocus() "right")
 			
 				#** Recherches dans les corpus ouverts **#
