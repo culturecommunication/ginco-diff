@@ -394,7 +394,7 @@ a.button {
 	overflow: hidden;
 }
 
-.searchConcepts .results th {
+#ThesaurusW .searchConcepts .results th {
 	background: #666;
 	color: white;
 	padding: 0.4em 1em;
@@ -435,33 +435,33 @@ a.button {
 	font-style: normal;
 }
 
-.searchConcepts .pager {
+#ThesaurusW .searchConcepts .pager {
 	line-height: 2em;
 	padding: 0 0 0 8em;
 }
 
-.searchConcepts .pager span {
+#ThesaurusW .searchConcepts .pager span {
 	padding: .6em;
 }
 
-.searchConcepts .pager ol {
+#ThesaurusW .searchConcepts .pager ol {
 	display: inline;
 }
 
-.searchConcepts .pager li {
+#ThesaurusW .searchConcepts .pager li {
 	display: inline;
 }
 
-.searchConcepts .pager a span {
+#ThesaurusW .searchConcepts .pager a span {
 	border: 1px solid #ccc;
 	color: #666;
 }
 
-.searchConcepts .pager a:hover span {
+#ThesaurusW .searchConcepts .pager a:hover span {
 	background: #ccc;
 }
 
-.searchConcepts .pager .selectedPage {
+#ThesaurusW .searchConcepts .pager .selectedPage {
 	font-weight: bold;
 	background: #666;
 	color: white;
