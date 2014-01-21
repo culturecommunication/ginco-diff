@@ -329,8 +329,19 @@ div.value ul,div.value li {
 	clear: both;
 }
 
-.twoColumnsList button {
+.twoColumnsList button,
+.twoColumnsList .button {
 	float: right;
+}
+
+a.button {
+	background: #EEE;
+	border: #888 1px solid;
+	font-size: 0.8em;
+	padding:  0em 0.3em;
+	margin-bottom: 0.1em;
+	color: #555;
+	cursor: pointer;
 }
 
 /*********************************** RESULTATS DE RECHERCHE */

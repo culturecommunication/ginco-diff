@@ -38,6 +38,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -121,9 +122,10 @@ public class Admin extends BaseResource
         return this.newViewable(status, message, uriInfo);
     }
     
-    @POST    
+    @GET    
+    @Path("delete")
     @Produces(MediaType.TEXT_HTML)
-    public Viewable delete(@FormParam("deleteScheme") String context,
+    public Viewable delete(@QueryParam("scheme") String context,
     						@Context UriInfo uriInfo){
     	String status = "200";
     	String message = "Suppression du référentiel effectuée avec succès.";
