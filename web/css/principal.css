@@ -103,7 +103,7 @@ body#ThesaurusW {
 
 #subheader a,#footer a {
 	text-decoration: none;
-	color: inherit;
+	color: #666;
 }
 
 #subheader span {
