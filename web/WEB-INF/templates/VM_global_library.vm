@@ -131,7 +131,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * 			Langage pour l'affichage de la date
  *#
 #macro( show_property_as_date $name $values $dateFormat $locale )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <h2>$esc.html($name)</h2>
       <ul>
 #foreach( $item in $values )
@@ -159,7 +159,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * 			Langage pour l'affichage de la date
  *#
 #macro( show_property_as_datetime $name $values $dateFormat $timeFormat $locale )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <h2>$esc.html($name)</h2>
       <ul>
 #foreach( $item in $values )
@@ -183,7 +183,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * 			Langage préférentiel pour affichage du libellé
  *#
 #macro( show_inline_property $name $values $locale )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <h2>$esc.html($name)</h2>
       <ul>
 #foreach( $item in $sorter.sortStrings($values, [$locale, null]))
@@ -207,7 +207,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * 			Langage préférentiel pour affichage du libellé
  *#
 #macro( show_inline_property_with_lang $name $values $locale )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
 	<h2>$esc.html($name)</h2>
 	<ul>
 #foreach( $item in $sorter.sortStrings($values, [$locale, null]))
@@ -234,7 +234,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  *			Classe CSS du conteneur
  *#
 #macro( show_property $name $values $locale $css $resourceprefix )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <div class="key-value $!css">
         <h2 class="key">$esc.html($name)</h2>
         <ul class="value">
@@ -262,7 +262,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  *			Classe CSS du conteneur
  *#
 #macro( show_block_property $name $values $locale $css )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <div class="key-value $!css">
         <h2>$esc.html($name)</h2>        
           #foreach ( $item in $sorter.sortStrings($values, [$locale, null]) )

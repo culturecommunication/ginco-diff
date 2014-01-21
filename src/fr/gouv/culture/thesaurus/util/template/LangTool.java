@@ -32,7 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * CLasse utilitaire pour formatter les "lang" dans les templates velocity.
+ * Classe utilitaire pour formatter les "lang" dans les templates velocity.
  * @author dhd
  *
  */
