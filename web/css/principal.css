@@ -219,7 +219,7 @@ body#ThesaurusW {
 .vedette,.kvVedette li {
 	text-transform: uppercase;
 }
-.non-pref {
+.non-pref ul {
 	font-style: italic;
 }
 
