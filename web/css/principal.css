@@ -338,11 +338,11 @@ div.value ul,div.value li {
 }
 
 .twoColumnsList button,
-.twoColumnsList .button {
+.twoColumnsList .bouton {
 	float: right;
 }
 
-#ThesaurusW a.button {
+a.bouton {
 	background: #EEE;
 	border: #888 1px solid;
 	font-size: 0.8em;

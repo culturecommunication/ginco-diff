@@ -69,7 +69,7 @@ Paramètres:
 							#if( $lastUpdate )
 					        	(dernière mise à jour&nbsp;: $esc.html($date.format("long", null, $lastUpdate, $locale)))
 							#end
-							<a href="${baseUri}/admin/delete?scheme=$esc.url($item.Uri)" class="button" 
+							<a href="${baseUri}/admin/delete?scheme=$esc.url($item.Uri)" class="bouton" 
 								title="Supprimer le référentiel &quot;$esc.html($item.getLabel($locale).value)&quot;"  
 								onclick="return Referentiel_ConfirmDeletion(&quot;$esc.html($esc.javascript($item.getLabel($locale).value))&quot;);">Supprimer</a>
 				        </li>
