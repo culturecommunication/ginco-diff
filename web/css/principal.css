@@ -341,7 +341,7 @@ div.value ul,div.value li {
 	float: right;
 }
 
-a.button {
+#ThesaurusW a.button {
 	background: #EEE;
 	border: #888 1px solid;
 	font-size: 0.8em;
