@@ -521,8 +521,9 @@ a.button {
 #errors li { padding-left: 3em; list-style-position: inside; }
 
 .form-item { clear: left; padding-top: 0.5em; }
-.form-item label { float: left; width: 20%; }
-.form-item input, .form-item textarea { float: left; width: 40%; }
+.form-item label { float: left; width: 25%; }
+#ThesaurusW .form-item label .required { padding-left: 0.3em; color: #CC0000; }
+.form-item input, .form-item textarea { float: left; width: 35%; }
 .form-item.message textarea { height: 10em; }
 .form-item.copy input { width: auto; }
 
