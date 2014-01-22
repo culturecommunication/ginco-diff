@@ -32,7 +32,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.openrdf.model.BNode;
@@ -71,7 +71,7 @@ public final class RdfEntriesGenerationHandler<T extends RdfResource> implements
 	private final Class<T> entryClass;
 
 	/** Instances créées. */
-	private final Map<String, T> entries = new HashMap<String, T>();
+	private final Map<String, T> entries = new LinkedHashMap<String, T>();
 
 	/**
 	 * Initialise un nouveau générateur d'instances.

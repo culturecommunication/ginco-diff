@@ -58,7 +58,7 @@ Paramètres:
 	    <div>
 	    	#if( $it && $it.size() > 0 )
 				<p>Thésaurus existants&nbsp;:</p>
-				<form action="admin" method="post">
+				<form action="${baseUri}/admin" method="post">
 					<ul class="twoColumnsList">
 					#foreach ($item in $it)
 						<li>
@@ -69,7 +69,9 @@ Paramètres:
 							#if( $lastUpdate )
 					        	(dernière mise à jour&nbsp;: $esc.html($date.format("long", null, $lastUpdate, $locale)))
 							#end
-							<button name="deleteScheme" value="$esc.html($item.Uri)" title="Supprimer le référentiel &quot;$esc.html($item.getLabel($locale).value)&quot;" onclick="return Referentiel_ConfirmDeletion(&quot;$esc.html($esc.javascript($item.getLabel($locale).value))&quot;);">Supprimer</button>		
+							<a href="${baseUri}/admin/delete?scheme=$esc.url($item.Uri)" class="button" 
+								title="Supprimer le référentiel &quot;$esc.html($item.getLabel($locale).value)&quot;"  
+								onclick="return Referentiel_ConfirmDeletion(&quot;$esc.html($esc.javascript($item.getLabel($locale).value))&quot;);">Supprimer</a>
 				        </li>
 					#end
 					</ul>
@@ -85,7 +87,7 @@ Paramètres:
 		#end
 	    </div>
 	    <div>
-			<form action="admin" method="post" enctype="multipart/form-data">
+			<form action="${baseUri}/admin" method="post" enctype="multipart/form-data">
 		        <label for="file">Fichier thésaurus&nbsp;: </label><br />
 		        <input type="file" name="file" id="file"/><br />
 		        <input type="submit" value="Mettre à jour le thésaurus" />

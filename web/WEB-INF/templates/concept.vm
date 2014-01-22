@@ -61,7 +61,7 @@ Paramètres:
 		    
 		    <ul id="breadcrumb">
 		    	#set( $l = $it.getParentConcepts() )
-			    #foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null]) )
+			    #foreach( $item in $l )
 					#if( $item.getLabel($locale).value != "" )
 			        <li><a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>&gt;</li>
 			        #end
@@ -84,11 +84,10 @@ Paramètres:
 				</div>
 				#linked_entries( $text.property.topAncestor   	$it.getTopAncestors()   $locale "right" )
 				#show_single_property_as_date( $text.property.created         $it.createdDate      "long"      $locale )
-				#show_single_property_as_date( $text.property.modified         $$it.modifiedDate      "long"      $locale )
+				#show_single_property_as_date( $text.property.modified         $it.modifiedDate      "long"      $locale )
 		    	#label_entries( $text.property.conceptGroups 	$it.getConceptGroups()   $locale "right")
 				#show_property( $text.property.definition 	$it.getProperties($prefixes.expandUri("skos:definition"))   $locale "right")
 				#show_property( $text.property.historyNote    	$it.getProperties($prefixes.expandUri("skos:historyNote"))  $locale	"right")
-				#show_property( $text.property.changeNote    	$it.getProperties($prefixes.expandUri("skos:changeNote"))  $locale	"right")
 				#linked_uris( $text.property.focus  $it.getFocus() "right")
 			
 				#** Recherches dans les corpus ouverts **#
@@ -99,8 +98,8 @@ Paramètres:
 			#** Colonne de gauche **#
 			<div class="keys-values">
 				#show_property( $text.property.prefLabel    $it.getProperties($prefixes.expandUri("skos:prefLabel"))  	$locale  )
-				#show_property( $text.property.notation    	$it.getProperties($prefixes.expandUri("skos:notation"))  $locale	"right")
-				#show_property( $text.property.status    	$it.getProperties($prefixes.expandUri("iso-thes:status"))  $locale	"right" "property.status.")
+				#show_property( $text.property.notation    	$it.getProperties($prefixes.expandUri("skos:notation"))  $locale )
+				#show_property( $text.property.status    	$it.getProperties($prefixes.expandUri("iso-thes:status"))  $locale	"" "property.status.")
 				#show_property( $text.property.scopeNote    	$it.getProperties($prefixes.expandUri("skos:scopeNote"))  $locale )
 				#show_property( $text.property.altLabel     $it.getProperties($prefixes.expandUri("skos:altLabel"))   	$locale "non-pref" )
 				#linked_entries( $text.property.broader   		$it.getBroaderConcepts()   $locale )
@@ -129,7 +128,7 @@ Paramètres:
 				<li><a href="${rdfData}?format=TURTLE">$esc.html($text.resource.data.turtle)</a></li>
 			</ul></li>
 			
-		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() $it.getConceptScheme() $it.getOrganisationMbox())
+		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it.getConceptScheme() $it.getOrganisationMbox())
 </div>
 	</body>
 </html>

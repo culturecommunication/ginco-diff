@@ -85,6 +85,24 @@ public final class ThesaurusSorter {
 	}
 	
 	/**
+	 * Tri des ressources par leur libellé.
+	 * 
+	 * @param entries
+	 *            Ressources à trier par libellé (ou <code>null</code>)
+	 * @param prioritizedLanguages
+	 *            Langues prioritaires (la valeur <code>null</code> représente
+	 *            la langue neutre)
+	 * @return Ressources triées par libellé, ou <code>null</code> si la liste
+	 *         des ressources en entrée est <code>null</code>
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Collection sortEntriesByLabel(final Collection entries,
+			final List prioritizedLanguages, final boolean prioritized) {
+		return sortEntriesByLabel(entries,
+				(Locale[]) prioritizedLanguages.toArray(new Locale[0]), prioritized);
+	}
+	
+	/**
 	 * Tri des ressources par leur libellé. Les valeurs <code>null</code> sont
 	 * conservées et mises en tête de la collection.
 	 * 
@@ -98,6 +116,23 @@ public final class ThesaurusSorter {
 	 */
 	public <T extends Entry> Collection<T> sortEntriesByLabel(
 			final Collection<T> entries, final Locale[] prioritizedLanguages) {
+		return sortEntriesByLabel(entries, prioritizedLanguages, true);
+	}
+	
+	/**
+	 * Tri des ressources par leur libellé. Les valeurs <code>null</code> sont
+	 * conservées et mises en tête de la collection.
+	 * 
+	 * @param entries
+	 *            Ressources à trier par libellé (ou <code>null</code>)
+	 * @param prioritizedLanguages
+	 *            Langues prioritaires (la valeur <code>null</code> représente
+	 *            la langue neutre)
+	 * @return Ressources triées par libellé, ou <code>null</code> si la liste
+	 *         des ressources en entrée est <code>null</code>
+	 */
+	public <T extends Entry> Collection<T> sortEntriesByLabel(
+			final Collection<T> entries, final Locale[] prioritizedLanguages, final boolean prioritized) {
 		Collection<T> sortedEntries;
 
 		if (entries == null) {
@@ -122,7 +157,7 @@ public final class ThesaurusSorter {
 							: Collator.getInstance(getLocale(language));
 
 					wrappers.add(new SortItemWrapper<T>(entry, label, collator,
-							LangUtils.convertLocalesToString(LangUtils.expand(prioritizedLanguages))));
+							prioritized ? LangUtils.convertLocalesToString(LangUtils.expand(prioritizedLanguages)) : null));
 				}
 			}
 

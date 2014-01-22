@@ -50,7 +50,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
       <ul>
 #end
 
-#macro( footer_end $organisationName $organisationHomepage $seeMoreUrl $scheme $organisationMbox)
+#macro( footer_end $organisationName $organisationHomepage $seeMoreUrl $defaultOrganisation $scheme $organisationMbox)
 		#if ($seeMoreUrl)
          <li><a href="$seeMoreUrl">En savoir plus</a></li>
         #elseif ($text.resource.learnMore.url.exists)
@@ -60,7 +60,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
          
         #if ($organisationName && $organisationHomepage)
          <li><a href="$organisationHomepage" title="$esc.html($text.resource.creator.webpage.tooltip.insert($organisationName))">$esc.html($text.resource.creator.webpage)</a></li>
-        #{else}
+        #elseif ($defaultOrganisation)
         <li><a href="$esc.html($text.resource.creator.default.url)" title="$esc.html($text.resource.creator.webpage.tooltip.insert($text.resource.creator.default.name))">$esc.html($text.resource.creator.webpage)</a></li>
         #end
         
@@ -71,9 +71,9 @@ knowledge of the CeCILL-B license and that you accept its terms.
     </div>
 #end
 
-#macro( footer $organisationName $organisationHomepage $seeMoreUrl )
+#macro( footer $organisationName $organisationHomepage $seeMoreUrl $defaultOrganisation)
 #footer_start()
-#footer_end($organisationName $organisationHomepage $seeMoreUrl )
+#footer_end($organisationName $organisationHomepage $seeMoreUrl $defaultOrganisation)
 #end
 
 
@@ -131,7 +131,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * 			Langage pour l'affichage de la date
  *#
 #macro( show_property_as_date $name $values $dateFormat $locale )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <h2>$esc.html($name)</h2>
       <ul>
 #foreach( $item in $values )
@@ -159,7 +159,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * 			Langage pour l'affichage de la date
  *#
 #macro( show_property_as_datetime $name $values $dateFormat $timeFormat $locale )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <h2>$esc.html($name)</h2>
       <ul>
 #foreach( $item in $values )
@@ -183,7 +183,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * 			Langage préférentiel pour affichage du libellé
  *#
 #macro( show_inline_property $name $values $locale )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <h2>$esc.html($name)</h2>
       <ul>
 #foreach( $item in $sorter.sortStrings($values, [$locale, null]))
@@ -207,7 +207,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * 			Langage préférentiel pour affichage du libellé
  *#
 #macro( show_inline_property_with_lang $name $values $locale )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
 	<h2>$esc.html($name)</h2>
 	<ul>
 #foreach( $item in $sorter.sortStrings($values, [$locale, null]))
@@ -234,7 +234,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  *			Classe CSS du conteneur
  *#
 #macro( show_property $name $values $locale $css $resourceprefix )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <div class="key-value $!css">
         <h2 class="key">$esc.html($name)</h2>
         <ul class="value">
@@ -262,7 +262,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  *			Classe CSS du conteneur
  *#
 #macro( show_block_property $name $values $locale $css )
-#if( !$values.isEmpty() )
+#if( !$collection.isStringEmpty($values) )
       <div class="key-value $!css">
         <h2>$esc.html($name)</h2>        
           #foreach ( $item in $sorter.sortStrings($values, [$locale, null]) )
@@ -293,7 +293,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
       <div class="key-value $!css">
         <h2 class="key">$esc.html($name)</h2>
         <ul class="value">
-#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null]) )
+#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null], false) )
 		#if( $item.getLabel($locale).value != "" )
           <li>
              <a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
@@ -324,7 +324,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
       <div class="key-value $!css">
         <h2 class="key">$esc.html($name)</h2>
         <ul class="value">
-#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null]) )
+#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null], false) )
 		#if( $item.getLabel($locale).value != "" )
           <li>$esc.html($item.getLabel($locale).value)</li>
         #end
@@ -351,12 +351,12 @@ knowledge of the CeCILL-B license and that you accept its terms.
       <div class="key-value">
         <h2 class="key">$esc.html($name)</h2>
         <div class="value">
-#foreach( $collection in $sorter.sortEntriesByLabel($m.keySet(), [$locale, null]) )
+#foreach( $collection in $sorter.sortEntriesByLabel($m.keySet(), [$locale, null], false) )
 #if( $collection )
 			<h3 class="concept-collection">&lt;&nbsp;$esc.html($collection.getLabel($locale).value)&nbsp;&gt;</h3>
 #end
 			<ul>
-#foreach( $item in $sorter.sortEntriesByLabel($m.get($collection), [$locale, null]) )
+#foreach( $item in $sorter.sortEntriesByLabel($m.get($collection), [$locale, null], false) )
 				<li>
 					<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
 				</li>

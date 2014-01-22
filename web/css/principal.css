@@ -83,7 +83,6 @@ body#ThesaurusW {
 }
 
 #webSiteTitle {
-	line-height: 100%;
 	margin-top: 10px;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #c9c9c9;
@@ -105,7 +104,7 @@ body#ThesaurusW {
 
 #subheader a,#footer a {
 	text-decoration: none;
-	color: inherit;
+	color: #666;
 }
 
 #subheader span {
@@ -128,9 +127,17 @@ body#ThesaurusW {
 	-moz-column-gap: 50px;
 	-webkit-column-count: 3;
 	-webkit-column-gap: 50px;
+	-ms-column-count: 3;
+	-ms-column-gap: 50px;
+	column-count: 3;
+	column-gap: 50px;
 	width: 100%;
 	padding-left: 20px;
 	padding-right: 0;
+	list-style: none;
+}
+#ThesaurusW #topConceptList, #ThesaurusW #conceptGroupList {
+	list-style: none;
 }
 
 #footer {
@@ -330,8 +337,19 @@ div.value ul,div.value li {
 	clear: both;
 }
 
-.twoColumnsList button {
+.twoColumnsList button,
+.twoColumnsList .button {
 	float: right;
+}
+
+a.button {
+	background: #EEE;
+	border: #888 1px solid;
+	font-size: 0.8em;
+	padding:  0em 0.3em;
+	margin-bottom: 0.1em;
+	color: #555;
+	cursor: pointer;
 }
 
 /*********************************** RESULTATS DE RECHERCHE */
@@ -385,7 +403,7 @@ div.value ul,div.value li {
 	overflow: hidden;
 }
 
-.searchConcepts .results th {
+#ThesaurusW .searchConcepts .results th {
 	background: #666;
 	color: white;
 	padding: 0.4em 1em;
@@ -426,33 +444,33 @@ div.value ul,div.value li {
 	font-style: normal;
 }
 
-.searchConcepts .pager {
+#ThesaurusW .searchConcepts .pager {
 	line-height: 2em;
 	padding: 0 0 0 8em;
 }
 
-.searchConcepts .pager span {
+#ThesaurusW .searchConcepts .pager span {
 	padding: .6em;
 }
 
-.searchConcepts .pager ol {
+#ThesaurusW .searchConcepts .pager ol {
 	display: inline;
 }
 
-.searchConcepts .pager li {
+#ThesaurusW .searchConcepts .pager li {
 	display: inline;
 }
 
-.searchConcepts .pager a span {
+#ThesaurusW .searchConcepts .pager a span {
 	border: 1px solid #ccc;
 	color: #666;
 }
 
-.searchConcepts .pager a:hover span {
+#ThesaurusW .searchConcepts .pager a:hover span {
 	background: #ccc;
 }
 
-.searchConcepts .pager .selectedPage {
+#ThesaurusW .searchConcepts .pager .selectedPage {
 	font-weight: bold;
 	background: #666;
 	color: white;
@@ -464,19 +482,18 @@ div.value ul,div.value li {
 }
 .open-searches li {
 	list-style: none;
-	display: inline-block;
+	display: inline;
 	margin-right: 20px;
-}
-.open-searches li {
-	display: inline-block;
 }
 .open-searches li img {
 	height: 36px;
+	border: none;
 }
 
 
 
 /* Liens dans le footer */
+#footer { padding-bottom: 100px; }
 #footer ul { vertical-align: top;}
 #footer ul li { position: relative; }
 #footer ul.sublinks {
@@ -505,8 +522,9 @@ div.value ul,div.value li {
 #errors li { padding-left: 3em; list-style-position: inside; }
 
 .form-item { clear: left; padding-top: 0.5em; }
-.form-item label { float: left; width: 20%; }
-.form-item input, .form-item textarea { float: left; width: 40%; }
+.form-item label { float: left; width: 25%; }
+#ThesaurusW .form-item label .required { padding-left: 0.3em; color: #CC0000; }
+.form-item input, .form-item textarea { float: left; width: 35%; }
 .form-item.message textarea { height: 10em; }
 .form-item.copy input { width: auto; }
 

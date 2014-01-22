@@ -53,6 +53,7 @@ import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.spi.template.ViewProcessor;
 
+import fr.gouv.culture.thesaurus.util.template.CollectionTool;
 import fr.gouv.culture.thesaurus.util.template.LangTool;
 
 import org.apache.log4j.Logger;
@@ -111,6 +112,7 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 	private final ResourceTool resourceToolOpenSearches;
 
 	private final LangTool langTool;
+	private final CollectionTool collectiongTool;
 	
 	/**
 	 * Creates a new view processor based on the Velocity template engine.
@@ -243,8 +245,9 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 				resourceToolOpenSearches = null;
 			}
 			
-			// Configure lang tool .
-			langTool = new LangTool();			
+			// Configure des tools .
+			langTool = new LangTool();		
+			collectiongTool = new CollectionTool();		
 			
 			// Start a new Velocity engine.
 			this.engine = new VelocityEngine(config);
@@ -346,6 +349,11 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 			// Add Velocity text tool.
 			if (ctx.get("lang") == null && langTool != null) {
 				ctx.put("lang", langTool);
+			}
+			
+			// Add Velocity collection tool.
+			if (ctx.get("collection") == null && collectiongTool != null) {
+				ctx.put("collection", collectiongTool);
 			}
 			
 			// Add Velocity sort tool.

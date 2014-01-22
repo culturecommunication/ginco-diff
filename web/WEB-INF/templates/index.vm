@@ -71,7 +71,7 @@ Paramètres :
 		    
 		    $text.homepage.content.append.insert($baseUri)
 	      
-	#footer($item.getOrganisation() $item.getOrganisationHomepage() $item.getSeeMoreUrl())
+	#footer($item.getOrganisation() $item.getOrganisationHomepage() $item.getSeeMoreUrl() true)
 </div>
   </body>
 </html>

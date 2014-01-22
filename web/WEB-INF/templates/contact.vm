@@ -52,11 +52,10 @@ Paramètres:
        <div id="ThesaurusW">
 		    <h1 class="noSubheader">$title</h1>
 		    
-		    <ul id="breadcrumb">
-		    	<li><a href="${baseUri}/">Accueil</a>&gt;</li>
-		    	<li><a href="$resolver.toUrl($it.uri)">$esc.html($it.getLabel($locale).value)</a>&gt;</li>
-			    <li>$esc.html($text.contact.breadcrumb)</li>
-		    </ul>
+		    <div id="subheader">
+		    	<a href="${baseUri}/">Accueil</a> | 
+		    	<a href="$resolver.toUrl($it.uri)">$esc.html($it.getLabel($locale).value)</a>
+		    </div>
 		    
 		    #if($success)
 		    <p class="success">$esc.html($text.get("$success"))</p>
@@ -87,16 +86,20 @@ Paramètres:
 		
 				<input type="hidden" name="check" />
 		
-				<p class="form-item from"><label for="from">$esc.html($text.contact.from)</label>
+				<p class="form-item from"><label for="from">$esc.html($text.contact.from)
+				<span class="required">*</span></label>
 				<input type="text" name="from" value="$from" /></p>
 				
-				<p class="form-item name"><label for="name">$esc.html($text.contact.name)</label>
+				<p class="form-item name"><label for="name">$esc.html($text.contact.name)
+				<span class="required">*</span></label>
 				<input type="text" name="name" value="$name" /></p>
 				
-				<p class="form-item subject"><label for="subject">$esc.html($text.contact.subject)</label>
+				<p class="form-item subject"><label for="subject">$esc.html($text.contact.subject)
+				<span class="required">*</span></label>
 				<input type="text" name="subject" value="$subject" /></p>
 				
-				<p class="form-item message"><label for="message">$esc.html($text.contact.message)</label>
+				<p class="form-item message"><label for="message">$esc.html($text.contact.message)
+				<span class="required">*</span></label>
 				<textarea name="message">$message</textarea></p>
 				
 				<p class="form-item copy"><label for="copy">$esc.html($text.contact.copy)</label>
@@ -133,7 +136,7 @@ Paramètres:
 				<li><a href="${rdfData}?includeSchemes=true&format=N3">$esc.html($text.conceptScheme.download.n3)</a></li>
 				<li><a href="${rdfData}?includeSchemes=true&format=Turtle">$esc.html($text.conceptScheme.download.turtle)</a></li>
 		</ul></li>
-		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() $it $it.getOrganisationMbox())
+		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it $it.getOrganisationMbox())
 		     </div>
 	</body>
 </html>

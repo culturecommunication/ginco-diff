@@ -50,7 +50,7 @@ Paramètres :
 	    <h1>$esc.html($text.subject_schemes.title.insert($subject))</h1>
 	    
 	    <div id="subheader">
-	    	<a href="${baseUri}/">Accueil</a> | <a href="${baseUri}/page/servicesProducteurs">$esc.html($text.subject_schemes.link.subjects)</a>
+	    	<a href="${baseUri}/">Accueil</a> | <a href="${baseUri}/page/sujets">$esc.html($text.subject_schemes.link.subjects)</a>
 	    </div>
 	    
 	    <p>Les différents thésaurus sur le sujet <em>$subject</em> sont :</p>

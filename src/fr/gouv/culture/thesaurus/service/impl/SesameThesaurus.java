@@ -81,10 +81,10 @@ import fr.gouv.culture.thesaurus.service.rdf.Entry;
 import fr.gouv.culture.thesaurus.service.rdf.RdfResource;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchOrderBy;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchQuery;
+import fr.gouv.culture.thesaurus.service.search.ConceptSearchQuery.SortCriterion;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchResult;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchResultsPage;
 import fr.gouv.culture.thesaurus.service.search.SearchOrder;
-import fr.gouv.culture.thesaurus.service.search.ConceptSearchQuery.SortCriterion;
 import fr.gouv.culture.thesaurus.util.TextUtils;
 import fr.gouv.culture.thesaurus.util.rdf.RdfEntriesGenerationHandler;
 import fr.gouv.culture.thesaurus.util.rdf.RdfXmlUtils;
@@ -1026,17 +1026,31 @@ public class SesameThesaurus implements ThesaurusService {
 			final ConceptSearchResult result = new ConceptSearchResult(
 					conceptUri, schemeUri);
 
-			result.setConceptPrefLabel(bindingSet.getValue(
-					SparqlQueries.SearchConcept.CONCEPT_PREFLABEL)
-					.stringValue());
-			result.setSchemeTitle(bindingSet.getValue(
-					SparqlQueries.SearchConcept.SCHEME_TITLE).stringValue());
+			result.setConceptPrefLabel(getStringValue(bindingSet, SparqlQueries.SearchConcept.CONCEPT_PREFLABEL));
+			result.setSchemeTitle(getStringValue(bindingSet, SparqlQueries.SearchConcept.SCHEME_TITLE));
 			result.setMatchingLabel(matchingLabel);
 			result.setFirstMatchingOccurrence(abbreviateAndHighlightMatchingLabel(
 					matchingLabel, searchPattern));
 
 			results.add(result);
 		}
+	}
+
+	/**
+	 * Retourne la valeur demandée sous la forme d'une string si non null.
+	 * @param bindingSet le binding set
+	 * @param bindingName le nom demandé
+	 * @return la valeur string demandée.
+	 */
+	private String getStringValue(final BindingSet bindingSet, final String bindingName) {
+		
+		Value value = bindingSet.getValue(bindingName);
+		
+		if(value != null){
+				return value.stringValue();
+		}
+		
+		return null;
 	}
 
 	/**
@@ -1190,30 +1204,10 @@ public class SesameThesaurus implements ThesaurusService {
 
 		final Map<String, Concept> concepts = constructResourcesFromQuery(
 				Concept.class, query);
-//		if (!concepts.isEmpty()) {
-//			// Recherche des collections associées aux concepts trouvés.
-//			final GraphQuery collectionsQuery = getConstructQuery(
-//					SparqlQueries.DescribeCollectionsFromRelatedSkosConcepts.QUERY,
-//					cnx);
-//			collectionsQuery
-//					.setBinding(
-//							SparqlQueries.DescribeParentSkosConcepts.STARTING_CONCEPT_URI,
-//							uri);
-//
-//			final Map<String, ConceptCollection> collections = constructResourcesFromQuery(
-//					ConceptCollection.class, collectionsQuery);
-//			for (final ConceptCollection collection : collections.values()) {
-//				for (final String conceptUri : collection.getMembers()) {
-//					final Concept concept = concepts.get(conceptUri);
-//
-//					if (concept != null) {
-//						concept.addCollection(collection);
-//					}
-//				}
-//			}
-//		}
-
-		return concepts.values();
+		
+		List<Concept> results = new LinkedList<Concept>(concepts.values());
+		Collections.reverse(results);
+		return results;
 	}
 	
 	/**
