@@ -31,6 +31,7 @@ package fr.gouv.culture.thesaurus.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,6 +39,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -369,7 +371,7 @@ public class SesameThesaurus implements ThesaurusService {
 	
 	/** {@inheritDoc} */
 	@Override
-	public Collection<String> listConceptSchemesProducers() throws BusinessException {
+	public Collection<String> listConceptSchemesProducers(Locale locale) throws BusinessException {
 		List<String> producers = new ArrayList<String>();
 
 		RepositoryConnection cnx = null;
@@ -397,7 +399,9 @@ public class SesameThesaurus implements ThesaurusService {
 			}
 		}
 
-		Collections.sort(producers);
+		Collator collator = Collator.getInstance(locale);
+		collator.setStrength(Collator.PRIMARY);
+		Collections.sort(producers, collator);
 
 		if (log.isDebugEnabled()) {
 			log.debug("listConceptSchemesProducers: " + producers);
@@ -408,7 +412,7 @@ public class SesameThesaurus implements ThesaurusService {
 	
 	/** {@inheritDoc} */
 	@Override
-	public Collection<String> listConceptSchemesSubjects() throws BusinessException {
+	public Collection<String> listConceptSchemesSubjects(Locale locale) throws BusinessException {
 		List<String> subjects = new ArrayList<String>();
 
 		RepositoryConnection cnx = null;
@@ -438,7 +442,9 @@ public class SesameThesaurus implements ThesaurusService {
 			}
 		}
 
-		Collections.sort(subjects);
+		Collator collator = Collator.getInstance(locale);
+		collator.setStrength(Collator.PRIMARY);
+		Collections.sort(subjects, collator);
 
 		if (log.isDebugEnabled()) {
 			log.debug("listConceptSchemesSubjects: " + subjects);

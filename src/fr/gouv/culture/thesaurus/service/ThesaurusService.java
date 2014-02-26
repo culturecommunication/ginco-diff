@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.Locale;
 
 import fr.gouv.culture.thesaurus.exception.BusinessException;
 import fr.gouv.culture.thesaurus.exception.InvalidParameterException;
@@ -100,21 +101,23 @@ public interface ThesaurusService
 	/**
      * Retrieves the producers (i.e. dc:Creator entries of skos:ConceptScheme) present
      * in the RDF triple store.
+     * @param locale sorting locale
      * @return the list of entries of type dc:Creator
      * @throws BusinessException if any error occurred while accessing
      *         the RDF triple store.
      */
-	public Collection<String> listConceptSchemesProducers()
+	public Collection<String> listConceptSchemesProducers(Locale locale)
 			throws BusinessException;
 	
 	/**
      * Retrieves the subjects (i.e. dc:subject entries of skos:ConceptScheme) present
      * in the RDF triple store.
+     * @param locale sorting locale
      * @return the list of entries of type dc:Creator
      * @throws BusinessException if any error occurred while accessing
      *         the RDF triple store.
      */
-	public Collection<String> listConceptSchemesSubjects()
+	public Collection<String> listConceptSchemesSubjects(Locale locale)
 			throws BusinessException;
 	
     /**

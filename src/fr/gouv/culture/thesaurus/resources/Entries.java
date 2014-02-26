@@ -172,7 +172,7 @@ public class Entries extends BaseResource {
         try { 
             // Display the list of ConceptSchemes present in repository.
             Viewable v = this.newViewable("/schemes-producers.vm", null,
-            							  this.thesaurus.listConceptSchemesProducers(),
+            							  this.thesaurus.listConceptSchemesProducers(DEFAULT_LOCALE),
                                           this.getUriResolver(uriInfo));
             response = this.addCacheDirectives(Response.ok(v), null);
         }
@@ -217,7 +217,7 @@ public class Entries extends BaseResource {
         try { 
             // Display the list of ConceptSchemes present in repository.
             Viewable v = this.newViewable("/schemes-subjects.vm", null,
-            							  this.thesaurus.listConceptSchemesSubjects(),
+            							  this.thesaurus.listConceptSchemesSubjects(DEFAULT_LOCALE),
                                           this.getUriResolver(uriInfo));
             response = this.addCacheDirectives(Response.ok(v), null);
         }
@@ -394,14 +394,16 @@ public class Entries extends BaseResource {
                         
             // Check entry RDF class.
             String rdfClass = this.checkSkosClass(uri);
+            ExportType expType=ExportType.valueOf(exportType);
             // Retrieve RDF data and stream them directly to HTTP response.
             StreamingOutput out = new RdfStreamingOutput(uri,
-                                                rdfClass, resolver, fullDump, ExportType.valueOf(exportType));
+                                                rdfClass, resolver, fullDump, expType);
             // Force response encoding as Sesame only generates UTF-8 XML.
-            Variant contentType = new Variant(MediaType.valueOf(RDF_XML),
+            Variant contentType = new Variant(MediaType.valueOf(expType.getMimeType()),
                                                         null, DEFAULT_ENCODING);
+            String filename = expType.getFilename(id);
             response = this.addCacheDirectives(
-                                        Response.ok(out, contentType), null);
+                                        Response.ok(out, contentType).header("Content-Disposition", "attachment; filename=" + filename), null);
         }
         catch (Exception e) {
             this.mapException(e);
