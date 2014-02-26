@@ -55,7 +55,7 @@ Paramètres :
 	    
 	    <p>Les différents thésaurus produits par <em>$producer</em> sont :</p>
 	    <ul>
-		#foreach ($item in $it)
+		#foreach ($item in $sorter.sortEntriesByLabel($it, [$locale, null], false))
 	    	<li><a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a></li>
 		#end
 	    </ul>
