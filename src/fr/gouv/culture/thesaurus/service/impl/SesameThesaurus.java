@@ -421,7 +421,10 @@ public class SesameThesaurus implements ThesaurusService {
 			BindingSet result;
 			while(rs.hasNext()){
 				result = rs.next();
-				subjects.add(this.getValue("subject", result));
+				String subject = this.getValue("subject", result);
+				if(StringUtils.isNotBlank(subject)){
+					subjects.add(subject);
+				}
 			}
 		} catch (OpenRDFException e) {
 			throw new BusinessException(ErrorMessage.SPARQL_CONSTRUCT_FAILED,
