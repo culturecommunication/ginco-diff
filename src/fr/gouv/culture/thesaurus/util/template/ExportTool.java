@@ -64,21 +64,16 @@ public class ExportTool {
 	public Integer size(String rdfClass, String uri, boolean fullDump,
 			String exportType) {
 
-		long timer = System.currentTimeMillis();
-
 		SizeWriter sizeWriter = new SizeWriter();
 		try {
-			dumpResource(uri, rdfClass, sizeWriter, fullDump,
+			dumpResource(uri, rdfClass, /*new BufferedWriter(sizeWriter)*/ sizeWriter, fullDump,
 					ExportType.valueOf(exportType));
 		} catch (Exception e) {
 			log.warn(
 					"Erreur lors de l'export : calcul de la taille impossible",
 					e);
 		}
-
-		timer = System.currentTimeMillis() - timer;
-		System.out.println("++++ timer : " + timer);
-
+		
 		return sizeWriter.getSize();
 	}
 
