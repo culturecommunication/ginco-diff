@@ -69,6 +69,7 @@ import fr.gouv.culture.thesaurus.service.ThesaurusService;
 import fr.gouv.culture.thesaurus.service.impl.ExportType;
 import fr.gouv.culture.thesaurus.service.rdf.ConceptScheme;
 import fr.gouv.culture.thesaurus.service.rdf.Entry;
+import fr.gouv.culture.thesaurus.util.TextUtils;
 import fr.gouv.culture.thesaurus.util.web.UriUtils;
 import fr.gouv.culture.thesaurus.vocabulary.Skos;
 
@@ -395,13 +396,24 @@ public class Entries extends BaseResource {
             // Check entry RDF class.
             String rdfClass = this.checkSkosClass(uri);
             ExportType expType=ExportType.valueOf(exportType);
+            
+            Entry entry = null;
+            if (Skos.CONCEPT_CLASS.equals(rdfClass)) {
+                entry = this.thesaurus.getConcept(uri);
+            }
+            else {
+                entry = this.thesaurus.getConceptScheme(uri);
+            }
+            String label = entry != null ? entry.getLabel(DEFAULT_LOCALE).getValue() : null;
+            
             // Retrieve RDF data and stream them directly to HTTP response.
             StreamingOutput out = new RdfStreamingOutput(uri,
                                                 rdfClass, fullDump, expType);
             // Force response encoding as Sesame only generates UTF-8 XML.
             Variant contentType = new Variant(MediaType.valueOf(expType.getMimeType()),
                                                         null, DEFAULT_ENCODING);
-            String filename = expType.getFilename(id);
+            
+            String filename = expType.getFilename(label != null ? TextUtils.replacePonctuationAndWhitespace(TextUtils.removeAccent(label)) : id);
             response = this.addCacheDirectives(
                                         Response.ok(out, contentType).header("Content-Disposition", "attachment; filename=" + filename), null);
         }

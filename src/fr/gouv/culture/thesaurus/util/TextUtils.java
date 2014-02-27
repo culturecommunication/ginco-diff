@@ -28,6 +28,7 @@
 
 package fr.gouv.culture.thesaurus.util;
 
+import java.text.Normalizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -234,5 +235,23 @@ public final class TextUtils {
 
 		return comparison;
 	}
+	
+	/**
+     * Supprime les accents
+     * @param strIn
+     * @return
+     */
+    public final static String removeAccent(String strIn){
+            return Normalizer.normalize(strIn,Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
+
+    /**
+     * Supprime les signes de ponctuations + blanc , tab, CR, lf
+     * @param strIn
+     * @return
+     */
+    public final static String replacePonctuationAndWhitespace(String strIn){
+            return strIn.replaceAll("[\\p{Punct}\\s]+", "_");
+    }
 
 }
