@@ -99,9 +99,9 @@ knowledge of the CeCILL-B license and that you accept its terms.
 
 				<thead>
 					<tr>
-						<th class="prefLabel">Concept #insertSortCommands("CONCEPT_PREFLABEL", "libellé", $query)</th>
-						<th class="matchingLabel">Correspondance #insertSortCommands("MATCHING_LABEL", "correspondance", $query)</th>
-						<th class="schemeTitle">Thésaurus #insertSortCommands("SCHEME_TITLE", "vocabulaire d'origine", $query)</th>
+						<th class="prefLabel" scope="col">Concept #insertSortCommands("CONCEPT_PREFLABEL", "libellé", $query)</th>
+						<th class="matchingLabel" scope="col">Correspondance #insertSortCommands("MATCHING_LABEL", "correspondance", $query)</th>
+						<th class="schemeTitle" scope="col">Thésaurus #insertSortCommands("SCHEME_TITLE", "vocabulaire d'origine", $query)</th>
 					</tr>
 				</thead>
 				<tbody>
