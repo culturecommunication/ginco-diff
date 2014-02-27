@@ -1,36 +1,36 @@
 /*
-  * Copyright / Copr. 2010-2013 Atos - Public Sector France -
-  * BS & Innovation for the DataLift project,
-  * Contributor(s) : L. Bihanic, SWORD
-  *
-  * Contact: dlfr-datalift@atos.net
-  *
-  * This software is governed by the CeCILL-B license under French law and
-  * abiding by the rules of distribution of free software. You can use,
-  * modify and/or redistribute the software under the terms of the CeCILL-B
-  * license as circulated by CEA, CNRS and INRIA at the following URL
-  * "http://www.cecill.info".
-  *
-  * As a counterpart to the access to the source code and rights to copy,
-  * modify and redistribute granted by the license, users are provided only
-  * with a limited warranty and the software's author, the holder of the
-  * economic rights, and the successive licensors have only limited
-  * liability.
-  *
-  * In this respect, the user's attention is drawn to the risks associated
-  * with loading, using, modifying and/or developing or reproducing the
-  * software by the user in light of its specific status of free software,
-  * that may mean that it is complicated to manipulate, and that also
-  * therefore means that it is reserved for developers and experienced
-  * professionals having in-depth computer knowledge. Users are therefore
-  * encouraged to load and test the software's suitability as regards their
-  * requirements in conditions enabling the security of their systems and/or
-  * data to be ensured and, more generally, to use and operate it in the
-  * same conditions as regards security.
-  *
-  * The fact that you are presently reading this means that you have had
-  * knowledge of the CeCILL-B license and that you accept its terms.
-  */
+ * Copyright / Copr. 2010-2013 Atos - Public Sector France -
+ * BS & Innovation for the DataLift project,
+ * Contributor(s) : L. Bihanic, SWORD
+ *
+ * Contact: dlfr-datalift@atos.net
+ *
+ * This software is governed by the CeCILL-B license under French law and
+ * abiding by the rules of distribution of free software. You can use,
+ * modify and/or redistribute the software under the terms of the CeCILL-B
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty and the software's author, the holder of the
+ * economic rights, and the successive licensors have only limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading, using, modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean that it is complicated to manipulate, and that also
+ * therefore means that it is reserved for developers and experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and, more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-B license and that you accept its terms.
+ */
 package com.atosorigin.jersey.velocity;
 
 import java.io.File;
@@ -54,6 +54,7 @@ import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.spi.template.ViewProcessor;
 
 import fr.gouv.culture.thesaurus.util.template.CollectionTool;
+import fr.gouv.culture.thesaurus.util.template.ExportTool;
 import fr.gouv.culture.thesaurus.util.template.LangTool;
 
 import org.apache.log4j.Logger;
@@ -83,11 +84,10 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 	public final static String TEMPLATES_ENCODING = "velocity.templates.encoding";
 	public final static String TEMPLATES_CACHE_DURATION = "velocity.templates.update.check";
 
-
 	public final static String TEMPLATES_TEXT_BUNDLES = "velocity.template.text.bundles";
 	public final static String TEMPLATES_TEXT_BUNDLES_BANNER = "velocity.template.text.bundles.banner";
 	public final static String TEMPLATES_TEXT_BUNDLES_OPEN_SEARCHES = "velocity.template.text.bundles.open-searches";
-	
+
 	public final static String TEMPLATES_TEXT_LOCALE = "velocity.template.text.locale";
 	public final static String TEMPLATES_DEFAULT_EXTENSION = ".vm";
 
@@ -112,8 +112,9 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 	private final ResourceTool resourceToolOpenSearches;
 
 	private final LangTool langTool;
-	private final CollectionTool collectiongTool;
-	
+	private final CollectionTool collectionTool;
+	private final ExportTool exportTool;
+
 	/**
 	 * Creates a new view processor based on the Velocity template engine.
 	 * 
@@ -208,15 +209,17 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 			} else {
 				resourceTool = null;
 			}
-			
+
 			// Configure resources for the banner (if any).
-			String textBundlesBanner = ctx.getInitParameter(TEMPLATES_TEXT_BUNDLES_BANNER);
+			String textBundlesBanner = ctx
+					.getInitParameter(TEMPLATES_TEXT_BUNDLES_BANNER);
 			if (textBundles != null) {
 				Map<String, Object> resourceParameters = new HashMap<String, Object>();
 
 				String textLocale = ctx.getInitParameter(TEMPLATES_TEXT_LOCALE);
 
-				resourceParameters.put(ResourceTool.BUNDLES_KEY, textBundlesBanner);
+				resourceParameters.put(ResourceTool.BUNDLES_KEY,
+						textBundlesBanner);
 				if (textLocale != null) {
 					resourceParameters.put(ResourceTool.LOCALE_KEY, textLocale);
 				}
@@ -226,15 +229,17 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 			} else {
 				resourceToolBanner = null;
 			}
-			
+
 			// Configure resources for the banner (if any).
-			String textBundlesOpenSearches = ctx.getInitParameter(TEMPLATES_TEXT_BUNDLES_OPEN_SEARCHES);
+			String textBundlesOpenSearches = ctx
+					.getInitParameter(TEMPLATES_TEXT_BUNDLES_OPEN_SEARCHES);
 			if (textBundles != null) {
 				Map<String, Object> resourceParameters = new HashMap<String, Object>();
 
 				String textLocale = ctx.getInitParameter(TEMPLATES_TEXT_LOCALE);
 
-				resourceParameters.put(ResourceTool.BUNDLES_KEY, textBundlesOpenSearches);
+				resourceParameters.put(ResourceTool.BUNDLES_KEY,
+						textBundlesOpenSearches);
 				if (textLocale != null) {
 					resourceParameters.put(ResourceTool.LOCALE_KEY, textLocale);
 				}
@@ -244,11 +249,12 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 			} else {
 				resourceToolOpenSearches = null;
 			}
-			
+
 			// Configure des tools .
-			langTool = new LangTool();		
-			collectiongTool = new CollectionTool();		
-			
+			langTool = new LangTool();
+			collectionTool = new CollectionTool();
+			exportTool = new ExportTool();
+
 			// Start a new Velocity engine.
 			this.engine = new VelocityEngine(config);
 			this.engine.init();
@@ -335,27 +341,33 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 			if (ctx.get("text") == null && resourceTool != null) {
 				ctx.put("text", resourceTool);
 			}
-			
+
 			// Add Velocity text tool.
 			if (ctx.get("banner") == null && resourceToolBanner != null) {
 				ctx.put("banner", resourceToolBanner);
 			}
-			
+
 			// Add Velocity text tool.
-			if (ctx.get("open-searches") == null && resourceToolOpenSearches != null) {
+			if (ctx.get("open-searches") == null
+					&& resourceToolOpenSearches != null) {
 				ctx.put("open-searches", resourceToolOpenSearches);
 			}
-			
+
 			// Add Velocity text tool.
 			if (ctx.get("lang") == null && langTool != null) {
 				ctx.put("lang", langTool);
 			}
-			
+
 			// Add Velocity collection tool.
-			if (ctx.get("collection") == null && collectiongTool != null) {
-				ctx.put("collection", collectiongTool);
+			if (ctx.get("collection") == null && collectionTool != null) {
+				ctx.put("collection", collectionTool);
 			}
-			
+
+			// Add Velocity collection tool.
+			if (ctx.get("export") == null && exportTool != null) {
+				ctx.put("export", exportTool);
+			}
+
 			// Add Velocity sort tool.
 			if (ctx.get("sort") == null) {
 				ctx.put("sort", new SortTool());

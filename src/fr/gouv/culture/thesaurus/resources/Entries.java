@@ -397,7 +397,7 @@ public class Entries extends BaseResource {
             ExportType expType=ExportType.valueOf(exportType);
             // Retrieve RDF data and stream them directly to HTTP response.
             StreamingOutput out = new RdfStreamingOutput(uri,
-                                                rdfClass, resolver, fullDump, expType);
+                                                rdfClass, fullDump, expType);
             // Force response encoding as Sesame only generates UTF-8 XML.
             Variant contentType = new Variant(MediaType.valueOf(expType.getMimeType()),
                                                         null, DEFAULT_ENCODING);
@@ -559,15 +559,12 @@ public class Entries extends BaseResource {
     {
         private final String uri;
         private final String rdfClass;
-        private final UriResolver resolver;
         private final boolean fullDump;
         private final ExportType type;
 
-        public RdfStreamingOutput(String uri, String rdfClass,
-                                  UriResolver resolver, boolean fullDump, ExportType type) {
+        public RdfStreamingOutput(String uri, String rdfClass, boolean fullDump, ExportType type) {
             this.uri = uri;
             this.rdfClass = rdfClass;
-            this.resolver = resolver;
             this.fullDump = fullDump;
             this.type = type;
         }
@@ -576,35 +573,10 @@ public class Entries extends BaseResource {
             Writer w = null;
             Reader r = null;
             try {
-            	/* Suppression de la substitution de l'URL de base par l'URL d'exposition lors de l'export RDF.
-            	 Cette substitution est conservée uniquement pour permettre la navigation entre les pages. /*
-            	/*
-                Transformer t = this.resolver.getRdfTransformer();
-                if (t != null) {
-                    // An XSL transformation shall be applied.
-                    // => Use a 512 KB memory/file temporary buffer.
-                    SwapWriter buf = new SwapWriter(512 * 1024,
-                                                    DEFAULT_ENCODING);
-                    w = buf;
-                    // Dump entry RDF data to temp. buffer.
-                    dumpResource(this.uri, this.rdfClass, w, this.fullDump);
-                    w.flush();
-                    w.close();
-                    w = null;
-                    // Flip temporary buffer in read mode.
-                    r = buf.getReader();
-                    // Apply XSL tranformation.
-                    t.setOutputProperty(OutputKeys.ENCODING, DEFAULT_ENCODING);
-                    t.transform(new StreamSource(r), new StreamResult(out));
-                    out.flush();
-                }
-                else {
-                */
-                    // Directly stream RDF data to HTTP response.
-                    w = new OutputStreamWriter(out, DEFAULT_ENCODING);
-                    dumpResource(this.uri, this.rdfClass, w, this.fullDump, this.type);
-                    w.flush();
-                //}
+                // Directly stream RDF data to HTTP response.
+                w = new OutputStreamWriter(out, DEFAULT_ENCODING);
+                dumpResource(this.uri, this.rdfClass, w, this.fullDump, this.type);
+                w.flush();
             }
             catch (Exception e) {
                 mapException(e);

@@ -123,9 +123,9 @@ Paramètres:
 		
 		#footer_start()
 			<li>$esc.html($text.resource.data)<ul class="sublinks">
-				<li><a href="${rdfData}">$esc.html($text.resource.data.rdf)</a></li>
-				<li><a href="${rdfData}?format=N3">$esc.html($text.resource.data.n3)</a></li>
-				<li><a href="${rdfData}?format=TURTLE">$esc.html($text.resource.data.turtle)</a></li>
+				<li><a href="${rdfData}" title="$export.humanConceptSize($it.uri, false, 'RDF')">$esc.html($text.resource.data.rdf)</a></li>
+				<li><a href="${rdfData}?format=N3" title="$export.humanConceptSize($it.uri, false, 'N3')">$esc.html($text.resource.data.n3)</a></li>
+				<li><a href="${rdfData}?format=TURTLE" title="$export.humanConceptSize($it.uri, false, 'TURTLE')">$esc.html($text.resource.data.turtle)</a></li>
 			</ul></li>
 			
 		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it.getConceptScheme() $it.getOrganisationMbox())

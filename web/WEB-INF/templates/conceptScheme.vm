@@ -106,14 +106,14 @@ Paramètres:
 		    
 	    #footer_start()
 		 <li>$esc.html($text.resource.data)<ul class="sublinks">
-				<li><a href="${rdfData}">$esc.html($text.resource.data.rdf)</a></li>
-				<li><a href="${rdfData}?format=N3">$esc.html($text.resource.data.n3)</a></li>
-				<li><a href="${rdfData}?format=TURTLE">$esc.html($text.resource.data.turtle)</a></li>
+				<li><a href="${rdfData}" 				title="$export.humanConceptSchemeSize($it.uri, false, 'RDF')">$esc.html($text.resource.data.rdf)</a></li>
+				<li><a href="${rdfData}?format=N3"		title="$export.humanConceptSchemeSize($it.uri, false, 'N3')">$esc.html($text.resource.data.n3)</a></li>
+				<li><a href="${rdfData}?format=TURTLE"	title="$export.humanConceptSchemeSize($it.uri, false, 'TURTLE')">$esc.html($text.resource.data.turtle)</a></li>
 		</ul></li>
 		<li>$esc.html($text.conceptScheme.download)<ul class="sublinks">
-				<li><a href="${rdfData}?includeSchemes=true">$esc.html($text.conceptScheme.download.rdf)</a></li>
-				<li><a href="${rdfData}?includeSchemes=true&format=N3">$esc.html($text.conceptScheme.download.n3)</a></li>
-				<li><a href="${rdfData}?includeSchemes=true&format=TURTLE">$esc.html($text.conceptScheme.download.turtle)</a></li>
+				<li><a href="${rdfData}?includeSchemes=true"				title="$export.humanConceptSchemeSize($it.uri, true, 'RDF')">$esc.html($text.conceptScheme.download.rdf)</a></li>
+				<li><a href="${rdfData}?includeSchemes=true&format=N3"		title="$export.humanConceptSchemeSize($it.uri, true, 'N3')">$esc.html($text.conceptScheme.download.n3)</a></li>
+				<li><a href="${rdfData}?includeSchemes=true&format=TURTLE"	title="$export.humanConceptSchemeSize($it.uri, true, 'TURTLE')">$esc.html($text.conceptScheme.download.turtle)</a></li>
 		</ul></li>
 		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it $it.getOrganisationMbox())
 		     </div>
