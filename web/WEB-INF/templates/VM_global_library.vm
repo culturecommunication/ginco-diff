@@ -212,7 +212,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 	<ul>
 #foreach( $item in $sorter.sortStrings($values, [$locale, null]))
 		#if( $item.value != "" )
-		<li><span class="lit-lang">#if($item.language)($lang.format($esc.html($item.language)))#end</span> <span class="lit-value">$esc.html($item.value)</span></li>
+		<li #if($item.language)xml:lang="$item.language"#end><span class="lit-lang">#if($item.language)($lang.format($esc.html($item.language)))#end</span> <span class="lit-value">$esc.html($item.value)</span></li>
 		#end
 #end
 	</ul>
@@ -240,7 +240,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
         <ul class="value">
           #foreach ( $item in $sorter.sortStrings($values, [$locale, null]) )
 	          #if( $item.value != "" )
-	          	<li><span class="lit-lang">#if($item.language)($lang.format($esc.html($item.language)))#end</span> <span class="lit-value">#if($resourceprefix)$text.get("${resourceprefix}${item.value}")#else$esc.html($item.value)#end</span></li>
+	          	<li #if($item.language)xml:lang="$item.language"#end><span class="lit-lang">#if($item.language)($lang.format($esc.html($item.language)))#end</span> <span class="lit-value">#if($resourceprefix)$text.get("${resourceprefix}${item.value}")#else$esc.html($item.value)#end</span></li>
 	          #end
           #end
         </ul>
