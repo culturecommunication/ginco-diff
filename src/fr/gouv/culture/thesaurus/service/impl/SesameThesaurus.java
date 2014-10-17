@@ -717,9 +717,9 @@ public class SesameThesaurus implements ThesaurusService {
 			cnx.clear(ctx);
 			// Load new triples into named graph.
 			cnx.add(file, null, RDFFormat.RDFXML, ctx);
-			// Add specific triple for last update date (now!).
+//			// Add specific triple for last import date (now!).
 			cnx.add(ctx,
-					this.valueFactory.createURI(DublinCoreTerms.DCTERMS_NS, DublinCoreTerms.MODIFIED),
+					this.valueFactory.createURI(DublinCoreTerms.DATE_SUBMITTED),
 					this.valueFactory.createLiteral(XmlDate.toXmlDateTime(null)),
 					ctx);
 			// Commit the whole transaction.

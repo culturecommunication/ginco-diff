@@ -61,8 +61,15 @@ Paramètres:
 				<form action="${baseUri}/admin" method="post">
 					<ul class="twoColumnsList">
 					#foreach ($item in $it)
-						<li>
+						<li
+							#set( $lastImport = false )
+							#set( $lastImport = $item.getDateSubmitted() )
+							#if( $lastImport )
+							title="Importé le &nbsp;: $esc.html($date.format("long", null, $lastImport, $locale))"
+							#end
+						>
 					    	<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
+
 							## Reset lastUpdate to force Velocity to take null values into account
 							#set( $lastUpdate = false )
 							#set( $lastUpdate = $item.getModifiedDate() )

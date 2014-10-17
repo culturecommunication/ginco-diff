@@ -488,7 +488,7 @@ public class Entries extends BaseResource {
             }
             
             // Check If-Modified-Since HTTP header.
-            Date lastUpdate = entry.getModifiedDate();
+            Date lastUpdate = entry.getDateSubmitted();
             if (lastUpdate != null) {
                 response = request.evaluatePreconditions(lastUpdate);
             }

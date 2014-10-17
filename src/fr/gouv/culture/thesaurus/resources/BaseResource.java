@@ -201,7 +201,7 @@ public abstract class BaseResource
             response = response.cacheControl(cc);
         }
         if (entry != null) {
-            Date lastUpdate = entry.getModifiedDate();
+        	Date lastUpdate = entry.getDateSubmitted();
             if (lastUpdate != null) {
                 response = response.lastModified(lastUpdate);
             }

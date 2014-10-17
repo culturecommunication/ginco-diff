@@ -88,6 +88,15 @@ public class Entry extends RdfResource {
 	public Date getModifiedDate() {
 		return this.getDateProperty(DublinCoreTerms.MODIFIED);
 	}
+	
+	/**
+	 * Returns the submission date (import) of the entry to reposirtory.
+	 * 
+	 * @return the submission date as a {@link Date} object.
+	 */
+	public Date getDateSubmitted() {
+		return this.getDateProperty(DublinCoreTerms.DATE_SUBMITTED);
+	}
 
 	public ThesaurusMetadata getMetadata() {
 		return metadata;

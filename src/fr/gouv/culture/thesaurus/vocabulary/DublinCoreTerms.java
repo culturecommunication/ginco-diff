@@ -43,6 +43,9 @@ public final class DublinCoreTerms {
 
 	/** Propriété : modified. */
 	public final static String MODIFIED = DCTERMS_NS + "modified";
+	
+	/** Propriété : dateSubmitted . */
+	public final static String DATE_SUBMITTED  = DCTERMS_NS + "dateSubmitted";
 
 	/** Constructeur privé pour empêcher toute instanciation. */
 	private DublinCoreTerms() {
