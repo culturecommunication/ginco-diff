@@ -3,3 +3,6 @@
 /dist
 /build
 /bin
+.sonar/pmd.xml
+.sonar/checkstyle.xml
+sonar-project.properties
