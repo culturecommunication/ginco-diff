@@ -252,8 +252,8 @@ public class VocabularyAutoload implements Runnable {
 
 				if (lock != null) {
 
-					if (log.isDebugEnabled()) {
-						log.debug("Début du traitement de : "
+					if (log.isInfoEnabled()){
+						log.info("Début du traitement de : "
 								+ vocabulary.getPath());
 					}
 
@@ -283,8 +283,8 @@ public class VocabularyAutoload implements Runnable {
 								log.debug("Déplacement en attente");
 							}
 						}
-						if (log.isDebugEnabled()) {
-							log.debug("Fichier déplacé vers : "
+						if (log.isInfoEnabled()) {
+							log.info("Fichier déplacé vers : "
 									+ destFile.getPath());
 						}
 					}
