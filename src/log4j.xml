@@ -49,19 +49,26 @@ knowledge of the CeCILL-B license and that you accept its terms.
   
   <!-- Thesaurus application -->
   <logger name="fr.gouv.culture.thesaurus">
-    <level value="debug"/>
+    <level value="info"/>
   </logger>
   <!-- Apache Velocity template engine -->
   <logger name="com.atosorigin.jersey">
     <level value="info"/>
   </logger>
   <logger name="org.apache.velocity">
-    <level value="debug"/>
+    <level value="info"/>
+  </logger>
+  <logger name="httpclient.wire">
+    <level value="warn"/>
+  </logger>
+  <logger name="org.apache.commons">
+    <level value="warn"/>
   </logger>
 
   <root>
-    <level value="debug"/>
+    <level value="info"/>
     <appender-ref ref="console"/>
+    <appender-ref ref="defaultLog"/>
   </root>
 
 </log4j:configuration>
