@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
 import java.nio.channels.FileLock;
+import java.util.Hashtable;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
@@ -67,10 +68,20 @@ public class VocabularyAutoload implements Runnable {
 	private File failureDir;
 
 	private int sleepTime = 10000;
+	private int maxTriesByFile = 3;
 
 	private String emailTo = null;
 
 	private File lockFile;
+
+	/**
+	 * Map containing the files currently waiting for being loaded
+	 * <p>
+	 * <b>key</b> : the file to load
+	 * <p>
+	 * <b>value</b> : the number of time loading failed (for retries)
+	 */
+	private Hashtable<File, Integer> pendingVocabularyFiles = new Hashtable<File, Integer>();
 
 	private FileFilter lookupFilter = new FileFilter() {
 
@@ -131,7 +142,10 @@ public class VocabularyAutoload implements Runnable {
 					+ this.failureDir.getAbsolutePath());
 			log.info("\tNom du fichier de lock utilisé (si ce fichier existe, l'ajout automatique est désactivé le temps de son existence) : "
 					+ this.lockFile.getAbsolutePath());
-			log.info("\tIntervalle de scrutation : " + this.sleepTime + "ms");
+			log.info("\tIntervalle de scrutation (défaut): " + this.sleepTime
+					+ "ms");
+			log.info("\tNombre de scrutations avant échec (défaut): "
+					+ this.maxTriesByFile);
 		}
 	}
 
@@ -171,6 +185,19 @@ public class VocabularyAutoload implements Runnable {
 	 */
 	public void setSleepTime(int sleepTime) {
 		this.sleepTime = sleepTime;
+		log.info("Intervalle de scrutation passé à : " + this.sleepTime + "ms");
+	}
+
+	/**
+	 * Temps d'attente en milliseconde avant le prochain traitement.
+	 * 
+	 * @param maxTries
+	 *            nombre d'essai maximum pour un fichier avant d'échouer
+	 */
+	public void setMaxTriesByFile(int maxTries) {
+		this.maxTriesByFile = maxTries;
+		log.info("Nombre de scrutations avant échec passé à : "
+				+ this.maxTriesByFile);
 	}
 
 	/**
@@ -223,7 +250,7 @@ public class VocabularyAutoload implements Runnable {
 
 		String lotID = "" + System.currentTimeMillis();
 		boolean hasErrors = false;
-
+		Integer numberOfTries = null;
 		StringWriter logWriter = new StringWriter();
 
 		WriterAppender appender = new WriterAppender(new HTMLLayout(),
@@ -235,7 +262,8 @@ public class VocabularyAutoload implements Runnable {
 		if (vocabularies != null) {
 			for (File vocabulary : vocabularies) {
 				if (log.isDebugEnabled()) {
-					log.debug("Préparation à l'injection du fichier "+ vocabulary.getPath());
+					log.debug("Préparation à l'injection du fichier "
+							+ vocabulary.getPath());
 				}
 				// On regarde si "lock.txt" est positionné : si oui, on ne fait
 				// rien.
@@ -247,82 +275,57 @@ public class VocabularyAutoload implements Runnable {
 					appender.close();
 					return;
 				}
-
-				// On verrouille le fichier
-				RandomAccessFile ram = null;
-				FileLock lock = null;
-				try {
-					ram = new RandomAccessFile(vocabulary, "rw");
-					if (log.isDebugEnabled()) {
-						log.debug("Essai de prise de lock sur le fichier");
-					}
-					lock = ram.getChannel().tryLock();
-				} catch (Exception e) {
-					log.warn(
-							"Impossible de prendre le verrou sur le fichier : "
-									+ vocabulary.getPath()
-									+ ". Une nouvelle tentative sera faite lors de la prochaine scrutation dans "
-									+ this.sleepTime + "ms", e);
-				} finally {
-					// On dévérouille le fichier
-					try {
-						if (lock != null) {
-							lock.release();
-						}
-					} catch (IOException e) {
-						log.warn(
-								"Erreur lors de la suppression du verrou sur le fichier : "
-										+ vocabulary.getPath(), e);
-					}
-					try {
-						if (ram != null) {
-							ram.close();
-						}
-					} catch (IOException e) {
-						// on ne peut
-						log.warn(
-								"Erreur lors de la fermeture du fichier : "
-										+ vocabulary.getPath(), e);
-					}
+				numberOfTries = pendingVocabularyFiles.get(vocabulary);
+				numberOfTries = numberOfTries == null ? 1 : numberOfTries + 1;
+				pendingVocabularyFiles.put(vocabulary, numberOfTries);
+				if (log.isInfoEnabled()) {
+					log.info("Début du traitement de : " + vocabulary.getPath()
+							+ " - essai#" + numberOfTries);
 				}
 
-				if (lock != null) {
-					if (log.isInfoEnabled()) {
-						log.info("Début du traitement de : "
-								+ vocabulary.getPath());
+				// On traite le fichier
+				boolean success = false;
+				try {
+					// Import du vocabulaire.
+					ThesaurusApplication.getThesaurusService().load(vocabulary);
+					success = true;
+				} catch (Throwable e) {
+					hasErrors = true;
+					StringBuilder message = new StringBuilder(
+							"Echec de chargement du vocabulaire : "
+									+ vocabulary.getPath());
+					if (numberOfTries < this.maxTriesByFile) {
+						message.append(" - Un nouvel essai sera fait lors de la prochaine scrutation.");
 					}
-
-					// On traite le fichier
-					boolean success = false;
-					try {
-
-						// Import du vocabulaire.
-						ThesaurusApplication.getThesaurusService().load(
-								vocabulary);
-						success = true;
-					} catch (Throwable e) {
-						hasErrors = true;
-						log.error(
-								"Echec de chargement du vocabulaire : "
-										+ vocabulary.getPath(), e);
-					} finally {
+					log.error(message.toString(), e);
+				} finally {
+					// Si l'import est un succès ou que le nombre d'échec max
+					// est atteint
+					if (!hasErrors || numberOfTries >= this.maxTriesByFile) {
 						// On déplace le fichier dans le bon répertoire.
 						File destFile = new File(success ? this.successDir
 								: this.failureDir, vocabulary.getName() + "."
 								+ lotID);
-						// On vérifie si le fichier existe toujours avant de le déplacer
-						// Sinon on peut tomber dans une boucle infinie si le fichier a été 
-						// supprimé manuellement pendant l'import
-						while (vocabulary.exists() && !vocabulary.renameTo(destFile)) {
+						// On vérifie si le fichier existe toujours avant de le
+						// déplacer
+						// Sinon on peut tomber dans une boucle infinie si le
+						// fichier a été supprimé manuellement pendant l'import
+						while (vocabulary.exists()
+								&& !vocabulary.renameTo(destFile)) {
 							try {
 								Thread.sleep(1000);
 							} catch (InterruptedException e) {
-								// rien à faire si ce n'est continuer d'attendre
+								// On arrête le traitement, sinon cela peut
+								// bloquer l'arrêt du serveur
+								log.warn("chargement du vocabulaire interrompu, le fichier peut ne pas avoir été traité intégralement. Vocabulaire : "
+										+ vocabulary.getPath());
+								break;
 							}
 							if (log.isDebugEnabled()) {
 								log.debug("Déplacement en attente");
 							}
 						}
+						pendingVocabularyFiles.remove(vocabulary);
 						if (log.isInfoEnabled()) {
 							log.info("Fichier déplacé vers : "
 									+ destFile.getPath());
@@ -335,7 +338,7 @@ public class VocabularyAutoload implements Runnable {
 		log.removeAppender(appender);
 		appender.close();
 
-		if (hasErrors) {
+		if (hasErrors && numberOfTries >= this.maxTriesByFile) {
 			try {
 				// On écrit le fichier avec le log d'erreur dans le répertoire
 				// d'erreur
@@ -347,8 +350,8 @@ public class VocabularyAutoload implements Runnable {
 
 			if (StringUtils.isNotEmpty(this.emailTo)) {
 				MailUtil mail = MailUtil.getHtmlMail(this.emailTo,
-						"Echec du chargement automatique du vocabulaire (" + lotID + ")",
-						logWriter.toString());
+						"Echec du chargement automatique du vocabulaire ("
+								+ lotID + ")", logWriter.toString());
 
 				try {
 					mail.send();
@@ -358,5 +361,4 @@ public class VocabularyAutoload implements Runnable {
 			}
 		}
 	}
-
 }

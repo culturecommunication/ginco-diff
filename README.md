@@ -91,6 +91,8 @@ Seuls les fichiers « *.rdf » sont pris en compte, et les sous-répertoires ne 
 - __emailTo__ : Adresse email de destination des rapports d'erreurs. Laisser vide pour ne pas envoyer d’email.
 - __refresh__ : Intervalle de scrutation du répertoire en millisecondes.
 Valeur par défaut : 10 000 (10 secondes).
+- __maxTries__ : Nombre de scrutations d'essai avant de déclarer un fichier en erreur lors du chargement.
+Valeur par défaut : 3.
 - __successDirectory__ : Répertoire de destination des vocabulaires chargés avec succès. 
 Ce répertoire est créé s’il n’existe pas. Il doit être accessible en écriture.
 Les fichiers déplacés sont renommés avec une extension correspondant à un numéro de lot (numéro identique pour tous les fichiers traités lors de la scrutation).
