@@ -248,11 +248,21 @@ input[type=submit]:active {
 	padding-bottom: 20px;
 }
 
-.alignments {
+#other-infos {
 	border-top: 1px solid #c9c9c9;
-	clear: right;
+	position: relative;
+	text-align: left;
 }
 
+#alignments {
+	width: 500px;
+}
+
+#management {
+	float: right;
+	width: 300px;
+	margin-left: 30px;
+}
 /******************************************* PRESENTATION DE RESOURCES */
 .keys-values {
 	width: 500px;
@@ -510,7 +520,7 @@ a.bouton {
 
 
 /* Fil d'ariane */
-#breadcrumb { padding-left: 0; font-size: 0.8em; margin-top: 0; }
+#breadcrumb { padding-left: 0; font-size: 0.8em; margin-top: 0; margin-bottom: 0; }
 #breadcrumb li { list-style: none; display: inline; padding-right: 10px; }
 #breadcrumb li a { padding-right: 10px; }
 

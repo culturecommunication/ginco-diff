@@ -84,14 +84,8 @@ Paramètres:
 				    </p>
 				</div>
 				#linked_entries( $text.property.topAncestor   	$it.getTopAncestors()   $locale "right" )
-				#show_single_property_as_date( $text.property.created         $it.createdDate      "long"      $locale )
-				#show_single_property_as_date( $text.property.modified         $it.modifiedDate      "long"      $locale )
 		    	#label_entries( $text.property.conceptGroups 	$it.getConceptGroups()   $locale "right")
-				#show_property( $text.property.historyNote    	$it.getProperties($prefixes.expandUri("skos:historyNote"))  $locale	"right")
 				#linked_uris( $text.property.focus  $it.getFocus() "right")
-			
-				#** Recherches dans les corpus ouverts **#
-				#show_open_searches( $sorter.sortStrings($it.getProperties($prefixes.expandUri("skos:prefLabel")), [$locale, null]).get(0).value )
 				
 		    </div>	
 		
@@ -99,7 +93,6 @@ Paramètres:
 			<div class="keys-values">
 				#show_property( $text.property.prefLabel    $it.getProperties($prefixes.expandUri("skos:prefLabel"))  	$locale  )
 				#show_property( $text.property.notation    	$it.getProperties($prefixes.expandUri("skos:notation"))  $locale )
-				#show_property( $text.property.status    	$it.getProperties($prefixes.expandUri("iso-thes:status"))  $locale	"" "property.status.")
 				#show_property( $text.property.definition 	$it.getProperties($prefixes.expandUri("skos:definition"))   $locale "right")
 				#show_property( $text.property.scopeNote    	$it.getProperties($prefixes.expandUri("skos:scopeNote"))  $locale )
 				#show_property( $text.property.altLabel     $it.getProperties($prefixes.expandUri("skos:altLabel"))   	$locale "non-pref" )
@@ -109,19 +102,51 @@ Paramètres:
 				#show_property( $text.property.example    	$it.getProperties($prefixes.expandUri("skos:example"))    	$locale )			
 			</div>
 			
-			#if( ($it.getAssociations($prefixes.expandUri("skos:exactMatch")) && !$it.getAssociations($prefixes.expandUri("skos:exactMatch")).isEmpty()) ||
+			
+			#set( $alignmentsAvailable  = ($it.getAssociations($prefixes.expandUri("skos:exactMatch")) && !$it.getAssociations($prefixes.expandUri("skos:exactMatch")).isEmpty()) ||
 				($it.getAssociations($prefixes.expandUri("skos:closeMatch")) && !$it.getAssociations($prefixes.expandUri("skos:closeMatch")).isEmpty()) || 
 				($it.getAssociations($prefixes.expandUri("skos:broadMatch")) && !$it.getAssociations($prefixes.expandUri("skos:broadMatch")).isEmpty()) || 
-				($it.getAssociations($prefixes.expandUri("skos:relatedMatch")) && !$it.getAssociations($prefixes.expandUri("skos:relatedMatch")).isEmpty()))
-			<div class="alignments">
-			#** AFFICHAGE DES ALIGNEMENTS ****#		
-				#linked_external_resources( $text.property.exactMatch    $it.getAssociations($prefixes.expandUri("skos:exactMatch")) )
-				#linked_external_resources( $text.property.closeMatch    $it.getAssociations($prefixes.expandUri("skos:closeMatch")) )
-				#linked_external_resources( $text.property.broadMatch    $it.getAssociations($prefixes.expandUri("skos:broadMatch")) )
-				#linked_external_resources( $text.property.relatedMatch  $it.getAssociations($prefixes.expandUri("skos:relatedMatch")) )
+				($it.getAssociations($prefixes.expandUri("skos:relatedMatch")) && !$it.getAssociations($prefixes.expandUri("skos:relatedMatch")).isEmpty()) )
+			#set ( $openSearchesAvailable = false)
+			
+			#** On vérifie qu'il existe des corpus ouverts renseignés **#
+			#foreach($i in [0..10])
+				#if( $open-searches.get("search-${i}.name").getExists() && !$openSearchesAvailable )
+					#set ( $openSearchesAvailable = true)
+				#end
+			#end
+			
+			#set ( $statusExists = !$collection.isStringEmpty($it.getProperties($prefixes.expandUri("iso-thes:status"))))
+			#set ( $createdDateExists = ("$it.createdDate" == ""))
+			#set ( $modifiedDateExists = ("$it.modifiedDate" == ""))
+			#set ( $historyNoteExists = !$collection.isStringEmpty($it.getProperties($prefixes.expandUri("skos:historyNote"))))
+			
+			#if( $alignmentsAvailable || $openSearchesAvailable || $statusExists || $createdDateExists || $modifiedDateExists || $historyNoteExists )
+			<div id="other-infos">
+				<div id="management">
+					#show_property( $text.property.status    	$it.getProperties($prefixes.expandUri("iso-thes:status"))  $locale	"" "property.status.")
+					#show_single_property_as_date( $text.property.created         $it.createdDate      "long"      $locale )
+					#show_single_property_as_date( $text.property.modified         $it.modifiedDate      "long"      $locale )
+					#show_property( $text.property.historyNote    	$it.getProperties($prefixes.expandUri("skos:historyNote"))  $locale	"right")
+				</div>
+				
+				#if( $alignmentsAvailable || $openSearchesAvailable )
+				<div id="alignments">
+					#if( $alignmentsAvailable )
+					#** AFFICHAGE DES ALIGNEMENTS ****#		
+					#linked_external_resources( $text.property.exactMatch    $it.getAssociations($prefixes.expandUri("skos:exactMatch")) )
+					#linked_external_resources( $text.property.closeMatch    $it.getAssociations($prefixes.expandUri("skos:closeMatch")) )
+					#linked_external_resources( $text.property.broadMatch    $it.getAssociations($prefixes.expandUri("skos:broadMatch")) )
+					#linked_external_resources( $text.property.relatedMatch  $it.getAssociations($prefixes.expandUri("skos:relatedMatch")) )
+					#end
+					
+				#** Recherches dans les corpus ouverts **#
+					#show_open_searches( $sorter.sortStrings($it.getProperties($prefixes.expandUri("skos:prefLabel")), [$locale, null]).get(0).value )
+				</div>
+				#end
 			</div>
 			#end
-		
+			
 		#footer_start()
 			<li>$esc.html($text.resource.data)<ul class="sublinks">
 				<li><a href="${rdfData}" title="$export.humanConceptSize($it.uri, false, 'RDF')">$esc.html($text.resource.data.rdf)</a></li>
