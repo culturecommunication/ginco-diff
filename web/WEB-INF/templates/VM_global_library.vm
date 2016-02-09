@@ -410,7 +410,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
         <h2>$esc.html($name)</h2>
         <ul>
 			#foreach( $item in $resources )
-				<li><a href="$item">$esc.html($item)</a></li>
+				<li><a href="$item" target="_blank">$esc.html($item)</a></li>
 			#end
         </ul>
       </div>
