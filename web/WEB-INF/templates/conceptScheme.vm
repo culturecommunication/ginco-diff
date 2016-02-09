@@ -79,7 +79,9 @@ Paramètres:
 			#show_inline_property_with_lang( $text.property.subject       $it.getProperties($prefixes.expandUri("dc:subject"))       $locale )
 			#show_inline_property_with_lang( $text.property.coverage      $it.getProperties($prefixes.expandUri("dc:coverage"))      $locale )
 			#show_inline_property_with_lang( $text.property.language      $it.getProperties($prefixes.expandUri("dc:language"))      $locale )
-	
+			
+			#show_inline_property_with_lang( $text.property.source 	$it.getProperties($prefixes.expandUri("dc:source"))   $locale )
+			
 			#** Termes de 1er niveau *#
 		    <h2 class="clear">$esc.html($text.property.topConcept)</h2>
 		    <ul id="topConceptList">
