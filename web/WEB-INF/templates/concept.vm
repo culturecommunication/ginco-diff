@@ -51,8 +51,7 @@ Paramètres:
 	  #body_class()
       #parse( "menu_banner.vm" )
          <div id="ThesaurusW">
-			<h1>$prefLabel</h1>
-	
+         
 		    <div id="subheader">
 		    	<a href="${baseUri}/">Accueil</a> | URI&nbsp;: 
 		    	<span id="uri"><a href="$resolver.toUrl($it.uri)">$it.uri</a></span>
@@ -68,6 +67,8 @@ Paramètres:
 				#end
 				<li>$sorter.sortStrings($it.getProperties($prefixes.expandUri("skos:prefLabel")), [$locale, null]).get(0).value</li>
 		    </ul>
+		    
+		    <h1>$prefLabel</h1>
 		
 			#** Colonne de droite **#
 		    <div id="metadata">
@@ -86,7 +87,6 @@ Paramètres:
 				#show_single_property_as_date( $text.property.created         $it.createdDate      "long"      $locale )
 				#show_single_property_as_date( $text.property.modified         $it.modifiedDate      "long"      $locale )
 		    	#label_entries( $text.property.conceptGroups 	$it.getConceptGroups()   $locale "right")
-				#show_property( $text.property.definition 	$it.getProperties($prefixes.expandUri("skos:definition"))   $locale "right")
 				#show_property( $text.property.historyNote    	$it.getProperties($prefixes.expandUri("skos:historyNote"))  $locale	"right")
 				#linked_uris( $text.property.focus  $it.getFocus() "right")
 			
@@ -100,6 +100,7 @@ Paramètres:
 				#show_property( $text.property.prefLabel    $it.getProperties($prefixes.expandUri("skos:prefLabel"))  	$locale  )
 				#show_property( $text.property.notation    	$it.getProperties($prefixes.expandUri("skos:notation"))  $locale )
 				#show_property( $text.property.status    	$it.getProperties($prefixes.expandUri("iso-thes:status"))  $locale	"" "property.status.")
+				#show_property( $text.property.definition 	$it.getProperties($prefixes.expandUri("skos:definition"))   $locale "right")
 				#show_property( $text.property.scopeNote    	$it.getProperties($prefixes.expandUri("skos:scopeNote"))  $locale )
 				#show_property( $text.property.altLabel     $it.getProperties($prefixes.expandUri("skos:altLabel"))   	$locale "non-pref" )
 				#linked_entries( $text.property.broader   		$it.getBroaderConcepts()   $locale )
