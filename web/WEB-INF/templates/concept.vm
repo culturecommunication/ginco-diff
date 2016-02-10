@@ -83,23 +83,23 @@ Paramètres:
 						#end
 				    </p>
 				</div>
-				#linked_entries( $text.property.topAncestor   	$it.getTopAncestors()   $locale "right" )
-		    	#label_entries( $text.property.conceptGroups 	$it.getConceptGroups()   $locale "right")
-				#linked_uris( $text.property.focus  $it.getFocus() "right")
+				#linked_entries($text.property.topAncestor		$it.getTopAncestors()	$locale "right concept-topAncestor" )
+		    	#label_entries(	$text.property.conceptGroups	$it.getConceptGroups()	$locale "right concept-conceptGroups")
+				#linked_uris(	$text.property.focus			$it.getFocus()			"right concept-focus")
 				
 		    </div>	
 		
 			#** Colonne de gauche **#
 			<div class="keys-values">
-				#show_property( $text.property.prefLabel    $it.getProperties($prefixes.expandUri("skos:prefLabel"))  	$locale  )
-				#show_property( $text.property.notation    	$it.getProperties($prefixes.expandUri("skos:notation"))  $locale )
-				#show_property( $text.property.definition 	$it.getProperties($prefixes.expandUri("skos:definition"))   $locale "right")
-				#show_property( $text.property.scopeNote    	$it.getProperties($prefixes.expandUri("skos:scopeNote"))  $locale )
-				#show_property( $text.property.altLabel     $it.getProperties($prefixes.expandUri("skos:altLabel"))   	$locale "non-pref" )
-				#linked_entries( $text.property.broader   		$it.getBroaderConcepts()   $locale )
-				#linked_entries_by_collection( $text.property.narrower  $it.getNarrowerConceptsByCollection()  $locale )
-				#linked_entries_by_collection( $text.property.related   $it.getRelatedConceptsByCollection()   $locale )
-				#show_property( $text.property.example    	$it.getProperties($prefixes.expandUri("skos:example"))    	$locale )			
+				#show_property( $text.property.prefLabel				$it.getProperties($prefixes.expandUri("skos:prefLabel"))	$locale "concept-prefLabel"	)
+				#show_property( $text.property.notation					$it.getProperties($prefixes.expandUri("skos:notation"))		$locale "concept-notation"	)
+				#show_property( $text.property.definition				$it.getProperties($prefixes.expandUri("skos:definition"))	$locale "concept-definition"	)
+				#show_property( $text.property.scopeNote				$it.getProperties($prefixes.expandUri("skos:scopeNote"))	$locale "concept-scopeNote"	)
+				#show_property( $text.property.altLabel				    $it.getProperties($prefixes.expandUri("skos:altLabel"))		$locale "concept-altLabel non-pref" )
+				#linked_entries( $text.property.broader					$it.getBroaderConcepts()									$locale	"concept-broader" )
+				#linked_entries_by_collection( $text.property.narrower	$it.getNarrowerConceptsByCollection()						$locale "concept-narrower" )
+				#linked_entries_by_collection( $text.property.related	$it.getRelatedConceptsByCollection()						$locale "concept-related" )
+				#show_property( $text.property.example					$it.getProperties($prefixes.expandUri("skos:example"))    	$locale "concept-Example"	)			
 			</div>
 			
 			
@@ -124,10 +124,10 @@ Paramètres:
 			#if( $alignmentsAvailable || $openSearchesAvailable || $statusExists || $createdDateExists || $modifiedDateExists || $historyNoteExists )
 			<div id="other-infos">
 				<div id="management">
-					#show_property( $text.property.status    	$it.getProperties($prefixes.expandUri("iso-thes:status"))  $locale	"" "property.status.")
-					#show_single_property_as_date( $text.property.created         $it.createdDate      "long"      $locale )
-					#show_single_property_as_date( $text.property.modified         $it.modifiedDate      "long"      $locale )
-					#show_property( $text.property.historyNote    	$it.getProperties($prefixes.expandUri("skos:historyNote"))  $locale	"right")
+					#show_property( $text.property.status					$it.getProperties($prefixes.expandUri("iso-thes:status"))	$locale	"concept-status" "property.status.")
+					#show_single_property_as_date( $text.property.created	$it.createdDate		"long"		$locale		"concept-created" )
+					#show_single_property_as_date( $text.property.modified	$it.modifiedDate	"long"		$locale		"concept-modified" )
+					#show_property( $text.property.historyNote				$it.getProperties($prefixes.expandUri("skos:historyNote"))	$locale	"concept-historyNote right")
 				</div>
 				
 				#if( $alignmentsAvailable || $openSearchesAvailable )

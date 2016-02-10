@@ -39,6 +39,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #macro( head_links $dataUri )
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link type="text/css" rel="stylesheet" href="${baseUri}/css/principal.css"/>
+    <link type="text/css" rel="stylesheet" href="${baseUri}/css/custom.css"/>
 #if( $dataUri )
     <link rel="alternate" type="application/rdf+xml" href="$dataUri"
           title="Structured Descriptor Document (RDF/XML format)"/>
@@ -110,9 +111,9 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * @param locale
  * 			Langage pour l'affichage de la date
  *#
-#macro( show_single_property_as_date $name $value $dateFormat $locale )
+#macro( show_single_property_as_date $name $value $dateFormat $locale $css )
 #if( $value )
-      <h2>$esc.html($name)</h2>
+      <h2 class="$!css">$esc.html($name)</h2>
       <p>$esc.html($date.format($dateFormat, null, $value, $locale))</span></p>
 #end
 #end
@@ -130,9 +131,9 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * @param locale
  * 			Langage pour l'affichage de la date
  *#
-#macro( show_property_as_date $name $values $dateFormat $locale )
+#macro( show_property_as_date $name $values $dateFormat $locale $idCss )
 #if( !$collection.isStringEmpty($values) )
-      <h2>$esc.html($name)</h2>
+      <h2 id="$!idCss">$esc.html($name)</h2>
       <ul>
 #foreach( $item in $values )
 		#if( $item.value != "" )
@@ -206,9 +207,9 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * @param locale
  * 			Langage préférentiel pour affichage du libellé
  *#
-#macro( show_inline_property_with_lang $name $values $locale )
+#macro( show_inline_property_with_lang $name $values $locale $idCss )
 #if( !$collection.isStringEmpty($values) )
-	<h2>$esc.html($name)</h2>
+	<h2 id="$!idCss">$esc.html($name)</h2>
 	<ul>
 #foreach( $item in $sorter.sortStrings($values, [$locale, null]))
 		#if( $item.value != "" )
@@ -344,11 +345,11 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * @param locale
  * 			Langage préférentiel pour affichage du libellé (ou null si aucun)
  *#
-#macro( linked_entries_by_collection $name $map $locale )
+#macro( linked_entries_by_collection $name $map $locale $css )
 ## Assign local variable to prevent multiple evaluation of entries argument.
 #set( $m = $map )
 #if( !$m.isEmpty() )
-      <div class="key-value">
+      <div class="key-value $!css">
         <h2 class="key">$esc.html($name)</h2>
         <div class="value">
 #foreach( $collection in $sorter.sortEntriesByLabel($m.keySet(), [$locale, null], false) )
