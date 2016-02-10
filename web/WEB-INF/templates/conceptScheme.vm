@@ -66,21 +66,21 @@ Paramètres:
 				      <p>$esc.html($it.metadata.organisation)</p>
 				    </div>
 				#end
-				#show_inline_property_with_lang( $text.property.contributor   $it.getProperties($prefixes.expandUri("dc:contributor"))   $locale )
-				#show_inline_property_with_lang( $text.property.publisher     $it.getProperties($prefixes.expandUri("dc:publisher"))     $locale )	
-				#show_inline_property_with_lang( $text.property.rights        $it.getProperties($prefixes.expandUri("dc:rights"))        $locale )
-				#show_property_as_date( $text.property.created         $it.getDateProperties($prefixes.expandUri("dct:created"))      "long"      $locale )
-				#show_property_as_date( $text.property.modified         $it.getDateProperties($prefixes.expandUri("dct:modified"))      "long"      $locale )
+				#show_inline_property_with_lang( $text.property.contributor   $it.getProperties($prefixes.expandUri("dc:contributor"))   $locale "concetpScheme-contributor" )
+				#show_inline_property_with_lang( $text.property.publisher     $it.getProperties($prefixes.expandUri("dc:publisher"))     $locale "concetpScheme-publisher" )	
+				#show_inline_property_with_lang( $text.property.rights        $it.getProperties($prefixes.expandUri("dc:rights"))        $locale "concetpScheme-rights" )
+				#show_property_as_date( $text.property.created         $it.getDateProperties($prefixes.expandUri("dct:created"))      "long"      $locale "concetpScheme-created" )
+				#show_property_as_date( $text.property.modified         $it.getDateProperties($prefixes.expandUri("dct:modified"))      "long"      $locale "concetpScheme-modified" )
 		    </div>
 		
 			#** Colonne de gauche *#
-			#show_inline_property_with_lang( $text.property.type          $it.getProperties($prefixes.expandUri("dc:type"))          $locale )
-			#show_inline_property_with_lang( $text.property.description 	$it.getProperties($prefixes.expandUri("dc:description"))   $locale )
-			#show_inline_property_with_lang( $text.property.subject       $it.getProperties($prefixes.expandUri("dc:subject"))       $locale )
-			#show_inline_property_with_lang( $text.property.coverage      $it.getProperties($prefixes.expandUri("dc:coverage"))      $locale )
-			#show_inline_property_with_lang( $text.property.language      $it.getProperties($prefixes.expandUri("dc:language"))      $locale )
+			#show_inline_property_with_lang( $text.property.type          $it.getProperties($prefixes.expandUri("dc:type"))          $locale "concetpScheme-type" )
+			#show_inline_property_with_lang( $text.property.description 	$it.getProperties($prefixes.expandUri("dc:description"))   $locale "concetpScheme-description" )
+			#show_inline_property_with_lang( $text.property.subject       $it.getProperties($prefixes.expandUri("dc:subject"))       $locale "concetpScheme-subject" )
+			#show_inline_property_with_lang( $text.property.coverage      $it.getProperties($prefixes.expandUri("dc:coverage"))      $locale "concetpScheme-coverage" )
+			#show_inline_property_with_lang( $text.property.language      $it.getProperties($prefixes.expandUri("dc:language"))      $locale "concetpScheme-language" )
 			
-			#show_inline_property_with_lang( $text.property.source 	$it.getProperties($prefixes.expandUri("dc:source"))   $locale )
+			#show_inline_property_with_lang( $text.property.source 	$it.getProperties($prefixes.expandUri("dc:source"))   $locale "concetpScheme-source" )
 			
 			#** Termes de 1er niveau *#
 		    <h2 class="clear">$esc.html($text.property.topConcept)</h2>
