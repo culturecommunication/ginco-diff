@@ -67,8 +67,6 @@ Paramètres:
 				#end
 				<li>$sorter.sortStrings($it.getProperties($prefixes.expandUri("skos:prefLabel")), [$locale, null]).get(0).value</li>
 		    </ul>
-		    
-		    <h1>$prefLabel</h1>
 		
 			#** Colonne de droite **#
 		    <div id="metadata">
@@ -86,11 +84,13 @@ Paramètres:
 				#linked_entries($text.property.topAncestor		$it.getTopAncestors()	$locale "right concept-topAncestor" )
 		    	#label_entries(	$text.property.conceptGroups	$it.getConceptGroups()	$locale "right concept-conceptGroups")
 				#linked_uris(	$text.property.focus			$it.getFocus()			"right concept-focus")
+				#show_thumbnails($text.property.thumbnails		$it.getAssociations($prefixes.expandUri("foaf:depiction"))		2	"right concept-illustrations"	"concept-thumbnails" )
 				
 		    </div>	
 		
 			#** Colonne de gauche **#
 			<div class="keys-values">
+				<h1>$prefLabel</h1>
 				#show_property( $text.property.prefLabel				$it.getProperties($prefixes.expandUri("skos:prefLabel"))	$locale "concept-prefLabel"	)
 				#show_property( $text.property.notation					$it.getProperties($prefixes.expandUri("skos:notation"))		$locale "concept-notation"	)
 				#show_property( $text.property.definition				$it.getProperties($prefixes.expandUri("skos:definition"))	$locale "concept-definition"	)
@@ -124,7 +124,7 @@ Paramètres:
 			#if( $alignmentsAvailable || $openSearchesAvailable || $statusExists || $createdDateExists || $modifiedDateExists || $historyNoteExists )
 			<div id="other-infos">
 				<div id="management">
-					#show_property( $text.property.status					$it.getProperties($prefixes.expandUri("iso-thes:status"))	$locale	"concept-status" "property.status.")
+					#show_property( $text.property.status					$it.getProperties($prefixes.expandUri("iso-thes:status"))	$locale	"right concept-status" "property.status.")
 					#show_single_property_as_date( $text.property.created	$it.createdDate		"long"		$locale		"concept-created" )
 					#show_single_property_as_date( $text.property.modified	$it.modifiedDate	"long"		$locale		"concept-modified" )
 					#show_property( $text.property.historyNote				$it.getProperties($prefixes.expandUri("skos:historyNote"))	$locale	"concept-historyNote right")

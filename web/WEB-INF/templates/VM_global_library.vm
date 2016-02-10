@@ -452,3 +452,31 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #end
 </ul>
 #end
+
+
+#**
+ * Affiche les images d'illustrations de concept
+ *
+ * @param sectionName
+ *			Libellé de la section
+ * @param thumbnails
+ * 			Liste d'URIs des images à afficher
+ * @param css
+ *			Classe(s) CSS du conteneur
+ *#
+#macro( show_thumbnails $sectionName $thumbnails $thumbnailsToDisplay $css $idCss )
+#if( !$thumbnails.isEmpty() )
+	<div id="$!idCss" class="key-value $!css">
+		<h2 class="key">$esc.html($sectionName)</h2>
+		<ul class="value">
+		#set( $i = 0 )
+		#foreach ( $link in $thumbnails )
+			#if( $link != "" && $i < $thumbnailsToDisplay )
+				#set( $i = $i + 1 )
+			<li><img src="$link"/></li>
+			#end
+		#end
+		</ul>
+	</div>
+#end
+#end
