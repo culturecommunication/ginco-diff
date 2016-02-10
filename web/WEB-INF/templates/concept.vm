@@ -87,6 +87,14 @@ Paramètres:
 		    	#label_entries( $text.property.conceptGroups 	$it.getConceptGroups()   $locale "right")
 				#linked_uris( $text.property.focus  $it.getFocus() "right")
 				
+				#** Affichage des illustrations **#
+				#set( $thumbnailsToDisplay = 2 )
+				#set( $thumbnailsFound = false )
+				#set( $thumbnailsList = [] )
+				#foreach ( $inc in [0..$thumbnailsToDisplay] )
+					#set( $thumbnailsFound = $thumbnailsList.add($it.getProperty($prefixes.expandUri("ginco:img$inc"))) || $thumbnailsFound )
+				#end
+				#show_thumbnails($text.property.thumbnails		$thumbnailsList		"right" )
 		    </div>	
 		
 			#** Colonne de gauche **#
