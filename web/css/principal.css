@@ -64,8 +64,8 @@ body#ThesaurusW {
 	font-variant: small-caps;
 	text-transform: none;
 	font-weight: 100;
-	margin-bottom: 0;
-	margin-top: 0;
+	margin-bottom: 1.5em;
+	margin-top: 0.67em;
 }
 
 #ThesaurusW h2 {
@@ -252,6 +252,7 @@ input[type=submit]:active {
 	border-top: 1px solid #c9c9c9;
 	position: relative;
 	text-align: left;
+	padding-top: 0.5em;
 }
 
 #alignments {
@@ -279,6 +280,7 @@ input[type=submit]:active {
 	padding-top: 0;
 	padding-bottom: 30px;
 	width: 35%;
+	font-style: italic;
 }
 
 ul.value,div.value {
