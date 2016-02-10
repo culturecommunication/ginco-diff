@@ -67,8 +67,6 @@ Paramètres:
 				#end
 				<li>$sorter.sortStrings($it.getProperties($prefixes.expandUri("skos:prefLabel")), [$locale, null]).get(0).value</li>
 		    </ul>
-		    
-		    <h1>$prefLabel</h1>
 		
 			#** Colonne de droite **#
 		    <div id="metadata">
@@ -94,11 +92,12 @@ Paramètres:
 				#foreach ( $inc in [0..$thumbnailsToDisplay] )
 					#set( $thumbnailsFound = $thumbnailsList.add($it.getProperty($prefixes.expandUri("ginco:img$inc"))) || $thumbnailsFound )
 				#end
-				#show_thumbnails($text.property.thumbnails		$thumbnailsList		"right" )
+				#show_thumbnails($text.property.thumbnails		$thumbnailsList		"right concept-illustrations"	"concept-thumbnails" )
 		    </div>	
 		
 			#** Colonne de gauche **#
 			<div class="keys-values">
+				<h1>$prefLabel</h1>
 				#show_property( $text.property.prefLabel				$it.getProperties($prefixes.expandUri("skos:prefLabel"))	$locale "concept-prefLabel"	)
 				#show_property( $text.property.notation					$it.getProperties($prefixes.expandUri("skos:notation"))		$locale "concept-notation"	)
 				#show_property( $text.property.definition				$it.getProperties($prefixes.expandUri("skos:definition"))	$locale "concept-definition"	)
@@ -132,7 +131,7 @@ Paramètres:
 			#if( $alignmentsAvailable || $openSearchesAvailable || $statusExists || $createdDateExists || $modifiedDateExists || $historyNoteExists )
 			<div id="other-infos">
 				<div id="management">
-					#show_property( $text.property.status					$it.getProperties($prefixes.expandUri("iso-thes:status"))	$locale	"concept-status" "property.status.")
+					#show_property( $text.property.status					$it.getProperties($prefixes.expandUri("iso-thes:status"))	$locale	"right concept-status" "property.status.")
 					#show_single_property_as_date( $text.property.created	$it.createdDate		"long"		$locale		"concept-created" )
 					#show_single_property_as_date( $text.property.modified	$it.modifiedDate	"long"		$locale		"concept-modified" )
 					#show_property( $text.property.historyNote				$it.getProperties($prefixes.expandUri("skos:historyNote"))	$locale	"concept-historyNote right")

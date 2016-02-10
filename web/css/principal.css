@@ -253,6 +253,7 @@ input[type=submit]:active {
 	position: relative;
 	text-align: left;
 	padding-top: 0.5em;
+	clear: both;
 }
 
 #alignments {
@@ -317,6 +318,20 @@ div.value ul,div.value li {
 
 .relation {
 	clear: left;
+}
+
+#concept-thumbnails ul {
+	list-style: none;
+	padding-left: 0;
+}
+
+#concept-thumbnails ul li {
+	display: inline-block;
+	max-width: 145px;
+}
+
+#concept-thumbnails ul li img {
+	max-width: 145px;
 }
 
 /******************************************* PAGE D'ACCUEIL */

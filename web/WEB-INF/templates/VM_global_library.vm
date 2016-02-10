@@ -463,13 +463,13 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * @param css
  *			Classe(s) CSS du conteneur
  *#
-#macro( show_thumbnails $sectionName $thumbnails $css )
+#macro( show_thumbnails $sectionName $thumbnails $css $idCss )
 #if( !$thumbnails.isEmpty() ) ## (Attention : Ne vérifie pas si la liste ne contient que des valeurs nulles)
 	#set( $onlyNullValues = true )
 	#foreach ( $link in $thumbnails )
 		#if( $link && $onlyNullValues )
 			#set( $onlyNullValues = false )
-		<div class="key-value $!css">
+		<div id="$!idCss" class="key-value $!css">
 			<h2 class="key">$esc.html($sectionName)</h2>
 			<ul class="value">
 				<li><img src="$link.getValue()"/></li>
