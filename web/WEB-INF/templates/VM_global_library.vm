@@ -481,8 +481,9 @@ knowledge of the CeCILL-B license and that you accept its terms.
 </ul>
 #end
 
+
 #**
- * Affiche les images d'illustrations de concept contenues dans une propriété
+ * Affiche les images d'illustrations de concept
  *
  * @param sectionName
  *			Libellé de la section
@@ -491,23 +492,19 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * @param css
  *			Classe(s) CSS du conteneur
  *#
-#macro( show_thumbnails_property $sectionName $thumbnails $css $idCss )
-#if( !$thumbnails.isEmpty() ) ## (Attention : Ne vérifie pas si la liste ne contient que des valeurs nulles)
-	#set( $onlyNullValues = true )
-	#foreach ( $link in $thumbnails )
-		#if( $link && $onlyNullValues )
-			#set( $onlyNullValues = false )
-		<div id="$!idCss" class="key-value $!css">
-			<h2 class="key">$esc.html($sectionName)</h2>
-			<ul class="value">
-				<li><img src="$link.getValue()"/></li>
-		#elseif( $link )
-				<li><img src="$link.getValue()"/></li>
+#macro( show_thumbnails $sectionName $thumbnails $thumbnailsToDisplay $css $idCss )
+#if( !$thumbnails.isEmpty() )
+	<div id="$!idCss" class="key-value $!css">
+		<h2 class="key">$esc.html($sectionName)</h2>
+		<ul class="value">
+		#set( $i = 0 )
+		#foreach ( $link in $thumbnails )
+			#if( $link != "" && $i < $thumbnailsToDisplay )
+				#set( $i = $i + 1 )
+			<li><img src="$link"/></li>
+			#end
 		#end
-	#end
-	#if( !$onlyNullValues )
-			</ul>
-		</div>
-	#end
+		</ul>
+	</div>
 #end
 #end

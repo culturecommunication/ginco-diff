@@ -84,15 +84,7 @@ Paramètres:
 				#linked_entries($text.property.topAncestor		$it.getTopAncestors()	$locale "right concept-topAncestor" )
 		    	#label_entries(	$text.property.conceptGroups	$it.getConceptGroups()	$locale "right concept-conceptGroups")
 				#linked_uris(	$text.property.focus			$it.getFocus()			"right concept-focus")
-				
-				#** Affichage des illustrations **#
-				#set( $thumbnailsToDisplay = 2 )
-				#set( $thumbnailsFound = false )
-				#set( $thumbnailsList = [] )
-				#foreach ( $inc in [1..$thumbnailsToDisplay] )
-					#set( $thumbnailsFound = $thumbnailsList.add($it.getProperty($prefixes.expandUri("ginco:img$inc"))) || $thumbnailsFound )
-				#end
-				#show_thumbnails_property($text.property.thumbnails		$thumbnailsList		"right concept-illustrations"	"concept-thumbnails" )
+				#show_thumbnails($text.property.thumbnails		$it.getAssociations($prefixes.expandUri("foaf:depiction"))		2	"right concept-illustrations"	"concept-thumbnails" )
 				
 		    </div>	
 		
