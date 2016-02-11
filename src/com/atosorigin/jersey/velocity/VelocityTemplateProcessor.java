@@ -339,6 +339,10 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 			if (ctx.get("esc") == null) {
 				ctx.put("esc", new EscapeTool());
 			}
+			// Add Velocity display tool.
+			if (ctx.get("display") == null) {
+				ctx.put("display", new DisplayTool());
+			}
 			// Add Velocity text tool.
 			if (ctx.get("text") == null && resourceTool != null) {
 				ctx.put("text", resourceTool);
