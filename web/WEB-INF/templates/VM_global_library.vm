@@ -250,6 +250,34 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #end
 
 #**
+ * Affiche les valeurs de la propriété. Si cette propriété ne possède aucune valeur, rien n'est 
+ * affiché. Cette méthode est similaire à la macro show_property avec des liens cliquables
+ *
+ * @param name
+ *			Libellé de la section
+ * @param values
+ *			Collection de LocalizedString à afficher
+ * @param locale
+ * 			Langage préférentiel pour affichage du libellé
+ * @param css
+ *			Classe CSS du conteneur
+ *#
+#macro( show_property_with_links $name $values $locale $css $resourceprefix )
+#if( !$collection.isStringEmpty($values) )
+      <div class="key-value $!css">
+        <h2 class="key">$esc.html($name)</h2>
+        <ul class="value">
+          #foreach ( $item in $sorter.sortStrings($values, [$locale, null]) )
+	          #if( $item.value != "" )
+	          	<li #if($item.language)xml:lang="$item.language"#end><span class="lit-lang">#if($item.language)($lang.format($esc.html($item.language)))#end</span> <span class="lit-value">#if($resourceprefix)$text.get("${resourceprefix}${item.value}")#else$display.stripTags($item.value, "a")#end</span></li>
+	          #end
+          #end
+        </ul>
+      </div>
+#end
+#end
+
+#**
  * Affiche les valeurs de la propriété sans utiliser de liste. 
  * Si cette propriété ne possède aucune valeur, rien n'est affiché. 
  *
