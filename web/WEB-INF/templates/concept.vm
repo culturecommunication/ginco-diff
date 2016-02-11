@@ -98,11 +98,11 @@ Paramètres:
 			#** Colonne de gauche **#
 			<div class="keys-values">
 				<h1>$prefLabel</h1>
-				#show_property( $text.property.prefLabel				$it.getProperties($prefixes.expandUri("skos:prefLabel"))	$locale "concept-prefLabel"	)
+				#show_property_with_links( $text.property.prefLabel		$it.getProperties($prefixes.expandUri("skos:prefLabel"))	$locale "concept-prefLabel"	)
 				#show_property( $text.property.notation					$it.getProperties($prefixes.expandUri("skos:notation"))		$locale "concept-notation"	)
 				#show_property_with_links( $text.property.definition	$it.getProperties($prefixes.expandUri("skos:definition"))	$locale "concept-definition"	)
 				#show_property_with_links( $text.property.scopeNote		$it.getProperties($prefixes.expandUri("skos:scopeNote"))	$locale "concept-scopeNote"	)
-				#show_property( $text.property.altLabel				    $it.getProperties($prefixes.expandUri("skos:altLabel"))		$locale "concept-altLabel non-pref" )
+				#show_property_with_links( $text.property.altLabel		$it.getProperties($prefixes.expandUri("skos:altLabel"))		$locale "concept-altLabel non-pref" )
 				#linked_entries( $text.property.broader					$it.getBroaderConcepts()									$locale	"concept-broader" )
 				#linked_entries_by_collection( $text.property.narrower	$it.getNarrowerConceptsByCollection()						$locale "concept-narrower" )
 				#linked_entries_by_collection( $text.property.related	$it.getRelatedConceptsByCollection()						$locale "concept-related" )
