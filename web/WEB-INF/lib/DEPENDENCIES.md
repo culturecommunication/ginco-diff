@@ -23,4 +23,4 @@
 	- slf4j-api-1.6.1.jar
 	- slf4j-log4j12-1.6.1.jar
 - velocity-1.6.3-dep.jar
-	- velocity-tools-generic-1.4.jar
+	- velocity-tools-generic-2.0.jar

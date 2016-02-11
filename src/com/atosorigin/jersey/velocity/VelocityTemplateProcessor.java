@@ -64,7 +64,9 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.log.Log4JLogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.apache.velocity.tools.ToolContext;
 import org.apache.velocity.tools.generic.DateTool;
+import org.apache.velocity.tools.generic.DisplayTool;
 import org.apache.velocity.tools.generic.EscapeTool;
 import org.apache.velocity.tools.generic.ResourceTool;
 import org.apache.velocity.tools.generic.SortTool;
@@ -201,7 +203,7 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 
 				resourceParameters.put(ResourceTool.BUNDLES_KEY, textBundles);
 				if (textLocale != null) {
-					resourceParameters.put(ResourceTool.LOCALE_KEY, textLocale);
+					resourceParameters.put("locale", textLocale);
 				}
 
 				resourceTool = new ResourceTool();
@@ -221,7 +223,7 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 				resourceParameters.put(ResourceTool.BUNDLES_KEY,
 						textBundlesBanner);
 				if (textLocale != null) {
-					resourceParameters.put(ResourceTool.LOCALE_KEY, textLocale);
+					resourceParameters.put("locale", textLocale);
 				}
 
 				resourceToolBanner = new ResourceTool();
@@ -241,7 +243,7 @@ public class VelocityTemplateProcessor implements ViewProcessor<Template> {
 				resourceParameters.put(ResourceTool.BUNDLES_KEY,
 						textBundlesOpenSearches);
 				if (textLocale != null) {
-					resourceParameters.put(ResourceTool.LOCALE_KEY, textLocale);
+					resourceParameters.put("locale", textLocale);
 				}
 
 				resourceToolOpenSearches = new ResourceTool();
