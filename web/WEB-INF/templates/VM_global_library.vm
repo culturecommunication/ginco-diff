@@ -482,7 +482,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #end
 
 #**
- * Affiche les images d'illustrations de concept
+ * Affiche les images d'illustrations de concept contenues dans une propriété
  *
  * @param sectionName
  *			Libellé de la section
@@ -491,7 +491,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
  * @param css
  *			Classe(s) CSS du conteneur
  *#
-#macro( show_thumbnails $sectionName $thumbnails $css $idCss )
+#macro( show_thumbnails_property $sectionName $thumbnails $css $idCss )
 #if( !$thumbnails.isEmpty() ) ## (Attention : Ne vérifie pas si la liste ne contient que des valeurs nulles)
 	#set( $onlyNullValues = true )
 	#foreach ( $link in $thumbnails )

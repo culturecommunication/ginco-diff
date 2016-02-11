@@ -89,10 +89,11 @@ Paramètres:
 				#set( $thumbnailsToDisplay = 2 )
 				#set( $thumbnailsFound = false )
 				#set( $thumbnailsList = [] )
-				#foreach ( $inc in [0..$thumbnailsToDisplay] )
+				#foreach ( $inc in [1..$thumbnailsToDisplay] )
 					#set( $thumbnailsFound = $thumbnailsList.add($it.getProperty($prefixes.expandUri("ginco:img$inc"))) || $thumbnailsFound )
 				#end
-				#show_thumbnails($text.property.thumbnails		$thumbnailsList		"right concept-illustrations"	"concept-thumbnails" )
+				#show_thumbnails_property($text.property.thumbnails		$thumbnailsList		"right concept-illustrations"	"concept-thumbnails" )
+				
 		    </div>	
 		
 			#** Colonne de gauche **#
