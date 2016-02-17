@@ -176,6 +176,27 @@ public class SparqlQueries {
 		final String CONCEPT_URI = "uri";
 
 	}
+	
+	/**
+	 * Informations sur la requête SPARQL de chargement des labels sur un
+	 * concept.
+	 * <p>
+	 * Le résultat de la requête est un graphe.
+	 * 
+	 * @author asa
+	 */
+	public interface LoadConceptLabels {
+
+		/** Nom de la requête renvoyant les propriétés d'un pref label. */
+		final String PREF_QUERY = "loadConceptPrefLabels";
+		
+		/** Nom de la requête renvoyant les propriétés d'un pref label. */
+		final String ALT_QUERY = "loadConceptAltLabels";
+
+		/** Nom de la variable contenant l'URI du concept à charger. */
+		final String CONCEPT_URI = "uri";
+
+	}
 
 	/**
 	 * Informations sur la requête SPARQL de chargement des ancêtres

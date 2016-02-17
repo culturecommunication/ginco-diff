@@ -676,6 +676,9 @@ public class SesameThesaurus implements ThesaurusService {
 			concept.setParentConcepts(listParentSkosConcepts(conceptUri, cnx));
 			concept.setConceptGroups(listConceptGroupsFromConcept(conceptUri, cnx));
 			
+			concept.setConceptPrefLabels(listConceptPrefLabels(conceptUri, cnx));
+			concept.setConceptAltLabels(listConceptAltLabels(conceptUri, cnx));
+			
 		} catch (OpenRDFException e) {
 			throw new BusinessException(ErrorMessage.SPARQL_SELECT_FAILED,
 					new Object[] { e.getMessage() }, e);
@@ -1250,6 +1253,52 @@ public class SesameThesaurus implements ThesaurusService {
 				Entry.class, query);
 
 		return groups.values();
+	}
+	
+	/**
+	 * Décrit les prefLabels liés à un concept.
+	 * Les labels ne sont pas décrits entièrements
+	 * (on extrait la forme litérale et éventuellement la source)
+	 * 
+	 * @param uri
+	 *            URI de la ressource d'origine
+	 * @param cnx
+	 *            Connexion vers le triplestore
+	 * @return Collection de ressources liées au concept
+	 * @throws OpenRDFException
+	 *             Levée si l'accès au triplestore a échoué
+	 */
+	private Collection<Entry> listConceptPrefLabels(URI uri, RepositoryConnection cnx) throws OpenRDFException {
+		final GraphQuery query = getConstructQuery(
+				SparqlQueries.LoadConceptLabels.PREF_QUERY, cnx);
+		query.setBinding(
+				SparqlQueries.LoadConceptLabels.CONCEPT_URI,
+				uri);
+
+		return constructResourcesFromQuery(Entry.class, query).values();
+	}
+	
+	/**
+	 * Décrit les alt labels liés à un concept.
+	 * Les labels ne sont pas décrits entièrements
+	 * (on extrait la forme litérale et éventuellement la source)
+	 * 
+	 * @param uri
+	 *            URI de la ressource d'origine
+	 * @param cnx
+	 *            Connexion vers le triplestore
+	 * @return Collection de ressources liées au concept
+	 * @throws OpenRDFException
+	 *             Levée si l'accès au triplestore a échoué
+	 */
+	private Collection<Entry> listConceptAltLabels(URI uri, RepositoryConnection cnx) throws OpenRDFException {
+		final GraphQuery query = getConstructQuery(
+				SparqlQueries.LoadConceptLabels.ALT_QUERY, cnx);
+		query.setBinding(
+				SparqlQueries.LoadConceptLabels.CONCEPT_URI,
+				uri);
+
+		return constructResourcesFromQuery(Entry.class, query).values();
 	}
 
 	/**
