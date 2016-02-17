@@ -60,6 +60,9 @@ public class Concept extends Entry {
 	
 	private final List<Entry> conceptGroups = new LinkedList<Entry>();
 	
+	private final List<Entry> conceptPrefLabels = new LinkedList<Entry>();
+	private final List<Entry> conceptAltLabels = new LinkedList<Entry>();
+	
 	/* Relations inverses vers le concept. */
 	private final List<ConceptCollection> collections = new LinkedList<ConceptCollection>();
 
@@ -79,6 +82,7 @@ public class Concept extends Entry {
 	@Override
     public LocalizedString getLabel(Locale locale) {
         return this.getIdentifyingProperty(Skos.PREF_LABEL, locale);
+        //TODOQ à changer pour différencier "skos.prefLabel" de "xl:prefLabel / iso-thes:PreferredTerm / xl:literalForm" ?
     }
 
 	/**
@@ -198,6 +202,24 @@ public class Concept extends Entry {
     public void setConceptGroups(Collection<Entry> conceptGroups) {
         this.conceptGroups.clear();
         this.conceptGroups.addAll(conceptGroups);
+    }
+    
+    
+    
+    public Collection<Entry> getConceptPrefLabels() {
+        return Collections.unmodifiableCollection(this.conceptPrefLabels);
+    }
+    public void setConceptPrefLabels(Collection<Entry> conceptPrefLabels) {
+        this.conceptPrefLabels.clear();
+        this.conceptPrefLabels.addAll(conceptPrefLabels);
+    }
+    
+    public Collection<Entry> getConceptAltLabels() {
+        return Collections.unmodifiableCollection(this.conceptAltLabels);
+    }
+    public void setConceptAltLabels(Collection<Entry> conceptAltLabels) {
+        this.conceptAltLabels.clear();
+        this.conceptAltLabels.addAll(conceptAltLabels);
     }
 
     
