@@ -205,16 +205,25 @@ public class Concept extends Entry {
     }
     
     
+    public Collection<Entry> getConceptLabels(String prefOrAlt) {
+    	Collection<Entry> labels = null;
+    	if (prefOrAlt.equals("prefLabel")) {
+    		labels = this.getConceptPrefLabels();
+    	} else if (prefOrAlt.equals("altLabel")) {
+    		labels = this.getConceptAltLabels();
+    	}
+    	return Collections.unmodifiableCollection(labels);
+    }
     
-    public Collection<Entry> getConceptPrefLabels() {
-        return Collections.unmodifiableCollection(this.conceptPrefLabels);
+    private Collection<Entry> getConceptPrefLabels() {
+    	return Collections.unmodifiableCollection(this.conceptPrefLabels);
     }
     public void setConceptPrefLabels(Collection<Entry> conceptPrefLabels) {
         this.conceptPrefLabels.clear();
         this.conceptPrefLabels.addAll(conceptPrefLabels);
     }
     
-    public Collection<Entry> getConceptAltLabels() {
+    private Collection<Entry> getConceptAltLabels() {
         return Collections.unmodifiableCollection(this.conceptAltLabels);
     }
     public void setConceptAltLabels(Collection<Entry> conceptAltLabels) {

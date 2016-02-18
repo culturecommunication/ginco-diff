@@ -676,7 +676,8 @@ public class SesameThesaurus implements ThesaurusService {
 			concept.setParentConcepts(listParentSkosConcepts(conceptUri, cnx));
 			concept.setConceptGroups(listConceptGroupsFromConcept(conceptUri, cnx));
 			
-			//concept.setconceptLabels(listConceptPrefLabels(conceptUri, "iso-thes:PreferredTerm", cnx));
+			concept.setConceptPrefLabels(listConceptPrefLabels(conceptUri, cnx));
+			concept.setConceptAltLabels(listConceptAltLabels(conceptUri, cnx));
 			
 		} catch (OpenRDFException e) {
 			throw new BusinessException(ErrorMessage.SPARQL_SELECT_FAILED,
@@ -1255,9 +1256,9 @@ public class SesameThesaurus implements ThesaurusService {
 	}
 	
 	/**
-	 * Décrit les PreferredTerm d'un concept. Les
-	 * PreferredTerm décrits ne le sont pas entièrement
-	 * (seule les propriétés xl:literalForm et dc:source sont extraites).
+	 * Décrit les prefLabels liés à un concept.
+	 * Les labels ne sont pas décrits entièrements
+	 * (on extrait la forme litérale et éventuellement la source)
 	 * 
 	 * @param uri
 	 *            URI de la ressource d'origine
@@ -1268,19 +1269,19 @@ public class SesameThesaurus implements ThesaurusService {
 	 *             Levée si l'accès au triplestore a échoué
 	 */
 	private Collection<Entry> listConceptPrefLabels(URI uri, RepositoryConnection cnx) throws OpenRDFException {
-		//TODO final GraphQuery query = getConstructQuery( SparqlQueries.//TODO , cnx);
-		//TODO query.setBinding( SparqlQueries.//TODO, uri);
-		
-		//final Map<String, Entry> groups = constructResourcesFromQuery(Entry.class, query);
+		final GraphQuery query = getConstructQuery(
+				SparqlQueries.LoadConceptLabels.PREF_QUERY, cnx);
+		query.setBinding(
+				SparqlQueries.LoadConceptLabels.CONCEPT_URI,
+				uri);
 
-		//return groups.values();
-		return null;
+		return constructResourcesFromQuery(Entry.class, query).values();
 	}
 	
 	/**
-	 * Décrit les SimpleNonPreferredTerm d'un concept. Les
-	 * SimpleNonPreferredTerm décrits ne le sont pas entièrement
-	 * (seule les propriétés xl:literalForm et dc:source sont extraites).
+	 * Décrit les alt labels liés à un concept.
+	 * Les labels ne sont pas décrits entièrements
+	 * (on extrait la forme litérale et éventuellement la source)
 	 * 
 	 * @param uri
 	 *            URI de la ressource d'origine
@@ -1291,13 +1292,13 @@ public class SesameThesaurus implements ThesaurusService {
 	 *             Levée si l'accès au triplestore a échoué
 	 */
 	private Collection<Entry> listConceptAltLabels(URI uri, RepositoryConnection cnx) throws OpenRDFException {
-		//TODO final GraphQuery query = getConstructQuery( SparqlQueries.//TODO , cnx);
-		//TODO query.setBinding( SparqlQueries.//TODO, uri);
-		
-		//final Map<String, Entry> groups = constructResourcesFromQuery(Entry.class, query);
+		final GraphQuery query = getConstructQuery(
+				SparqlQueries.LoadConceptLabels.ALT_QUERY, cnx);
+		query.setBinding(
+				SparqlQueries.LoadConceptLabels.CONCEPT_URI,
+				uri);
 
-		//return groups.values();
-		return null;
+		return constructResourcesFromQuery(Entry.class, query).values();
 	}
 
 	/**
@@ -1321,29 +1322,6 @@ public class SesameThesaurus implements ThesaurusService {
 				uri);
 
 		return constructResourcesFromQuery(ConceptScheme.class, query).values();
-	}
-	
-	/**
-	 * Décrit les labels liés à un concept.
-	 * Les labels ne sont pas décrite (on extrait la source et la forme litérale)
-	 * 
-	 * @param uri
-	 *            URI du concept d'origine
-	 * @param cnx
-	 *            Connexion vers le triplestore
-	 * @return Collection des concept schemes liés au concept
-	 * @throws OpenRDFException
-	 *             Levée si l'accès au triplestore a échoué
-	 */
-	private Collection<Entry> listLabelsFromConcept(URI uri,
-			RepositoryConnection cnx) throws OpenRDFException {
-		final GraphQuery query = getConstructQuery(
-				SparqlQueries.DescribeSchemesFromConcept.QUERY, cnx);
-		query.setBinding(
-				SparqlQueries.DescribeSchemesFromConcept.STARTING_CONCEPT_URI,
-				uri);
-
-		return constructResourcesFromQuery(Entry.class, query).values();
 	}
 
 	private void executeConstructQuery(String key, String uri, Writer rdfOut, ExportType type)
