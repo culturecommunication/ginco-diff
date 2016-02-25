@@ -78,9 +78,11 @@ import fr.gouv.culture.thesaurus.service.ThesaurusService;
 import fr.gouv.culture.thesaurus.service.ThesaurusServiceConfiguration;
 import fr.gouv.culture.thesaurus.service.rdf.Concept;
 import fr.gouv.culture.thesaurus.service.rdf.ConceptCollection;
+import fr.gouv.culture.thesaurus.service.rdf.ConceptGroup;
 import fr.gouv.culture.thesaurus.service.rdf.ConceptScheme;
 import fr.gouv.culture.thesaurus.service.rdf.Entry;
 import fr.gouv.culture.thesaurus.service.rdf.RdfResource;
+import fr.gouv.culture.thesaurus.service.rdf.UnitedConceptGroups;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchOrderBy;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchQuery;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchQuery.SortCriterion;
@@ -876,6 +878,86 @@ public class SesameThesaurus implements ThesaurusService {
 		}
 
 		return resultsPage;
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public UnitedConceptGroups getConceptGroupWithLabelAndVocabulary(
+			String conceptGroupLabel, String sourceVocabulary)
+			throws BusinessException {
+		//TODO
+		UnitedConceptGroups unitedConceptGroups = new UnitedConceptGroups(conceptGroupLabel, sourceVocabulary);
+		
+		RepositoryConnection cnx = null;
+		try {
+			cnx = this.repository.getConnection();
+			
+			GraphQuery graphQuery;
+			// On récupère les conceptGroups qui correspondent à nos paramètres
+			if (unitedConceptGroups.isSetSourceVocabulary()) {
+				graphQuery = getConstructQuery(
+						SparqlQueries.ListConceptGroupsFromLabel.FILTERED_QUERY, cnx);
+				URI sourceVocabularyUri = this.valueFactory.createURI(sourceVocabulary);
+				graphQuery.setBinding(SparqlQueries.ListConceptGroupsFromLabel.CONCEPT_GROUP_VOCABULARY,
+						sourceVocabularyUri); //TODO Ici passer l'uri du vocabulaire
+			} else {
+				graphQuery = getConstructQuery(
+						SparqlQueries.ListConceptGroupsFromLabel.QUERY, cnx);
+			}
+			
+			Literal conceptGroupLabelLiteral = this.valueFactory.createLiteral(conceptGroupLabel); 
+			
+			graphQuery.setBinding(SparqlQueries.ListConceptGroupsFromLabel.CONCEPT_GROUP_LABEL,
+					conceptGroupLabelLiteral);
+			
+			unitedConceptGroups.setConceptGroups(
+					constructResourcesFromQuery(ConceptGroup.class, graphQuery).values());
+			
+			// On récupère les données (concepts et conceptSchemes) qui leur sont associées
+			graphQuery.clearBindings();
+			
+			GraphQuery graphQuery2;
+			
+			graphQuery = getConstructQuery(
+					SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.QUERY_CONCEPT, cnx);
+			graphQuery2 = getConstructQuery(
+					SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.QUERY_CONCEPT_SCHEMES, cnx);
+			
+			URI conceptGroupUri;
+			for (ConceptGroup conceptGroup : unitedConceptGroups.getConceptGroups()) {
+				conceptGroupUri = this.valueFactory.createURI(conceptGroup.getUri());
+				
+				graphQuery.setBinding(
+						SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.CONCEPT_GROUP_URI, conceptGroupUri);
+				graphQuery2.setBinding(
+						SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.CONCEPT_GROUP_URI, conceptGroupUri);
+				
+				Collection<Concept> conceptList = new LinkedList<Concept>();
+				for (Concept concept : constructResourcesFromQuery(Concept.class, graphQuery).values()) {
+					conceptList.add(this.getConcept(concept.getUri()));
+				}
+				
+				conceptGroup.setConceptMembers(conceptList);
+				conceptGroup.setConceptSchemeMembers(
+						constructResourcesFromQuery(ConceptScheme.class, graphQuery2).values());
+			}
+			
+		} catch (OpenRDFException e) {
+			throw new BusinessException(ErrorMessage.SPARQL_CONSTRUCT_FAILED,
+					new Object[] { e.getMessage() }, e);
+		} finally {
+			if (cnx != null) {
+				try {
+					cnx.close();
+				} catch (Exception e) { /* Ignore... */
+				}
+			}
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("conceptGroups : " + unitedConceptGroups);
+		}
+		return unitedConceptGroups;
 	}
 
 	// -------------------------------------------------------------------------
