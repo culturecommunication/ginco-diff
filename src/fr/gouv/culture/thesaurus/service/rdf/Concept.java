@@ -82,7 +82,6 @@ public class Concept extends Entry {
 	@Override
     public LocalizedString getLabel(Locale locale) {
         return this.getIdentifyingProperty(Skos.PREF_LABEL, locale);
-        //TODOQ à changer pour différencier "skos.prefLabel" de "xl:prefLabel / iso-thes:PreferredTerm / xl:literalForm" ?
     }
 
 	/**

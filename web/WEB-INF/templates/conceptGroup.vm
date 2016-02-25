@@ -1,0 +1,108 @@
+#**
+This software is governed by the CeCILL-B license under French law and
+abiding by the rules of distribution of free software. You can use,
+modify and/or redistribute the software under the terms of the CeCILL-B
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info".
+
+As a counterpart to the access to the source code and rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty and the software's author, the holder of the
+economic rights, and the successive licensors have only limited
+liability.
+
+In this respect, the user's attention is drawn to the risks associated
+with loading, using, modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean that it is complicated to manipulate, and that also
+therefore means that it is reserved for developers and experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and, more generally, to use and operate it in the
+same conditions as regards security.
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL-B license and that you accept its terms.
+*#
+
+#**
+Template Velocity de la page d'affichage d'un groupe de concept d'un vocabulaire
+(Concept SKOS) : "/page/<id Concept>". 
+Paramètres:
+ - baseUri    - URL de base du site
+ - locale     - Locale pour l'affichage (format date, ordre tri...)
+ - resolver   - UriResolver permettant la traduction entre URI RDF et URL
+ - it         - Collection<Entry> des ConceptGroup chargée depuis le triple store RDF
+ - prefixes   - Gestionnaire de préfixes
+*#
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" #namespaces_decl() xml:lang="fr">
+	<head>
+		<title>//TODO Récupérer le label de(s) conceptGroup(s)</title>
+		#parse( "/head_commons.vm" )
+		#head_links()
+	</head>
+
+	#body_class()
+		#parse( "menu_banner.vm" )
+		<div id="ThesaurusW">
+			
+			<h1>$it.getLabel()</h1>
+			
+			<div id="subheader">
+				<a href="${baseUri}/">Accueil</a>
+				| Type : <span><a href="http://purl.org/iso25964/skos-thes#ConceptGroup">Groupe(s) de concepts</a></span>
+			</div>
+			
+			#** Colonne de droite **#
+			<div id="metadata">
+				<div class="topRightPanel">
+					<h2>$esc.html($text.property.filterByVocabulary) </h2>
+					<ul>
+					<!-- //TODO Lister les vocabulaires -->
+						##foreach($scheme in $it.conceptSchemes)
+						<li>
+							<!-- <a href="##$resolver.toUrl($scheme.uri)">
+								##$esc.html($scheme.getLabel($locale).value)
+							</a> -->
+						</li>
+						##end
+					</ul>
+					#if ($it.isSetSourceVocabulary())
+					<!-- //TODO Afficher dates (mettre le bon accesseur au lieu de $it.createdDate) -->
+					<h2>Dates</h2>
+						##show_single_property_as_date( $text.property.created	$it.createdDate		"long"		$locale		"concept-created" )
+						##show_single_property_as_date( $text.property.modified	$it.modifiedDate	"long"		$locale		"concept-modified" )
+					#end
+				</div>
+			</div>
+			
+			#** Colonne de gauche **#
+			<div class="keys-values">
+				#if ($it.isSetSourceVocabulary())
+				<p>Liste des concepts issus du vocabulaire <strong>$!it.getUriSourceVocabulary()<!-- //TODOQ actuellement URI, à changer pour renvoyer le label ? --></strong></p>
+				<!-- 
+					//TODOQ récupérer en première entrée de $it le vocabulaire duquel on est issu ? -> à éviter si possible
+				-->
+				#else
+				<p>Liste des concepts issus de tous les vocabulaires</p>
+				#end
+				
+				#foreach ($item in $sorter.sortEntriesByLabel($it.getConceptGroups(), [$locale, null], false))
+				<li><a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a></li>
+				#end
+			</div>
+		
+			#footer_start()
+				<!-- <li>
+					$esc.html($text.resource.data)
+					<ul class="sublinks">
+					</ul>
+				</li> -->
+			#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it.getConceptScheme() $it.getOrganisationMbox())
+		</div>
+	</body>
+</html>

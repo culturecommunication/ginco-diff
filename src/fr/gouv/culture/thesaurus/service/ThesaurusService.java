@@ -40,6 +40,8 @@ import fr.gouv.culture.thesaurus.exception.InvalidParameterException;
 import fr.gouv.culture.thesaurus.service.impl.ExportType;
 import fr.gouv.culture.thesaurus.service.rdf.Concept;
 import fr.gouv.culture.thesaurus.service.rdf.ConceptScheme;
+import fr.gouv.culture.thesaurus.service.rdf.Entry;
+import fr.gouv.culture.thesaurus.service.rdf.UnitedConceptGroups;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchQuery;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchResultsPage;
 
@@ -240,5 +242,19 @@ public interface ThesaurusService
 	 */
 	ConceptSearchResultsPage searchConcept(ConceptSearchQuery query)
 			throws BusinessException;
+	
+	/** 
+	 * Effectue une recherche de conceptGroups dans le thésaurus.
+	 * 
+	 * @param conceptGroupLabel
+	 *            Label du(des) conceptGroup(s) au(x)quel(s) on souhaite accéder
+	 * @param sourceVocabulary
+	 *            Voabulaire depuis lequel on souhaite accéder au conceptGroup
+	 * @return //TODO
+	 * @throws BusinessException
+	 *             Levée si une erreur s'est produite lors de la recherche dans
+	 *             le triplestore.
+	 */
+	public UnitedConceptGroups getConceptGroupWithLabelAndVocabulary(String conceptGroupLabel, String sourceVocabulary) throws BusinessException;
 
 }

@@ -336,6 +336,30 @@ public class SparqlQueries {
 			final String CONCEPT_URI = "uri";
 
 		}
+		
+		
+		/**
+		 * Informations sur la requête SPARQL renvoyant la liste des différents
+		 * conceptGroups répondant à un même label.
+		 * <p>
+		 * Le résultat de la requête est un graphe.
+		 * 
+		 * @author asa
+		 */
+		public interface ListConceptGroupsFromLabel {
+
+			/** Nom de la requête renvoyant les différents conceptGroups répondant à un certain label. */
+			final String QUERY = "listMatchingLabelConceptGroups";
+			
+			/** Nom de la requête renvoyant les différents conceptGroups répondant à un certain label et contenu dans un vocabulaire particulier. */
+			final String FILTERED_QUERY = "listMatchingLabelConceptGroupsFilterVocabulary";
+			
+			/** Nom de la variable contenant le label à matcher. */
+			final String CONCEPT_GROUP_LABEL = "labelToMatch";
+			
+			/** Nom de la variable contenant le vocabulaire sur lequel filtrer. */
+			final String CONCEPT_GROUP_VOCABULARY = "filterVocabulary";
+		}
 
 
 	// ------------------------------------------------------------------------

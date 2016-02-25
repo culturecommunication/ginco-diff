@@ -78,9 +78,11 @@ import fr.gouv.culture.thesaurus.service.ThesaurusService;
 import fr.gouv.culture.thesaurus.service.ThesaurusServiceConfiguration;
 import fr.gouv.culture.thesaurus.service.rdf.Concept;
 import fr.gouv.culture.thesaurus.service.rdf.ConceptCollection;
+import fr.gouv.culture.thesaurus.service.rdf.ConceptGroup;
 import fr.gouv.culture.thesaurus.service.rdf.ConceptScheme;
 import fr.gouv.culture.thesaurus.service.rdf.Entry;
 import fr.gouv.culture.thesaurus.service.rdf.RdfResource;
+import fr.gouv.culture.thesaurus.service.rdf.UnitedConceptGroups;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchOrderBy;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchQuery;
 import fr.gouv.culture.thesaurus.service.search.ConceptSearchQuery.SortCriterion;
@@ -876,6 +878,50 @@ public class SesameThesaurus implements ThesaurusService {
 		}
 
 		return resultsPage;
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public UnitedConceptGroups getConceptGroupWithLabelAndVocabulary(
+			String conceptGroupLabel, String sourceVocabulary)
+			throws BusinessException {
+		//TODO
+		UnitedConceptGroups unitedConceptGroups = new UnitedConceptGroups(conceptGroupLabel, sourceVocabulary);
+		
+		RepositoryConnection cnx = null;
+		try {
+			cnx = this.repository.getConnection();
+			
+			GraphQuery graphQuery;
+			if (unitedConceptGroups.isSetSourceVocabulary()) {
+				graphQuery = getConstructQuery(
+						SparqlQueries.ListConceptGroupsFromLabel.FILTERED_QUERY, cnx);
+				/* graphQuery.setBinding(SparqlQueries.ListConceptGroupsFromLabel.CONCEPT_GROUP_VOCABULARY,
+						conceptGroupLabel); */ //TODO Ici passer l'uri du vocabulaire
+			} else {
+				graphQuery = getConstructQuery(
+						SparqlQueries.ListConceptGroupsFromLabel.QUERY, cnx);
+			}
+			/*graphQuery.setBinding(SparqlQueries.ListConceptGroupsFromLabel.CONCEPT_GROUP_LABEL,
+					conceptGroupLabel);*/ //TODOQ comment passer un paramètre autre qu'une uri ?
+			unitedConceptGroups.setConceptGroups(
+					constructResourcesFromQuery(ConceptGroup.class, graphQuery).values());
+		} catch (OpenRDFException e) {
+			throw new BusinessException(ErrorMessage.SPARQL_CONSTRUCT_FAILED,
+					new Object[] { e.getMessage() }, e);
+		} finally {
+			if (cnx != null) {
+				try {
+					cnx.close();
+				} catch (Exception e) { /* Ignore... */
+				}
+			}
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("conceptGroups : " + unitedConceptGroups);
+		}
+		return unitedConceptGroups;
 	}
 
 	// -------------------------------------------------------------------------

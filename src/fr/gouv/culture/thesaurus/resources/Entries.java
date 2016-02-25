@@ -509,6 +509,41 @@ public class Entries extends BaseResource {
     }
     
     /**
+     * Resource method serving the HTML representation of conceptGroups
+     * 
+     * @param  label				Label of the conceptGroup one is looking for.
+     * 
+     * @param  sourceVocabulary		vocabulary form where one is trying to access coneptGroup page.
+     * @param  uriInfo				<i>[dependency injection]</i> the request URI.
+     * 
+     * @return a JAX-RS response forwarding to the Velocity template
+     *         of the welcome page.
+     * @throws WebApplicationException wrapping the HTTP error response
+     *         and the source exception, if any error occurred (unknown
+     *         or invalid entry, RDF triple store access error...).
+     */
+    @GET
+    @Path("page/conceptGroup/{label}")
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHtmlPageConceptGroup(
+					    		@PathParam("label") String conceptGroupLabel,
+								@QueryParam("sourceVocabulary")
+									@DefaultValue("") String sourceVocabulary,
+					    		@Context UriInfo uriInfo) {
+        ResponseBuilder response = null;
+        try { 
+            Viewable v = this.newViewable("/conceptGroup.vm", null,
+            							  this.thesaurus.getConceptGroupWithLabelAndVocabulary(conceptGroupLabel, sourceVocabulary),
+                                          this.getUriResolver(uriInfo));
+            response = this.addCacheDirectives(Response.ok(v), null);
+        }
+        catch (Exception e) {
+            this.mapException(e);
+        }
+        return response.build();
+    }
+    
+    /**
      * Checks that the specified URI resolves into an RDF subject and
      * that this subject is either a SKOS Concept or ConceptScheme.
      * @param  uri   the URI of the thesaurus entry.
