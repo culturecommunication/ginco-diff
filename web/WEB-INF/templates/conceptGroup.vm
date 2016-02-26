@@ -51,6 +51,7 @@ Paramètres:
 		<div id="ThesaurusW">
 			
 			<h1>$it.getLabel()</h1>
+			<!-- <h1>$locale.toString()</h1>  -->
 			
 			<div id="subheader">
 				<a href="${baseUri}/">Accueil</a>
@@ -63,19 +64,24 @@ Paramètres:
 					<h2>$esc.html($text.property.filterByVocabulary) </h2>
 					<ul>
 					<!-- //TODO Lister les vocabulaires -->
-						##foreach($scheme in $it.conceptSchemes)
+						#foreach($scheme in $it.getAllConceptSchemeMembers())
 						<li>
-							<!-- <a href="##$resolver.toUrl($scheme.uri)">
-								##$esc.html($scheme.getLabel($locale).value)
-							</a> -->
+							#set($filteredConceptGroupUrl = "${it.getLabel()}?sourceVocabulary=$resolver.getUri($scheme.uri)")
+							
+							<a href="$resolver.toUrl("../page/conceptGroup" , $filteredConceptGroupUrl)">
+								$esc.html($scheme.getLabel($locale).value)
+							</a>
 						</li>
-						##end
+						#end
+						<li>
+							<a href="$resolver.toUrl("../page/conceptGroup" , $it.getLabel())">
+								$esc.html("Tous les vocabulaires")
+							</a>
+						</li>
 					</ul>
 					#if ($it.isSetSourceVocabulary())
-					<!-- //TODO Afficher dates (mettre le bon accesseur au lieu de $it.createdDate) -->
-					<h2>Dates</h2>
-						##show_single_property_as_date( $text.property.created	$it.createdDate		"long"		$locale		"concept-created" )
-						##show_single_property_as_date( $text.property.modified	$it.modifiedDate	"long"		$locale		"concept-modified" )
+						#show_single_property_as_date( $text.property.created	$it.getFirstConceptGroup().createdDate		"long"		$locale		"concept-created" )
+						#show_single_property_as_date( $text.property.modified	$it.getFirstConceptGroup().modifiedDate		"long"		$locale		"concept-modified" )
 					#end
 				</div>
 			</div>
@@ -83,16 +89,18 @@ Paramètres:
 			#** Colonne de gauche **#
 			<div class="keys-values">
 				#if ($it.isSetSourceVocabulary())
-				<p>Liste des concepts issus du vocabulaire <strong>$!it.getUriSourceVocabulary()<!-- //TODOQ actuellement URI, à changer pour renvoyer le label ? --></strong></p>
-				<!-- 
-					//TODOQ récupérer en première entrée de $it le vocabulaire duquel on est issu ? -> à éviter si possible
-				-->
+				<p>Liste des concepts issus du vocabulaire <strong>$!it.getVocabularyLabel($locale).value<!-- //TODOQ actuellement URI, à changer pour renvoyer le label ? --></strong></p>
 				#else
 				<p>Liste des concepts issus de tous les vocabulaires</p>
 				#end
 				
-				#foreach ($item in $sorter.sortEntriesByLabel($it.getConceptGroups(), [$locale, null], false))
-				<li><a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a></li>
+				#foreach ($item in $sorter.sortEntriesByLabel($it.getAllConceptMembers(), [$locale, null], false))
+				<li>
+					<a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a>
+					#if (!$it.isSetSourceVocabulary())
+					- $esc.html($item.getConceptScheme().getLabel($locale).value)
+					#end 
+				</li>
 				#end
 			</div>
 		

@@ -30,6 +30,7 @@ package fr.gouv.culture.thesaurus.service.rdf;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Locale;
 
 /**
  * Liste des ConceptGroup 
@@ -63,11 +64,45 @@ public class UnitedConceptGroups {
 		return uriSourceVocabulary;
 	}
 	
+	//TODO descriptions des fonctions
+	public ConceptGroup getFirstConceptGroup() {
+		return conceptGroups.iterator().next();
+	}
+	
 	public Collection<ConceptGroup> getConceptGroups() {
 		return conceptGroups;
 	}
 	public void setConceptGroups(Collection<ConceptGroup> conceptGroups) {
 		this.conceptGroups.clear();
 		this.conceptGroups.addAll(conceptGroups);
+	}
+	
+	public Collection<Concept> getAllConceptMembers() {
+		Collection<Concept> res = new LinkedList<Concept>();
+		for (ConceptGroup conceptGroup : this.getConceptGroups()) {
+			res.addAll(conceptGroup.getConceptMembers());
+		}
+		return res;
+	}
+	
+	public Collection<ConceptScheme> getAllConceptSchemeMembers() {
+		Collection<ConceptScheme> res = new LinkedList<ConceptScheme>();
+		for (ConceptGroup conceptGroup : this.getConceptGroups()) {
+			res.addAll(conceptGroup.getConceptSchemeMembers());
+		}
+		return res;
+	}
+	
+	public LocalizedString getVocabularyLabel(Locale locale){
+		LocalizedString res = null;
+		if (isSetSourceVocabulary()) {
+			for (ConceptScheme vocabulary : this.getAllConceptSchemeMembers()) {
+				if (vocabulary.getUri().equals(uriSourceVocabulary)) {
+					res = vocabulary.getLabel(locale);
+					break;
+				}
+			}
+		}
+		return res;
 	}
 }

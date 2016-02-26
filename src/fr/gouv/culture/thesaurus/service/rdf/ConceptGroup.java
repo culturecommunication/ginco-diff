@@ -28,6 +28,7 @@
 
 package fr.gouv.culture.thesaurus.service.rdf;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,8 +44,9 @@ import fr.gouv.culture.thesaurus.vocabulary.Skos;
  */
 
 public class ConceptGroup extends Entry {
-	private final List<Concept> conceptMembers= new LinkedList<Concept>();
-	private final List<ConceptScheme> concepSchemeMembers= new LinkedList<ConceptScheme>();
+	private final Collection<Concept> conceptMembers= new LinkedList<Concept>();
+	private final Collection<ConceptScheme> concepSchemeMembers= new LinkedList<ConceptScheme>();
+	
 	
 	public ConceptGroup(String uri){
 		super(uri);
@@ -56,5 +58,19 @@ public class ConceptGroup extends Entry {
 		return this.getIdentifyingProperty(RdfSchema.LABEL, locale);
 	}
 	
+	public Collection<Concept> getConceptMembers() {
+		return conceptMembers;
+	}
+	public void setConceptMembers(Collection<Concept> concepts) {
+		this.conceptMembers.clear();
+		this.conceptMembers.addAll(concepts);
+	}
 	
+	public Collection<ConceptScheme> getConceptSchemeMembers() {
+		return concepSchemeMembers;
+	}
+	public void setConceptSchemeMembers(Collection<ConceptScheme> conceptSchemes) {
+		this.concepSchemeMembers.clear();
+		this.concepSchemeMembers.addAll(conceptSchemes);
+	}
 }

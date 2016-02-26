@@ -360,6 +360,33 @@ public class SparqlQueries {
 			/** Nom de la variable contenant le vocabulaire sur lequel filtrer. */
 			final String CONCEPT_GROUP_VOCABULARY = "filterVocabulary";
 		}
+		
+		
+		/**
+		 * Informations sur la requête SPARQL renvoyant la éléments
+		 * associées à un conceptGroup (concept et conceptSchemes).
+		 * <p>
+		 * Le résultat de la requête est un graphe.
+		 * 
+		 * @author asa
+		 */
+		public interface ListConceptsAndConceptSchemesFromConceptGroups {
+
+			/**
+			 * Nom de la requête renvoyant les concepts liés à un
+			 * conceptGroup.
+			 */
+			final String QUERY_CONCEPT = "listConceptsFromConceptGroup";
+			
+			/**
+			 * Nom de la requête renvoyant les conceptSchemes liés à un
+			 * conceptGroup.
+			 */
+			final String QUERY_CONCEPT_SCHEMES = "listConceptSchemesFromConceptGroup";
+			
+			/** Nom de la variable contenant l'URI du conceptGroup. */
+			final String CONCEPT_GROUP_URI = "uri";
+		}
 
 
 	// ------------------------------------------------------------------------
