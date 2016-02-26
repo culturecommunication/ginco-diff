@@ -82,7 +82,25 @@ Paramètres:
 				    </p>
 				</div>
 				#linked_entries($text.property.topAncestor		$it.getTopAncestors()	$locale "right concept-topAncestor" )
-		    	#label_entries(	$text.property.conceptGroups	$it.getConceptGroups()	$locale "right concept-conceptGroups")
+		    	
+				#if(!$l.isEmpty() )
+				<div class="key-value right concept-conceptGroups">
+					<h2 class="key">$esc.html($text.property.conceptGroups)</h2>
+					<ul class="value">
+					#foreach( $item in $sorter.sortEntriesByLabel($it.getConceptGroups(), [$locale, null], false) )
+							#if( $item.getLabel($locale).value != "" )
+						<li>
+							#set($filteredConceptGroupUrl = "${item.getLabel($locale).value}?sourceVocabulary=$resolver.getUri($it.getConceptScheme().uri)")
+							<a href="$resolver.toUrl("../page/conceptGroup" , $filteredConceptGroupUrl)">
+							$esc.html($item.getLabel($locale).value)
+							</a>
+						</li>
+							#end
+					#end
+					</ul>
+				</div>
+				#end
+		    	
 				#linked_uris(	$text.property.focus			$it.getFocus()			"right concept-focus")
 				#show_thumbnails($text.property.thumbnails		$it.getAssociations($prefixes.expandUri("foaf:depiction"))		2	"right concept-illustrations"	"concept-thumbnails" )
 				

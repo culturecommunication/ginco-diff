@@ -42,6 +42,7 @@ public class UnitedConceptGroups {
 	private final Collection<ConceptGroup> conceptGroups = new LinkedList<ConceptGroup>();
 	private String label = "";
 	private String uriSourceVocabulary = "";
+	private final Collection<ConceptScheme> unitedConcepSchemeMembers= new LinkedList<ConceptScheme>();
 	
 	public UnitedConceptGroups(String conceptGroupLabel, String sourceVocabulary) {
 		label = conceptGroupLabel;
@@ -64,7 +65,6 @@ public class UnitedConceptGroups {
 		return uriSourceVocabulary;
 	}
 	
-	//TODO descriptions des fonctions
 	public ConceptGroup getFirstConceptGroup() {
 		return conceptGroups.iterator().next();
 	}
@@ -85,10 +85,19 @@ public class UnitedConceptGroups {
 		return res;
 	}
 	
+	public void setAllConceptSchemeMembers(Collection<ConceptScheme> conceptSchemes) {
+		this.unitedConcepSchemeMembers.clear();
+		this.unitedConcepSchemeMembers.addAll(conceptSchemes);
+	}
 	public Collection<ConceptScheme> getAllConceptSchemeMembers() {
-		Collection<ConceptScheme> res = new LinkedList<ConceptScheme>();
-		for (ConceptGroup conceptGroup : this.getConceptGroups()) {
-			res.addAll(conceptGroup.getConceptSchemeMembers());
+		Collection<ConceptScheme> res;
+		if (this.isSetSourceVocabulary()) {
+			res = this.unitedConcepSchemeMembers;
+		} else {
+			res = new LinkedList<ConceptScheme>();
+			for (ConceptGroup conceptGroup : this.getConceptGroups()) {
+				res.addAll(conceptGroup.getConceptSchemeMembers());
+			}
 		}
 		return res;
 	}

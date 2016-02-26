@@ -52,7 +52,7 @@ body#ThesaurusW {
 	line-height: 1.5em;
 }
 
-#ThesaurusW a,#ThesaurusW a span {
+#ThesaurusW a,#ThesaurusW a span,#ThesaurusW a strong {
 	text-decoration: none;
 	color: #63f;
 }

@@ -41,7 +41,7 @@ Paramètres:
 
 <html xmlns="http://www.w3.org/1999/xhtml" #namespaces_decl() xml:lang="fr">
 	<head>
-		<title>//TODO Récupérer le label de(s) conceptGroup(s)</title>
+		<title>Groupe(s) de concepts - $it.getLabel()</title>
 		#parse( "/head_commons.vm" )
 		#head_links()
 	</head>
@@ -63,19 +63,22 @@ Paramètres:
 				<div class="topRightPanel">
 					<h2>$esc.html($text.property.filterByVocabulary) </h2>
 					<ul>
-					<!-- //TODO Lister les vocabulaires -->
 						#foreach($scheme in $it.getAllConceptSchemeMembers())
 						<li>
 							#set($filteredConceptGroupUrl = "${it.getLabel()}?sourceVocabulary=$resolver.getUri($scheme.uri)")
-							
+							#set($isCurrentVocabulary = $scheme.getLabel($locale).value.equals($!it.getVocabularyLabel($locale).value))
 							<a href="$resolver.toUrl("../page/conceptGroup" , $filteredConceptGroupUrl)">
+								#if($isCurrentVocabulary) <strong> #end
 								$esc.html($scheme.getLabel($locale).value)
+								#if($isCurrentVocabulary) </strong> #end
 							</a>
 						</li>
 						#end
 						<li>
 							<a href="$resolver.toUrl("../page/conceptGroup" , $it.getLabel())">
+								#if(!$it.isSetSourceVocabulary()) <strong> #end
 								$esc.html("Tous les vocabulaires")
+								#if(!$it.isSetSourceVocabulary()) </strong> #end
 							</a>
 						</li>
 					</ul>
@@ -89,7 +92,7 @@ Paramètres:
 			#** Colonne de gauche **#
 			<div class="keys-values">
 				#if ($it.isSetSourceVocabulary())
-				<p>Liste des concepts issus du vocabulaire <strong>$!it.getVocabularyLabel($locale).value<!-- //TODOQ actuellement URI, à changer pour renvoyer le label ? --></strong></p>
+				<p>Liste des concepts issus du vocabulaire <strong>$!it.getVocabularyLabel($locale).value</strong></p>
 				#else
 				<p>Liste des concepts issus de tous les vocabulaires</p>
 				#end
@@ -105,12 +108,7 @@ Paramètres:
 			</div>
 		
 			#footer_start()
-				<!-- <li>
-					$esc.html($text.resource.data)
-					<ul class="sublinks">
-					</ul>
-				</li> -->
-			#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it.getConceptScheme() $it.getOrganisationMbox())
+			#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() true $it.getConceptScheme() $it.getOrganisationMbox())
 		</div>
 	</body>
 </html>

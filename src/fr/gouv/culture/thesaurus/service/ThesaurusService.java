@@ -250,7 +250,7 @@ public interface ThesaurusService
 	 *            Label du(des) conceptGroup(s) au(x)quel(s) on souhaite accéder
 	 * @param sourceVocabulary
 	 *            Voabulaire depuis lequel on souhaite accéder au conceptGroup
-	 * @return //TODO
+	 * @return Objet métier représentant un collection de concept groups répondant à un label et un vocabulaire précis
 	 * @throws BusinessException
 	 *             Levée si une erreur s'est produite lors de la recherche dans
 	 *             le triplestore.
