@@ -41,7 +41,7 @@ Paramètres:
 
 <html xmlns="http://www.w3.org/1999/xhtml" #namespaces_decl() xml:lang="fr">
 	<head>
-		<title>//TODO Récupérer le label de(s) conceptGroup(s)</title>
+		<title>Groupe(s) de concepts - $it.getLabel()</title>
 		#parse( "/head_commons.vm" )
 		#head_links()
 	</head>
