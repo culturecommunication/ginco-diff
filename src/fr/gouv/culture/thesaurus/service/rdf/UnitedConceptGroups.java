@@ -65,7 +65,6 @@ public class UnitedConceptGroups {
 		return uriSourceVocabulary;
 	}
 	
-	//TODO descriptions des fonctions
 	public ConceptGroup getFirstConceptGroup() {
 		return conceptGroups.iterator().next();
 	}

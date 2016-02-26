@@ -63,7 +63,6 @@ Paramètres:
 				<div class="topRightPanel">
 					<h2>$esc.html($text.property.filterByVocabulary) </h2>
 					<ul>
-					<!-- //TODO Lister les vocabulaires -->
 						#foreach($scheme in $it.getAllConceptSchemeMembers())
 						<li>
 							#set($filteredConceptGroupUrl = "${it.getLabel()}?sourceVocabulary=$resolver.getUri($scheme.uri)")
@@ -93,7 +92,7 @@ Paramètres:
 			#** Colonne de gauche **#
 			<div class="keys-values">
 				#if ($it.isSetSourceVocabulary())
-				<p>Liste des concepts issus du vocabulaire <strong>$!it.getVocabularyLabel($locale).value<!-- //TODOQ actuellement URI, à changer pour renvoyer le label ? --></strong></p>
+				<p>Liste des concepts issus du vocabulaire <strong>$!it.getVocabularyLabel($locale).value</strong></p>
 				#else
 				<p>Liste des concepts issus de tous les vocabulaires</p>
 				#end
@@ -109,12 +108,7 @@ Paramètres:
 			</div>
 		
 			#footer_start()
-				<!-- <li>
-					$esc.html($text.resource.data)
-					<ul class="sublinks">
-					</ul>
-				</li> -->
-			#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it.getConceptScheme() $it.getOrganisationMbox())
+			#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() true $it.getConceptScheme() $it.getOrganisationMbox())
 		</div>
 	</body>
 </html>

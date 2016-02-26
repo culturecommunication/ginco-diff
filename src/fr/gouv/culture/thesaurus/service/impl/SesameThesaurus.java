@@ -1380,7 +1380,18 @@ public class SesameThesaurus implements ThesaurusService {
 	}
 	
 	/**
-	 * //TODO
+	 * Liste les conceptGroups répondant à un label et à un vocabulaire.
+	 * 
+	 * @param unitedConceptGroups
+	 *            objet métier contenant le label et le vocabulaire à matcher
+	 * @param cnx
+	 *            Connexion vers le triplestore
+	 * @return Collection des conceptGroups qui matchent le label et le vocabulaire s'il y en a un
+	 * @throws OpenRDFException
+	 *             Levée si l'accès au triplestore a échoué
+	 * @throws BusinessException
+	 *             Levée si une erreur s'est produite lors de la recherche dans
+	 *             le triplestore.
 	 */
 	private Collection<ConceptGroup> simpleListMatchingConceptGroup(
 			UnitedConceptGroups unitedConceptGroups, RepositoryConnection cnx)
@@ -1411,7 +1422,19 @@ public class SesameThesaurus implements ThesaurusService {
 	}
 	
 	/**
-	 * //TODO
+	 * Liste les conceptGroups répondant à un label et à un vocabulaire et
+	 * leur associe les concepts et conceptSchemes associés.
+	 * 
+	 * @param unitedConceptGroups
+	 *            objet métier contenant le label et le vocabulaire à matcher
+	 * @param cnx
+	 *            Connexion vers le triplestore
+	 * @return Collection des conceptGroups qui matchent le label et le vocabulaire s'il y en a un
+	 * @throws OpenRDFException
+	 *             Levée si l'accès au triplestore a échoué
+	 * @throws BusinessException
+	 *             Levée si une erreur s'est produite lors de la recherche dans
+	 *             le triplestore.
 	 */
 	private Collection<ConceptGroup> completeListMatchingConceptGroup(
 			UnitedConceptGroups unitedConceptGroups, RepositoryConnection cnx)
@@ -1429,7 +1452,19 @@ public class SesameThesaurus implements ThesaurusService {
 	}
 	
 	/**
-	 * //TODO
+	 * Associe à des conceptGroups les informations supplémentaires qui les
+	 * concernent.
+	 * 
+	 * @param conceptGroups
+	 *            Collection de conceptGroup auxquels il faut associer des
+	 *            données supplémentaires.
+	 * @param cnx
+	 *            Connexion vers le triplestore
+	 * @throws OpenRDFException
+	 *             Levée si l'accès au triplestore a échoué
+	 * @throws BusinessException
+	 *             Levée si une erreur s'est produite lors de la recherche dans
+	 *             le triplestore.
 	 */
 	private void completeConceptGroupsInformations(
 			Collection<ConceptGroup> conceptGroups, RepositoryConnection cnx)
@@ -1448,7 +1483,18 @@ public class SesameThesaurus implements ThesaurusService {
 	}
 	
 	/**
-	 * //TODO
+	 * Liste les Concepts associés à un conceptGroup.
+	 * 
+	 * @param conceptGroupUri
+	 *            uri du conceptGroup
+	 * @param cnx
+	 *            Connexion vers le triplestore
+	 * @return Collection des Concepts liés au conceptGroup
+	 * @throws OpenRDFException
+	 *             Levée si l'accès au triplestore a échoué
+	 * @throws BusinessException
+	 *             Levée si une erreur s'est produite lors de la recherche dans
+	 *             le triplestore.
 	 */
 	private Collection<Concept> listConceptsFromConceptGroup(
 			URI conceptGroupUri, RepositoryConnection cnx)
@@ -1471,7 +1517,18 @@ public class SesameThesaurus implements ThesaurusService {
 	}
 	
 	/**
-	 * //TODO
+	 * Liste les ConceptSchemes associés à un conceptGroup.
+	 * 
+	 * @param conceptGroupUri
+	 *            uri du conceptGroup
+	 * @param cnx
+	 *            Connexion vers le triplestore
+	 * @return Collection des ConceptSchemes liés au conceptGroup
+	 * @throws OpenRDFException
+	 *             Levée si l'accès au triplestore a échoué
+	 * @throws BusinessException
+	 *             Levée si une erreur s'est produite lors de la recherche dans
+	 *             le triplestore.
 	 */
 	private Collection<ConceptScheme> listConceptSchemesFromConceptGroup(
 			URI conceptGroupUri, RepositoryConnection cnx)
