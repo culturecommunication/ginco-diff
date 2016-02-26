@@ -93,17 +93,41 @@ Paramètres:
 			<div class="keys-values">
 				#if ($it.isSetSourceVocabulary())
 				<p>Liste des concepts issus du vocabulaire <strong>$!it.getVocabularyLabel($locale).value</strong></p>
+				<ul>
+					#set($currentConceptLabel = $it.getAllConceptMembers().iterator.next().getConceptScheme())
+					#foreach ($item in $sorter.sortEntriesByLabel($it.getAllConceptMembers(), [$locale, null], false))
+					<li>
+						<a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a>
+						#if (!$it.isSetSourceVocabulary())
+						- $esc.html($item.getConceptScheme().getLabel($locale).value)
+						#end 
+					</li>
+					#end
+				</ul>
 				#else
 				<p>Liste des concepts issus de tous les vocabulaires</p>
-				#end
-				
-				#foreach ($item in $sorter.sortEntriesByLabel($it.getAllConceptMembers(), [$locale, null], false))
-				<li>
-					<a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a>
-					#if (!$it.isSetSourceVocabulary())
-					- $esc.html($item.getConceptScheme().getLabel($locale).value)
-					#end 
-				</li>
+				<ul>
+					#set($currentConceptLabel = $it.getAllConceptMembers().iterator.next().getLabel($locale).value)
+					#set ($firstLoop = true)
+					#foreach ($item in $sorter.sortEntriesByLabel($it.getAllConceptMembers(), [$locale, null], false))
+						#if ($currentConceptLabel.equals($item.getLabel($locale).value))
+							<li>Dans <a href="$resolver.toUrl($item.uri)">$esc.html($item.getConceptScheme().getLabel($locale).value)</a></li>
+							#set ($currentConceptLabel = $item.getLabel($locale).value)
+						#else
+							#if ( !$firstLoop )
+						</ul>
+					</li>
+							#else
+								#set ($firstLoop = false)
+							#end
+					<li>
+						#set ($currentConceptLabel = $item.getLabel($locale).value)
+						$esc.html($item.getLabel($locale).value)
+						<ul>
+							<li>Dans <a href="$resolver.toUrl($item.uri)">$esc.html($item.getConceptScheme().getLabel($locale).value)</a></li>
+						#end
+					#end
+				</ul>
 				#end
 			</div>
 		
