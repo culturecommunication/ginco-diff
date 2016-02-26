@@ -69,6 +69,8 @@ import org.openrdf.rio.n3.N3Writer;
 import org.openrdf.rio.rdfxml.util.RDFXMLPrettyWriter;
 import org.openrdf.rio.turtle.TurtleWriter;
 
+import sun.awt.SunToolkit.InfiniteLoop;
+
 import fr.gouv.culture.thesaurus.exception.BusinessException;
 import fr.gouv.culture.thesaurus.exception.ErrorMessage;
 import fr.gouv.culture.thesaurus.exception.InvalidParameterException;
@@ -885,7 +887,6 @@ public class SesameThesaurus implements ThesaurusService {
 	public UnitedConceptGroups getConceptGroupWithLabelAndVocabulary(
 			String conceptGroupLabel, String sourceVocabulary)
 			throws BusinessException {
-		//TODO
 		UnitedConceptGroups matchingUnitedConceptGroups = new UnitedConceptGroups(conceptGroupLabel, sourceVocabulary);
 		
 		RepositoryConnection cnx = null;
@@ -893,15 +894,25 @@ public class SesameThesaurus implements ThesaurusService {
 			cnx = this.repository.getConnection();
 			
 			matchingUnitedConceptGroups.setConceptGroups(
-					listMatchingConceptGroup(matchingUnitedConceptGroups, cnx));
+					completeListMatchingConceptGroup(matchingUnitedConceptGroups, cnx));
 			
 			if (matchingUnitedConceptGroups.isSetSourceVocabulary()) {
 				UnitedConceptGroups unfilteredConceptGroups = new UnitedConceptGroups(conceptGroupLabel, "");
 				
 				unfilteredConceptGroups.setConceptGroups(
-						listMatchingConceptGroup(unfilteredConceptGroups, cnx));
+						simpleListMatchingConceptGroup(unfilteredConceptGroups, cnx));
 				
-				matchingUnitedConceptGroups.setAllConceptSchemeMembers(unfilteredConceptGroups.getAllConceptSchemeMembers());
+				Collection<ConceptScheme> allVocabularies = new LinkedList<ConceptScheme>();
+				
+				URI conceptGroupUri;
+				for (ConceptGroup conceptGroup : unfilteredConceptGroups.getConceptGroups()) {
+					conceptGroupUri = this.valueFactory.createURI(conceptGroup.getUri());
+					
+					allVocabularies.addAll(
+							listConceptSchemesFromConceptGroup(conceptGroupUri, cnx));
+				}
+				
+				matchingUnitedConceptGroups.setAllConceptSchemeMembers(allVocabularies);
 			}
 			
 		} catch (OpenRDFException e) {
@@ -921,70 +932,6 @@ public class SesameThesaurus implements ThesaurusService {
 		}
 		return matchingUnitedConceptGroups;
 	}
-	
-	private Collection<ConceptGroup> listMatchingConceptGroup(
-			UnitedConceptGroups unitedConceptGroups, RepositoryConnection cnx)
-					throws OpenRDFException, BusinessException{
-		Collection<ConceptGroup> matchingResults;
-		
-		GraphQuery graphQuery;
-		// On récupère les conceptGroups qui correspondent à nos paramètres
-		if (unitedConceptGroups.isSetSourceVocabulary()) {
-			graphQuery = getConstructQuery(
-					SparqlQueries.ListConceptGroupsFromLabel.FILTERED_QUERY, cnx);
-			URI sourceVocabularyUri = this.valueFactory.createURI(unitedConceptGroups.getUriSourceVocabulary());
-			graphQuery.setBinding(SparqlQueries.ListConceptGroupsFromLabel.CONCEPT_GROUP_VOCABULARY,
-					sourceVocabularyUri);
-		} else {
-			graphQuery = getConstructQuery(
-					SparqlQueries.ListConceptGroupsFromLabel.QUERY, cnx);
-		}
-		
-		Literal conceptGroupLabelLiteral = this.valueFactory.createLiteral(unitedConceptGroups.getLabel()); 
-		
-		graphQuery.setBinding(SparqlQueries.ListConceptGroupsFromLabel.CONCEPT_GROUP_LABEL,
-				conceptGroupLabelLiteral);
-		
-		matchingResults = constructResourcesFromQuery(ConceptGroup.class, graphQuery).values();
-		
-		// On récupère les données (concepts et conceptSchemes) qui leur sont associées
-		completeConceptGroupsInformations(matchingResults, cnx);
-		
-		return matchingResults;
-	}
-	
-	private void completeConceptGroupsInformations(
-			Collection<ConceptGroup> conceptGroups, RepositoryConnection cnx)
-					throws OpenRDFException, BusinessException {
-		GraphQuery graphQuery;
-		GraphQuery graphQuery2;
-		
-		graphQuery = getConstructQuery(
-				SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.QUERY_CONCEPT, cnx);
-		graphQuery2 = getConstructQuery(
-				SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.QUERY_CONCEPT_SCHEMES, cnx);
-		
-		URI conceptGroupUri;
-		for (ConceptGroup conceptGroup : conceptGroups) {
-			conceptGroupUri = this.valueFactory.createURI(conceptGroup.getUri());
-			
-			graphQuery.setBinding(
-					SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.CONCEPT_GROUP_URI, conceptGroupUri);
-			graphQuery2.setBinding(
-					SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.CONCEPT_GROUP_URI, conceptGroupUri);
-			
-			Collection<Concept> conceptList = new LinkedList<Concept>();
-			for (Concept concept : constructResourcesFromQuery(Concept.class, graphQuery).values()) {
-				conceptList.add(this.getConcept(concept.getUri()));
-			}
-			
-			conceptGroup.setConceptMembers(conceptList);
-			conceptGroup.setConceptSchemeMembers(
-					constructResourcesFromQuery(ConceptScheme.class, graphQuery2).values());
-		}
-	}
-	
-	
 
 	// -------------------------------------------------------------------------
 	// Specific implementation
@@ -1430,6 +1377,114 @@ public class SesameThesaurus implements ThesaurusService {
 				uri);
 
 		return constructResourcesFromQuery(ConceptScheme.class, query).values();
+	}
+	
+	/**
+	 * //TODO
+	 */
+	private Collection<ConceptGroup> simpleListMatchingConceptGroup(
+			UnitedConceptGroups unitedConceptGroups, RepositoryConnection cnx)
+					throws OpenRDFException, BusinessException{
+		Collection<ConceptGroup> matchingResults;
+		
+		GraphQuery graphQuery;
+
+		if (unitedConceptGroups.isSetSourceVocabulary()) {
+			graphQuery = getConstructQuery(
+					SparqlQueries.ListConceptGroupsFromLabel.FILTERED_QUERY, cnx);
+			URI sourceVocabularyUri = this.valueFactory.createURI(unitedConceptGroups.getUriSourceVocabulary());
+			graphQuery.setBinding(SparqlQueries.ListConceptGroupsFromLabel.CONCEPT_GROUP_VOCABULARY,
+					sourceVocabularyUri);
+		} else {
+			graphQuery = getConstructQuery(
+					SparqlQueries.ListConceptGroupsFromLabel.QUERY, cnx);
+		}
+		
+		Literal conceptGroupLabelLiteral = this.valueFactory.createLiteral(unitedConceptGroups.getLabel()); 
+		
+		graphQuery.setBinding(SparqlQueries.ListConceptGroupsFromLabel.CONCEPT_GROUP_LABEL,
+				conceptGroupLabelLiteral);
+		
+		matchingResults = constructResourcesFromQuery(ConceptGroup.class, graphQuery).values();
+		
+		return matchingResults;
+	}
+	
+	/**
+	 * //TODO
+	 */
+	private Collection<ConceptGroup> completeListMatchingConceptGroup(
+			UnitedConceptGroups unitedConceptGroups, RepositoryConnection cnx)
+					throws OpenRDFException, BusinessException{
+		Collection<ConceptGroup> matchingResults;
+		
+		// On récupère les conceptGroups qui correspondent à nos paramètres
+		matchingResults = simpleListMatchingConceptGroup(unitedConceptGroups, cnx);
+		
+		// On récupère les données (concepts et conceptSchemes) qui leur sont associées
+		completeConceptGroupsInformations(matchingResults, cnx);
+		
+		return matchingResults;
+		
+	}
+	
+	/**
+	 * //TODO
+	 */
+	private void completeConceptGroupsInformations(
+			Collection<ConceptGroup> conceptGroups, RepositoryConnection cnx)
+					throws OpenRDFException, BusinessException {
+		
+		URI conceptGroupUri;
+		for (ConceptGroup conceptGroup : conceptGroups) {
+			conceptGroupUri = this.valueFactory.createURI(conceptGroup.getUri());
+			
+			conceptGroup.setConceptMembers(
+					listConceptsFromConceptGroup(conceptGroupUri, cnx));
+			
+			conceptGroup.setConceptSchemeMembers(
+					listConceptSchemesFromConceptGroup(conceptGroupUri, cnx));
+		}
+	}
+	
+	/**
+	 * //TODO
+	 */
+	private Collection<Concept> listConceptsFromConceptGroup(
+			URI conceptGroupUri, RepositoryConnection cnx)
+			throws OpenRDFException, BusinessException{
+		
+		GraphQuery graphQuery;
+		
+		graphQuery = getConstructQuery(
+				SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.QUERY_CONCEPT, cnx);
+		
+		graphQuery.setBinding(
+				SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.CONCEPT_GROUP_URI, conceptGroupUri);
+		
+		Collection<Concept> conceptList = new LinkedList<Concept>();
+		for (Concept concept : constructResourcesFromQuery(Concept.class, graphQuery).values()) {
+			conceptList.add(this.getConcept(concept.getUri()));
+		}
+		
+		return conceptList;
+	}
+	
+	/**
+	 * //TODO
+	 */
+	private Collection<ConceptScheme> listConceptSchemesFromConceptGroup(
+			URI conceptGroupUri, RepositoryConnection cnx)
+			throws OpenRDFException, BusinessException {
+		GraphQuery graphQuery;
+		
+		graphQuery = getConstructQuery(
+				SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.QUERY_CONCEPT_SCHEMES, cnx);
+		
+		graphQuery.setBinding(
+				SparqlQueries.ListConceptsAndConceptSchemesFromConceptGroups.CONCEPT_GROUP_URI, conceptGroupUri);
+		
+		return constructResourcesFromQuery(ConceptScheme.class, graphQuery).values();
 	}
 
 	private void executeConstructQuery(String key, String uri, Writer rdfOut, ExportType type)
