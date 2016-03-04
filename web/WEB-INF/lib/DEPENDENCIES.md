@@ -19,7 +19,7 @@
 	- commons-codec-1.4.jar
 	- commons-httpclient-3.1.jar
 	- commons-logging-1.1.1.jar
-	- openrdf-sesame-2.6.5-onejar.jar
+	- openrdf-sesame-2.7.16-onejar.jar
 	- slf4j-api-1.6.1.jar
 	- slf4j-log4j12-1.6.1.jar
 - velocity-1.6.3-dep.jar

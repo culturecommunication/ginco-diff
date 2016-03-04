@@ -719,7 +719,7 @@ public class SesameThesaurus implements ThesaurusService {
 			URI ctx = this.valueFactory.createURI(namedGraphUri);
 			// Get a transactional connection.
 			cnx = this.repository.getConnection();
-			cnx.setAutoCommit(false);
+			cnx.begin();
 			// Clear existing triples from named graph, if any.
 			cnx.clear(ctx);
 			// Load new triples into named graph.
@@ -777,7 +777,7 @@ public class SesameThesaurus implements ThesaurusService {
 			URI ctx = this.valueFactory.createURI(uri);
 			// Get a transactional connection.
 			cnx = this.repository.getConnection();
-			cnx.setAutoCommit(false);
+			cnx.begin();
 			// Clear existing triples from named graph, if any.
 			cnx.clear(ctx);			
 			// Commit the whole transaction.
