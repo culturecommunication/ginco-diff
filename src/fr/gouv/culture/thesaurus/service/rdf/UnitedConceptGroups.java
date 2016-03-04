@@ -42,11 +42,16 @@ public class UnitedConceptGroups {
 	private final Collection<ConceptGroup> conceptGroups = new LinkedList<ConceptGroup>();
 	private String label = "";
 	private String uriSourceVocabulary = "";
-	private final Collection<ConceptScheme> unitedConcepSchemeMembers= new LinkedList<ConceptScheme>();
+	private final Collection<ConceptScheme> unitedConcepSchemeMembers;
+	private final Collection<Concept> unitedConcepts;
+	private boolean isUnitedConceptsComputed;
 	
 	public UnitedConceptGroups(String conceptGroupLabel, String sourceVocabulary) {
 		label = conceptGroupLabel;
 		uriSourceVocabulary = sourceVocabulary;
+		unitedConcepSchemeMembers = new LinkedList<ConceptScheme>();
+		unitedConcepts = new LinkedList<Concept>();
+		isUnitedConceptsComputed = false;
 	}
 	
 	public boolean isSetSourceVocabulary () {
@@ -78,11 +83,13 @@ public class UnitedConceptGroups {
 	}
 	
 	public Collection<Concept> getAllConceptMembers() {
-		Collection<Concept> res = new LinkedList<Concept>();
-		for (ConceptGroup conceptGroup : this.getConceptGroups()) {
-			res.addAll(conceptGroup.getConceptMembers());
+		if (!isUnitedConceptsComputed) {
+			for (ConceptGroup conceptGroup : this.getConceptGroups()) {
+				unitedConcepts.addAll(conceptGroup.getConceptMembers());
+			}
+			isUnitedConceptsComputed = true;
 		}
-		return res;
+		return unitedConcepts;
 	}
 	
 	public void setAllConceptSchemeMembers(Collection<ConceptScheme> conceptSchemes) {
@@ -90,16 +97,7 @@ public class UnitedConceptGroups {
 		this.unitedConcepSchemeMembers.addAll(conceptSchemes);
 	}
 	public Collection<ConceptScheme> getAllConceptSchemeMembers() {
-		Collection<ConceptScheme> res;
-		if (this.isSetSourceVocabulary()) {
-			res = this.unitedConcepSchemeMembers;
-		} else {
-			res = new LinkedList<ConceptScheme>();
-			for (ConceptGroup conceptGroup : this.getConceptGroups()) {
-				res.addAll(conceptGroup.getConceptSchemeMembers());
-			}
-		}
-		return res;
+		return unitedConcepSchemeMembers;
 	}
 	
 	public LocalizedString getVocabularyLabel(Locale locale){

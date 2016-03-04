@@ -52,6 +52,18 @@ public class ConceptScheme extends Entry
     public ConceptScheme(final String uri) {
         super(uri);
     }
+    
+    /**
+	 * Creates a new ConceptScheme business object based on an Entry.
+	 * 
+	 * @param Entry the entry base.
+	 */
+    public ConceptScheme(Entry entry) {
+		super(entry.uri);
+		this.setMetadata(entry.getMetadata());
+		this.getProperties().putAll(entry.getProperties());
+		this.getAssociations().putAll(entry.getAssociations());
+	}
 
 	/** {@inheritDoc} */
 	@Override

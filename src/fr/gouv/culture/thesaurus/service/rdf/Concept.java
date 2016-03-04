@@ -75,6 +75,18 @@ public class Concept extends Entry {
 	public Concept(String uri) {
         super(uri);
     }
+	
+	/**
+	 * Creates a new Concept business object based on an Entry.
+	 * 
+	 * @param Entry the entry base.
+	 */
+	public Concept(Entry entry) {
+		super(entry.uri);
+		this.setMetadata(entry.getMetadata());
+		this.getProperties().putAll(entry.getProperties());
+		this.getAssociations().putAll(entry.getAssociations());
+	}
 
 	/* Relations vers d'autres ressources RDF / littéraux. */
 

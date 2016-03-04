@@ -94,7 +94,7 @@ Paramètres:
 				#if ($it.isSetSourceVocabulary())
 				<p>Liste des concepts issus du vocabulaire <strong>$!it.getVocabularyLabel($locale).value</strong></p>
 				<ul>
-					#set($currentConceptLabel = $it.getAllConceptMembers().iterator.next().getConceptScheme())
+					## A_suppr : sert à rien : #set($currentConceptLabel = $it.getAllConceptMembers().iterator.next().getConceptScheme())
 					#foreach ($item in $sorter.sortEntriesByLabel($it.getAllConceptMembers(), [$locale, null], false))
 					<li>
 						<a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a>

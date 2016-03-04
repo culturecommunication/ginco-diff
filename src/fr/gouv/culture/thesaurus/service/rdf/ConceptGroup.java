@@ -52,6 +52,18 @@ public class ConceptGroup extends Entry {
 		super(uri);
 	}
 	
+	/**
+	 * Creates a new ConceptGroup business object based on an Entry.
+	 * 
+	 * @param Entry the entry base.
+	 */
+	public ConceptGroup(Entry entry) {
+		super(entry.uri);
+		this.setMetadata(entry.getMetadata());
+		this.getProperties().putAll(entry.getProperties());
+		this.getAssociations().putAll(entry.getAssociations());
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public LocalizedString getLabel(final Locale locale) {

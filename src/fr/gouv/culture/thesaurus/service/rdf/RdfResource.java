@@ -331,6 +331,14 @@ public class RdfResource {
 	public void addAssociation(final String property, final String resourceUri) {
 		associations.put(property, resourceUri);
 	}
+	
+	protected Map<String, LocalizedStrings> getProperties() {
+		return this.properties;
+	}
+	
+	protected MultiValueMap getAssociations() {
+		return this.associations;
+	}
 
 	/** {@inheritDoc} */
 	@Override
