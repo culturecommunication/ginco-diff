@@ -114,8 +114,15 @@ body#ThesaurusW {
 #metadata {
 	float: right;
 	margin-top: 0px;
+}
+
+#metadata, #management{
 	width: 300px;
 	margin-left: 30px;
+}
+
+#management {
+	float: right;
 }
 
 #metadata h2:first-child {
@@ -256,18 +263,9 @@ input[type=submit]:active {
 	clear: both;
 }
 
-#alignments {
-	width: 500px;
-}
-
-#management {
-	float: right;
-	width: 300px;
-	margin-left: 30px;
-}
 /******************************************* PRESENTATION DE RESOURCES */
-.keys-values {
-	width: 500px;
+.keys-values, #alignments {
+	width: 620px;
 }
 
 .key-value {
@@ -281,14 +279,13 @@ input[type=submit]:active {
 	padding-top: 0;
 	padding-bottom: 30px;
 	width: 35%;
-	font-style: italic;
 }
 
 ul.value,div.value {
 	margin-left: 0;
 	margin-top: 0;
 	padding-top: 0;
-	padding-left: 35%;
+	padding-left: 40%;
 }
 
 div.value ul,div.value li {
@@ -312,7 +309,6 @@ div.value ul,div.value li {
 }
 
 .concept-collection {
-	margin-left: 2em;
 	font-style: italic;
 }
 
