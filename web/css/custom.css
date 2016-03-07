@@ -44,7 +44,9 @@
 .concept-definition {
     
 }
-
+.concept-definition .lit-value {
+	font-weight : bold;    
+}
 .concept-scopeNote {
     
 }
