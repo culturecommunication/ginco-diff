@@ -71,7 +71,11 @@ public class UnitedConceptGroups {
 	}
 	
 	public ConceptGroup getFirstConceptGroup() {
-		return conceptGroups.iterator().next();
+		ConceptGroup res = null;
+		if(!conceptGroups.isEmpty()) {
+			res = conceptGroups.iterator().next(); 
+		}
+		return res;
 	}
 	
 	public Collection<ConceptGroup> getConceptGroups() {
