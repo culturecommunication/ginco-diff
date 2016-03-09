@@ -90,7 +90,7 @@ Paramètres:
 					#foreach( $item in $sorter.sortEntriesByLabel($it.getConceptGroups(), [$locale, null], false) )
 							#if( $item.getLabel($locale).value != "" )
 						<li>
-							#set($filteredConceptGroupUrl = "${item.getLabel($locale).value}?sourceVocabulary=$resolver.getUri($it.getConceptScheme().uri)")
+							#set($filteredConceptGroupUrl = "$esc.url(${item.getLabel($locale).value})?sourceVocabulary=$resolver.getUri($it.getConceptScheme().uri)")
 							<a href="$resolver.toUrl("../page/conceptGroup" , $filteredConceptGroupUrl)">
 							$esc.html($item.getLabel($locale).value)
 							</a>

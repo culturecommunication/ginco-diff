@@ -33,8 +33,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -95,6 +97,8 @@ import fr.gouv.culture.thesaurus.vocabulary.Skos;
  */
 @Path("/")
 public class Entries extends BaseResource {
+	
+	private static final String UTF_8 = "UTF-8";
 
     /**
      * Creates a new root resource serving thesaurus entry data and
@@ -518,6 +522,7 @@ public class Entries extends BaseResource {
      * 
      * @return a JAX-RS response forwarding to the Velocity template
      *         of the welcome page.
+     * @throws UnsupportedEncodingException 
      * @throws WebApplicationException wrapping the HTTP error response
      *         and the source exception, if any error occurred (unknown
      *         or invalid entry, RDF triple store access error...).
@@ -532,6 +537,7 @@ public class Entries extends BaseResource {
 					    		@Context UriInfo uriInfo) {
         ResponseBuilder response = null;
         try { 
+        	conceptGroupLabel = URLDecoder.decode(conceptGroupLabel, UTF_8);//Fix replacement of " " by "+"
             Viewable v = this.newViewable("/conceptGroup.vm", null,
             							  this.thesaurus.getConceptGroupWithLabelAndVocabulary(conceptGroupLabel, sourceVocabulary),
                                           this.getUriResolver(uriInfo));

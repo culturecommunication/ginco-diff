@@ -65,7 +65,7 @@ Paramètres:
 					<ul>
 						#foreach($scheme in $it.getAllConceptSchemeMembers())
 						<li>
-							#set($filteredConceptGroupUrl = "${it.getLabel()}?sourceVocabulary=$resolver.getUri($scheme.uri)")
+							#set($filteredConceptGroupUrl = "$esc.url(${it.getLabel()})?sourceVocabulary=$resolver.getUri($scheme.uri)")
 							#set($isCurrentVocabulary = $scheme.getLabel($locale).value.equals($!it.getVocabularyLabel($locale).value))
 							<a href="$resolver.toUrl("../page/conceptGroup" , $filteredConceptGroupUrl)">
 								#if($isCurrentVocabulary) <strong> #end
@@ -75,7 +75,7 @@ Paramètres:
 						</li>
 						#end
 						<li>
-							<a href="$resolver.toUrl("../page/conceptGroup" , $it.getLabel())">
+							<a href="$resolver.toUrl("../page/conceptGroup" , $esc.url($it.getLabel()))">
 								#if(!$it.isSetSourceVocabulary()) <strong> #end
 								$esc.html("Tous les vocabulaires")
 								#if(!$it.isSetSourceVocabulary()) </strong> #end
