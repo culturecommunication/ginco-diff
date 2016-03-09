@@ -526,7 +526,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #macro( show_labels $name $values $labelType $locale $css $resourceprefix )
 #if( !$collection.isStringEmpty($values) )
 	#if ($values.size() == 1) ## skos core labels
-		#show_property_with_links( $name $values $locale $css $resourceprefix 	)
+		#show_property_with_links( $name $values.iterator().next().getProperties($prefixes.expandUri("skos:prefLabel")) $locale $css $resourceprefix 	)
 	#elseif ($values.size() > 1) ## skos xl labels
 		<div class="key-value $!css">
         	<h2 class="key">$esc.html($name)</h2>
