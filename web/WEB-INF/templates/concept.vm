@@ -83,11 +83,12 @@ Paramètres:
 				</div>
 				#linked_entries($text.property.topAncestor		$it.getTopAncestors()	$locale "right concept-topAncestor" )
 		    	
-				#if(!$l.isEmpty() )
+		    	#set( $conceptGroupEntries = $it.getConceptGroups())
+				#if(!$conceptGroupEntries.isEmpty() )
 				<div class="key-value right concept-conceptGroups">
 					<h2 class="key">$esc.html($text.property.conceptGroups)</h2>
 					<ul class="value">
-					#foreach( $item in $sorter.sortEntriesByLabel($it.getConceptGroups(), [$locale, null], false) )
+					#foreach( $item in $sorter.sortEntriesByLabel($conceptGroupEntries, [$locale, null], false) )
 							#if( $item.getLabel($locale).value != "" )
 						<li>
 							#set($filteredConceptGroupUrl = "$esc.url(${item.getLabel($locale).value})?sourceVocabulary=$resolver.getUri($it.getConceptScheme().uri)")
