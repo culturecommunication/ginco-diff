@@ -33,6 +33,7 @@ import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 
 import fr.gouv.culture.thesaurus.service.rdf.LocalizedString;
+import fr.gouv.culture.thesaurus.service.rdf.RdfResource;
 
 /**
  * Classe utilitaire pour les collections dans les templates velocity.
@@ -43,16 +44,45 @@ import fr.gouv.culture.thesaurus.service.rdf.LocalizedString;
 public class CollectionTool {
 
 	/**
-	 * Indique si une collection et vide ou ne contient que des élémeents vides
-	 * (null ou "").
+	 * Indique si une collection et vide ou ne contient que des éléments null,
+	 * ou des literaux vides.
+	 * <p>
+	 * Pour les literaux, cette méthode évalue les {@link String} et les
+	 * {@link LocalizedString}
 	 * 
 	 * @param collection
 	 *            la collection à tester
 	 * @return {@code true} si la collection est vide ou ne contient que des
-	 *         élémeents vvides, {@code false} sinon.
+	 *         élémeents vides, {@code false} sinon.
 	 */
 	public boolean isStringEmpty(Collection<?> collection) {
-		if (collection.isEmpty()) {
+		return isStringEmpty(collection, null);
+	}
+
+	/**
+	 * Indique si une collection et vide ou ne contient que des éléments null,
+	 * ou des literaux vides, ou des ressources RDF dont la propriété donnée est
+	 * null ou vide
+	 * <p>
+	 * Pour les literaux, cette méthode évalue les {@link String} et les
+	 * {@link LocalizedString}
+	 * <p>
+	 * Pour les ressources RDF, la méthode utilisée pour évaluer la proriété à
+	 * tester est {@link RdfResource#getProperties(String)}. Si cet appel
+	 * retourne une collection vide ou pleine de valeurs vides ou nulles, la
+	 * propriété est considérée comme vide pour la ressource RDF testée.
+	 * 
+	 * @param collection
+	 *            la collection à tester
+	 * @param rdfPropertyToCheck
+	 *            clé de la propriété RDF à évaluer si la collection contient
+	 *            des {@link RdfResource}
+	 * @return {@code true} si la collection est vide ou ne contient que des
+	 *         éléments vides, {@code false} sinon.
+	 */
+	public boolean isStringEmpty(Collection<?> collection,
+			String rdfPropertyToCheck) {
+		if (collection == null) {
 			return true;
 		}
 
@@ -69,13 +99,16 @@ public class CollectionTool {
 							.getValue())) {
 						return false;
 					}
+				} else if (item instanceof RdfResource && StringUtils.isNotBlank(rdfPropertyToCheck)) {
+					Collection<?> propertyValues = ((RdfResource) item)
+							.getProperties(rdfPropertyToCheck);
+					return isStringEmpty(propertyValues);
 				} else {
 					// Autre objet : ne doit pas être null
 					return false;
 				}
 			}
 		}
-
 		return true;
 	}
 

@@ -29,13 +29,10 @@
 package fr.gouv.culture.thesaurus.service.rdf;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 
 import fr.gouv.culture.thesaurus.vocabulary.RdfSchema;
-import fr.gouv.culture.thesaurus.vocabulary.Skos;
 
 /**
  * Objet métier représentant un conceptGroup SKOS.
