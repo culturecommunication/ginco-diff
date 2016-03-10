@@ -80,7 +80,7 @@ Paramètres:
 			#show_inline_property_with_lang( $text.property.coverage      $it.getProperties($prefixes.expandUri("dc:coverage"))      $locale "concetpScheme-coverage" )
 			#show_inline_property_with_lang( $text.property.language      $it.getProperties($prefixes.expandUri("dc:language"))      $locale "concetpScheme-language" )
 			
-			#show_inline_property_with_lang( $text.property.source 	$it.getProperties($prefixes.expandUri("dc:source"))   $locale "concetpScheme-source" )
+			#show_inline_property_with_links( $text.property.source 	$it.getProperties($prefixes.expandUri("dc:source"))   $locale "concetpScheme-source" )
 			
 			#** Termes de 1er niveau *#
 		    <h2 class="clear">$esc.html($text.property.topConcept)</h2>
