@@ -184,7 +184,7 @@ public class RdfResource {
 	public LocalizedString getIdentifyingProperty(String property,
 			Locale preferredLocale) {
 		LocalizedString label = getPreferredProperty(property, preferredLocale);
-		if (label == null) {
+		if (label == null || StringUtils.isBlank(label.getValue())) {
 			label = new LocalizedString(getUri(), null);
 		}
 		return label;
