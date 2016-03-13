@@ -186,14 +186,10 @@ public class SparqlQueries {
 	 * @author asa
 	 */
 	public interface LoadConceptLabels {
+		/** Nom de la requête renvoyant les skos-xl labels et leurs propriétés */
+		final String XL_LABELS_QUERY = "loadConceptSkosXlLabels";
 
-		/** Nom de la requête renvoyant les propriétés d'un pref label. */
-		final String PREF_QUERY = "loadConceptPrefLabels";
-		
-		/** Nom de la requête renvoyant les propriétés d'un pref label. */
-		final String ALT_QUERY = "loadConceptAltLabels";
-
-		/** Nom de la variable contenant l'URI du concept à charger. */
+		/** Nom de la variable contenant l'URI du concept pour lequel est faite la requête */
 		final String CONCEPT_URI = "uri";
 
 	}

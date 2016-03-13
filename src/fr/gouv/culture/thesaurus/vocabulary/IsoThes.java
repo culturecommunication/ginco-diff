@@ -29,20 +29,27 @@
 package fr.gouv.culture.thesaurus.vocabulary;
 
 /**
- * Vocabulaire SKOS THES.
+ * Vocabulaire ISO 25964 qui étend le vocabulaire SKOS.
  * 
  * @author asa
  */
-public final class SkosThes {
+public final class IsoThes {
 
 	/** The SKOS namespace. */
 	public final static String SKOS_THES_NS = "http://purl.org/iso25964/skos-thes#";
 
-	/** The fully qualified name of SKOS Concept class. */
+	/** The fully qualified name of SKOS XL ConceptGroup class. */
 	public final static String CONCEPT_GROUP = SKOS_THES_NS + "ConceptGroup";
 
+
+	/** The fully qualified name of SKOS XL PreferredTerm class. */
+	public final static String PREFERRED_TERM = SKOS_THES_NS + "PreferredTerm";
+	
+	/** The fully qualified name of SKOS XL SimpleNonPreferredTerm class. */
+	public final static String SIMPLE_NON_PREFERRED_TERM = SKOS_THES_NS + "SimpleNonPreferredTerm";
+	
 	/** Constructeur privé pour empêcher toute instanciation. */
-	private SkosThes() {
+	private IsoThes() {
         throw new UnsupportedOperationException();
 	}
 

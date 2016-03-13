@@ -103,7 +103,7 @@ import fr.gouv.culture.thesaurus.util.rdf.SparqlUtils;
 import fr.gouv.culture.thesaurus.util.xml.XmlDate;
 import fr.gouv.culture.thesaurus.vocabulary.DublinCoreTerms;
 import fr.gouv.culture.thesaurus.vocabulary.Skos;
-import fr.gouv.culture.thesaurus.vocabulary.SkosThes;
+import fr.gouv.culture.thesaurus.vocabulary.IsoThes;
 
 /**
  * A {@link ThesaurusService thesaurus access service} implementation relying on
@@ -707,8 +707,7 @@ public class SesameThesaurus implements ThesaurusService {
 		concept.setParentConcepts(listParentSkosConcepts(conceptUri, cnx));
 		concept.setConceptGroups(listConceptGroupsFromConcept(conceptUri, cnx));
 		
-		concept.setConceptPrefLabels(listConceptPrefLabels(conceptUri, cnx));
-		concept.setConceptAltLabels(listConceptAltLabels(conceptUri, cnx));
+		concept.loadPrefAndAltLabelsWithProperties(listConceptXlLabels(conceptUri, cnx));
 			
 		if (log.isDebugEnabled()) {
 			log.debug("getConcept: " + uri + " -> " + concept);
@@ -740,7 +739,7 @@ public class SesameThesaurus implements ThesaurusService {
 			cnx.clear(ctx);
 			// Load new triples into named graph.
 			cnx.add(file, null, RDFFormat.RDFXML, ctx);
-//			// Add specific triple for last import date (now!).
+			// Add specific triple for last import date (now!).
 			cnx.add(ctx,
 					this.valueFactory.createURI(DublinCoreTerms.DATE_SUBMITTED),
 					this.valueFactory.createLiteral(XmlDate.toXmlDateTime(null)),
@@ -1316,47 +1315,22 @@ public class SesameThesaurus implements ThesaurusService {
 	}
 	
 	/**
-	 * Décrit les prefLabels liés à un concept.
-	 * Les labels ne sont pas décrits entièrements
-	 * (on extrait la forme litérale et éventuellement la source)
+	 * Récupère tous les labels skos-xl (xl:prefLabel, xl:altLabel) liés à un
+	 * concept, ainsi que leurs propriétés
 	 * 
 	 * @param uri
-	 *            URI de la ressource d'origine
+	 *            URI du concept pour lequel récupérer les xl labels
 	 * @param cnx
 	 *            Connexion vers le triplestore
 	 * @return Collection de ressources liées au concept
 	 * @throws OpenRDFException
 	 *             Levée si l'accès au triplestore a échoué
 	 */
-	private Collection<Entry> listConceptPrefLabels(URI uri, RepositoryConnection cnx) throws OpenRDFException {
+	private Collection<Entry> listConceptXlLabels(URI uri,
+			RepositoryConnection cnx) throws OpenRDFException {
 		final GraphQuery query = getConstructQuery(
-				SparqlQueries.LoadConceptLabels.PREF_QUERY, cnx);
-		query.setBinding(
-				SparqlQueries.LoadConceptLabels.CONCEPT_URI,
-				uri);
-
-		return constructResourcesFromQuery(Entry.class, query).values();
-	}
-	
-	/**
-	 * Décrit les alt labels liés à un concept.
-	 * Les labels ne sont pas décrits entièrements
-	 * (on extrait la forme litérale et éventuellement la source)
-	 * 
-	 * @param uri
-	 *            URI de la ressource d'origine
-	 * @param cnx
-	 *            Connexion vers le triplestore
-	 * @return Collection de ressources liées au concept
-	 * @throws OpenRDFException
-	 *             Levée si l'accès au triplestore a échoué
-	 */
-	private Collection<Entry> listConceptAltLabels(URI uri, RepositoryConnection cnx) throws OpenRDFException {
-		final GraphQuery query = getConstructQuery(
-				SparqlQueries.LoadConceptLabels.ALT_QUERY, cnx);
-		query.setBinding(
-				SparqlQueries.LoadConceptLabels.CONCEPT_URI,
-				uri);
+				SparqlQueries.LoadConceptLabels.XL_LABELS_QUERY, cnx);
+		query.setBinding(SparqlQueries.LoadConceptLabels.CONCEPT_URI, uri);
 
 		return constructResourcesFromQuery(Entry.class, query).values();
 	}
@@ -1474,7 +1448,7 @@ public class SesameThesaurus implements ThesaurusService {
 	
 	/**
 	 * Construit la collection des ConceptGroup correspondant à un graphe RDF
-	 * et y associe les entrées correspondantes (Concepts et ConcepetSchemes).
+	 * et y associe les entrées correspondantes (Concepts et ConceptSchemes).
 	 * 
 	 * @param ModelGenerator
 	 *            Objet contenant le graphe et les entrées de tous types.
@@ -1486,7 +1460,7 @@ public class SesameThesaurus implements ThesaurusService {
 		RdfEntriesGenerationHandler<Entry> handler = results.getRdfEntriesGenerationHandler();
 		
 		//Interroger le model et récupérer les conceptGroups
-		URI conceptGroupType = this.valueFactory.createURI(SkosThes.CONCEPT_GROUP);		
+		URI conceptGroupType = this.valueFactory.createURI(IsoThes.CONCEPT_GROUP);		
 		
 		LinkedHashMap<String, ConceptGroup> myConceptGroups = new LinkedHashMap<String, ConceptGroup>();
 		LinkedHashMap<String, Concept> linkedConcepts = new LinkedHashMap<String, Concept>();

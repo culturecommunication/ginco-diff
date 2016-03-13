@@ -538,38 +538,32 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #end
 
 #**
- * Affiche les labels ainsi que les informations associées
+ * Affiche les labels ainsi que les informations associées (langue et source)
  *
  * @param name
  *			Libellé de la section
  * @param values
- *			Collection de LocalizedString à afficher
- * @param labelType
- *			Type de label (pref ou alt)
+ *			Collection de RdfResources à afficher. Le libellé et la langue sont récupérés de xl:literalForm, la source de dc:source
  * @param locale
  * 			Langage préférentiel pour affichage du libellé
  * @param css
  *			Classe CSS du conteneur
  *#
-#macro( show_labels $name $values $labelType $locale $css $resourceprefix )
-#if( !$collection.isStringEmpty($values) )
-	#if ($values.size() == 1) ## skos core labels
-		#show_property_with_links( $name $values.iterator().next().getProperties($prefixes.expandUri("skos:prefLabel")) $locale $css $resourceprefix 	)
-	#elseif ($values.size() > 1) ## skos xl labels
-		<div class="key-value $!css">
-        	<h2 class="key">$esc.html($name)</h2>
-        	<ul class="value">
-        		#foreach ( $label in $values )
-        			#set($labelSource = $display.stripTags($label.getProperty($prefixes.expandUri("dc:source")).value, "a"))
-        			#foreach ($item in $sorter.sortStrings($label.getProperties($prefixes.expandUri("xl:literalForm")), [$locale, null]))
-						#if( $item.value != "" )
-				<li #if($item.language)xml:lang="$item.language"#end><span class="lit-lang">#if($item.language)($lang.format($esc.html($item.language)))#end</span> <span class="lit-value">#if($resourceprefix)$text.get("${resourceprefix}${item.value}")#else$display.stripTags($item.value, "a")#end #if($labelSource != "")(Source : $labelSource)#end</span></li>
-	        			#end
-	        		#end
-	        		#set($labelSource = "")
-         		#end
-        	</ul>
-      	</div>
-	#end
+#macro( show_labels_with_source $name $values $locale $css )
+#if( !$collection.isStringEmpty($values, $prefixes.expandUri("xl:literalForm")) )
+	<div class="key-value $!css">
+    	<h2 class="key">$esc.html($name)</h2>
+        <ul class="value">
+          #foreach ( $item in $values )
+				#set($source = $display.stripTags($item.getProperty($prefixes.expandUri("dc:source")).value, "a"))
+				#set($label = $item.getProperty($prefixes.expandUri("xl:literalForm")))
+				#if( $label.value != "" )
+				  	<li #if($label.language)xml:lang="$label.language"#end><span class="lit-lang">#if($label.language)($lang.format($esc.html($label.language)))#end</span> <span class="lit-value">$label.value #if($source && $source != "")($text.property.termSource : $source)#end</span></li>
+				#end
+				#set($source = "")
+				#set($label = "")
+          #end
+        </ul>
+	</div>
 #end
 #end
