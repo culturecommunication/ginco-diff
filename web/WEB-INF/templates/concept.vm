@@ -69,18 +69,23 @@ Paramètres:
 		    </ul>
 		
 			#** Colonne de droite **#
-		    <div id="metadata">
-				#** Vocabulaire source **#
-				<div class="topRightPanel">
-				    <h2>$esc.html($text.property.inScheme)</h2>
-				    <p>
-						#foreach($scheme in $it.conceptSchemes)
-							<a href="$resolver.toUrl($scheme.uri)">
-								$esc.html($scheme.getLabel($locale).value)
-							</a>
-						#end
-				    </p>
-				</div>
+		    <div id="metadata">	
+		    
+		    	#set( $conceptSchemes = $it.conceptSchemes )
+				#if( !$collection.isStringEmpty($conceptSchemes) )
+					#** Vocabulaire source **#
+					<div class="topRightPanel">
+					    <h2>$esc.html($text.property.inScheme)</h2>
+					    <p>
+							#foreach($scheme in $conceptSchemes)
+								<a href="$resolver.toUrl($scheme.uri)">
+									$esc.html($scheme.getLabel($locale).value)
+								</a>
+							#end
+					    </p>
+					</div>
+				#end
+				
 				#linked_entries($text.property.topAncestor		$it.getTopAncestors()	$locale "right concept-topAncestor" )
 		    	
 		    	#set( $conceptGroupEntries = $it.getConceptGroups())
