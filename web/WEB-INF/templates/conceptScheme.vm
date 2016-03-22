@@ -60,7 +60,7 @@ Paramètres:
 		
 			#** Colonne de droite *#
 		    <div id="metadata">    	
-				#if( $it.metadata.organisation )
+				#if( $it.metadata.organisation && !$it.metadata.organisation.empty)
 					<div class="topRightPanel">
 				      <h2 class="first">$esc.html($text.property.creator)</h2>
 				      <p>$esc.html($it.metadata.organisation)</p>
@@ -83,15 +83,17 @@ Paramètres:
 			#show_inline_property_with_links( $text.property.source 	$it.getProperties($prefixes.expandUri("dc:source"))   $locale "concetpScheme-source" )
 			
 			#** Termes de 1er niveau *#
-		    <h2 class="clear">$esc.html($text.property.topConcept)</h2>
-		    <ul id="topConceptList">
-				#set( $topConcepts = $it.getTopConcepts($locale) )
-				#foreach ($item in $sorter.sortEntriesByLabel($topConcepts, [$locale, null], false))
-					<li>
-				    	<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
-					</li>
-				#end
-		    </ul>
+			#set( $topConcepts = $it.getTopConcepts($locale) )
+			#if( !$collection.isStringEmpty($topConcepts) )
+			    <h2 class="clear">$esc.html($text.property.topConcept)</h2>
+			    <ul id="topConceptList">
+					#foreach ($item in $sorter.sortEntriesByLabel($topConcepts, [$locale, null], false))
+						<li>
+					    	<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value.toLowerCase())</a>
+						</li>
+					#end
+			    </ul>
+			#end
 		    
 		    #** Groupes de concepts *#
 		    #if(!$it.getConceptGroups($locale).isEmpty())

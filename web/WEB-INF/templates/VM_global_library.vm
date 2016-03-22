@@ -558,7 +558,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 				#set($source = $display.stripTags($item.getProperty($prefixes.expandUri("dc:source")).value, "a"))
 				#set($label = $item.getProperty($prefixes.expandUri("xl:literalForm")))
 				#if( $label.value != "" )
-				  	<li #if($label.language)xml:lang="$label.language"#end><span class="lit-lang">#if($label.language)($lang.format($esc.html($label.language)))#end</span> <span class="lit-value">$label.value #if($source && $source != "")($text.property.termSource : $source)#end</span></li>
+				  	<li #if($label.language)xml:lang="$label.language"#end><span class="lit-lang">#if($label.language)($lang.format($esc.html($label.language)))#end</span> <span class="lit-value">$label.value.toLowerCase() #if($source && $source != "")($text.property.termSource : $source)#end</span></li>
 				#end
 				#set($source = "")
 				#set($label = "")
