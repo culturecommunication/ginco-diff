@@ -61,27 +61,33 @@ Paramètres:
 			#** Colonne de droite **#
 			<div id="metadata">
 				<div class="topRightPanel">
-					<h2>$esc.html($text.property.filterByVocabulary) </h2>
-					<ul>
-						#foreach($scheme in $it.getAllConceptSchemeMembers())
-						<li>
-							#set($filteredConceptGroupUrl = "$esc.url(${it.getLabel()})?sourceVocabulary=$resolver.getUri($scheme.uri)")
-							#set($isCurrentVocabulary = $scheme.getLabel($locale).value.equals($!it.getVocabularyLabel($locale).value))
-							<a href="$resolver.toUrl("../page/conceptGroup" , $filteredConceptGroupUrl)">
-								#if($isCurrentVocabulary) <strong> #end
-								$esc.html($scheme.getLabel($locale).value)
-								#if($isCurrentVocabulary) </strong> #end
-							</a>
-						</li>
-						#end
-						<li>
-							<a href="$resolver.toUrl("../page/conceptGroup" , $esc.url($it.getLabel()))">
-								#if(!$it.isSetSourceVocabulary()) <strong> #end
-								$esc.html("Tous les vocabulaires")
-								#if(!$it.isSetSourceVocabulary()) </strong> #end
-							</a>
-						</li>
-					</ul>
+				
+					
+					#set( $allConceptSchemeMembers = $it.getAllConceptSchemeMembers())
+					#if ($allConceptSchemeMembers && $allConceptSchemeMembers.size() > 1)
+						<h2>$esc.html($text.property.filterByVocabulary) </h2>
+						<ul>
+							#foreach($scheme in $sorter.sortStrings($allConceptSchemeMembers, [$locale, null], $prefixes.expandUri("dc:title")) )
+							<li>
+								#set($filteredConceptGroupUrl = "$esc.url(${it.getLabel()})?sourceVocabulary=$resolver.getUri($scheme.uri)")
+								#set($isCurrentVocabulary = $scheme.getLabel($locale).value.equals($!it.getVocabularyLabel($locale).value))
+								<a href="$resolver.toUrl("../page/conceptGroup" , $filteredConceptGroupUrl)">
+									#if($isCurrentVocabulary) <strong> #end
+									$esc.html($scheme.getLabel($locale).value)
+									#if($isCurrentVocabulary) </strong> #end
+								</a>
+							</li>
+							#end
+							<li>
+								<a href="$resolver.toUrl("../page/conceptGroup" , $esc.url($it.getLabel()))">
+									#if(!$it.isSetSourceVocabulary()) <strong> #end
+									$esc.html("Tous les vocabulaires")
+									#if(!$it.isSetSourceVocabulary()) </strong> #end
+								</a>
+							</li>
+						</ul>
+					#end
+					
 					#if ($it.isSetSourceVocabulary())
 						#show_single_property_as_date( $text.property.created	$it.getFirstConceptGroup().createdDate		"long"		$locale		"concept-created" )
 						#show_single_property_as_date( $text.property.modified	$it.getFirstConceptGroup().modifiedDate		"long"		$locale		"concept-modified" )
