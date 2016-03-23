@@ -362,34 +362,6 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #end
 #end
 
-#**
- * Affiche les propriétés de type text vers une autre ressource.
- *
- * @param name
- *			Libellé de la section
- * @param entries
- *			Collection de Entry à afficher
- * @param locale
- * 			Langage préférentiel pour affichage du libellé (ou null si aucun)
- * @param css
- *			Classe CSS du conteneur
- *#
-#macro( label_entries $name $entries $locale $css )
-## Assign local variable to prevent multiple evaluation of entries argument.
-#set( $l = $entries )
-#if( !$l.isEmpty() )
-      <div class="key-value $!css">
-        <h2 class="key">$esc.html($name)</h2>
-        <ul class="value">
-#foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null], false) )
-		#if( $item.getLabel($locale).value != "" )
-          <li>$esc.html($item.getLabel($locale).value)</li>
-        #end
-#end
-        </ul>
-      </div>
-#end
-#end
 
 #**
  * Affiche les propriétés de type Lien vers une autre ressource.
