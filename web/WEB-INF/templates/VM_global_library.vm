@@ -353,7 +353,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #foreach( $item in $sorter.sortEntriesByLabel($l, [$locale, null], false) )
 		#if( $item.getLabel($locale).value != "" )
           <li>
-             <a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
+             <a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value.toLowerCase())</a>
           </li>
         #end
 #end
@@ -415,7 +415,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 			<ul>
 		#foreach( $item in $sorter.sortEntriesByLabel($m.get($collection), [$locale, null], false) )
 				<li>
-					<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value)</a>
+					<a href="$resolver.toUrl($item.Uri)">$esc.html($item.getLabel($locale).value.toLowerCase())</a>
 				</li>
 		#end
 			</ul>

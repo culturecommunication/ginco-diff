@@ -98,7 +98,7 @@ Paramètres:
 						<li>
 							#set($filteredConceptGroupUrl = "$esc.url(${item.getLabel($locale).value})?sourceVocabulary=$resolver.getUri($it.getConceptScheme().uri)")
 							<a href="$resolver.toUrl("../page/conceptGroup" , $filteredConceptGroupUrl)">
-							$esc.html($item.getLabel($locale).value)
+							$esc.html($item.getLabel($locale).value.toLowerCase())
 							</a>
 						</li>
 							#end
