@@ -57,7 +57,9 @@ Paramètres :
 	    </p>
 	    <ul>
 		#foreach ($item in $sorter.sortEntriesByLabel($it, [$locale, null], false))
-	      <li><a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a></li>
+			#if( $item.getLabel($locale).value != "" )
+	      		<li><a href="$resolver.toUrl($item.uri)">$esc.html($item.getLabel($locale).value)</a></li>
+	      	#end
 		#end
 	    </ul>
 	      

@@ -57,7 +57,9 @@ Paramètres :
 	    <p>Les différents sujets sont :</p>
 	    <ul>
 		#foreach ($item in $it)
-	    	<li><a href="$baseUri/page/sujets/vocabulaires?sujet=$esc.url($item)">$esc.html($item)</a></li>
+			#if( $item != "" )
+	    		<li><a href="$baseUri/page/sujets/vocabulaires?sujet=$esc.url($item)">$esc.html($item)</a></li>
+	      	#end
 		#end
 	    </ul>
 		      

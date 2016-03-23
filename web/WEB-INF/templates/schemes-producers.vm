@@ -56,7 +56,10 @@ Paramètres :
 	    <p>Les différents services producteurs sont :</p>
 	    <ul>
 		#foreach ($item in $it)
-	    	<li><a href="$baseUri/page/servicesProducteurs/vocabulaires?serviceProducteur=$esc.url($item)">$esc.html($item)</a></li>
+			#if( $item != "" )
+	      		<li><a href="$baseUri/page/servicesProducteurs/vocabulaires?serviceProducteur=$esc.url($item)">$esc.html($item)</a></li>
+	      	#end
+	    	
 		#end
 	    </ul>
 	      
