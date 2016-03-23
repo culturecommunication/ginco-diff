@@ -134,7 +134,7 @@ Paramètres:
 		<li>$esc.html($text.conceptScheme.download)<ul class="sublinks">
 				<li><a href="${rdfData}?includeSchemes=true">$esc.html($text.conceptScheme.download.rdf)</a></li>
 				<li><a href="${rdfData}?includeSchemes=true&format=N3">$esc.html($text.conceptScheme.download.n3)</a></li>
-				<li><a href="${rdfData}?includeSchemes=true&format=Turtle">$esc.html($text.conceptScheme.download.turtle)</a></li>
+				<li><a href="${rdfData}?includeSchemes=true&format=TURTLE">$esc.html($text.conceptScheme.download.turtle)</a></li>
 		</ul></li>
 		#footer_end($it.getOrganisation() $it.getOrganisationHomepage() $it.getSeeMoreUrl() false $it $it.getOrganisationMbox())
 		     </div>
