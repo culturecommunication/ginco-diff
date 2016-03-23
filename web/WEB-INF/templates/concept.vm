@@ -93,7 +93,7 @@ Paramètres:
 				<div class="key-value right concept-conceptGroups">
 					<h2 class="key">$esc.html($text.property.conceptGroups)</h2>
 					<ul class="value">
-					#foreach( $item in $sorter.sortEntriesByLabel($conceptGroupEntries, [$locale, null], false) )
+					#foreach( $item in $sorter.sortEntriesByLabel($conceptGroupEntries, [$locale, null], true) )
 							#if( $item.getLabel($locale).value != "" )
 						<li>
 							#set($filteredConceptGroupUrl = "$esc.url(${item.getLabel($locale).value})?sourceVocabulary=$resolver.getUri($it.getConceptScheme().uri)")
