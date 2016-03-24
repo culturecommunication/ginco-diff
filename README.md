@@ -27,13 +27,18 @@ Vous pouvez personnaliser les paramètres de compilation en créant un fichier b
 Déploiement
 -----------
 
-Pour déployer l'application, vous devez disposer d'un serveur Apache Tomcat 6.
+Pour déployer l'application, vous devez disposer d'un serveur Apache Tomcat 6 :
+- Le serveur doit être lancé avec le paramètre de JVM "-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true". Ce paramètre peut être renseigné dans les paramètres de lancement JAVA_OPTS de Tomcat.
+- Le connecteur HTTP doit être configuré pour utiliser le charset UTF-8 pour encoder les URL : paramètre 'URIEncoding="UTF-8"'
+
+
+Etapes de déploiement :
 
 1. Arrêter le serveur Tomcat (si besoin)
 2. Copier le jar "/lib/javax.mail-1.5.1.jar" dans le répertoire "/lib" de Tomcat (cette librairie permet à l'application d'envoyer des emails).
 3. Copier le war généré dans "/dist" (thesaurus.war par défaut) dans le repertoire "/webapps" de Tomcat.
-4. Copier les 2 war "/lib/sesame/openrdf-sesame.war" et "/lib/sesame/openrdf-workbench.war" dans le repertoire "/webapps" de Tomcat.
-5. Ajouter une __Resource__ de type __javax.mail.Session__ avec le nom JNDI __mail/thesaurus__ au context du war de l'application. Par exemple, créer le fichier "/conf/Catalina/localhost/thesaurus.xml" dans Tomcat avec le contenu suivant :
+4. Copier les 2 war "/lib/sesame/openrdf-sesame.war" et "/lib/sesame/openrdf-workbench.war" dans le repertoire "/webapps" de Tomcat. La version de OpenRDF Sesame mise à disposition ici est la 2.6.5 (version minimale compatible).
+5. Ajouter une __Resource__ de type __javax.mail.Session__ avec le nom JNDI __mail/thesaurus__ au context du war de l'application. Par exemple, créer le fichier "/conf/Catalina/localhost/thesaurus.xml" dans Tomcat avec le contenu suivant (en adaptant si nécessaire la valeur de 'mail.smtp.host' qui est l'adresse IP ou le nom du serveur SMTP) :
 
     <pre>
     &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -46,7 +51,7 @@ Pour déployer l'application, vous devez disposer d'un serveur Apache Tomcat 6.
 
 NB : Si la Session email n'est pas trouvée au démarrage de l'application, un warning (non bloquant) apparait dans les logs. L'application fonctionne alors, à l'exception du formulaire de contact et des logs d'erreurs par email.
 
-### Configurer SESAME
+### Configurer OpenRDF SESAME
 
 Avant de pouvoir utiliser l'application, il faut créer le répository sesame :
 
