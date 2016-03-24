@@ -63,11 +63,10 @@ public class Concept extends Entry {
 	private final List<Concept> relatedConcepts = new LinkedList<Concept>();
 	private final List<Concept> parentConcepts = new LinkedList<Concept>();
 
-	private final List<Entry> conceptGroups = new LinkedList<Entry>();
-
 	private final List<RdfResource> xlPrefLabels = new LinkedList<RdfResource>();
 	private final List<RdfResource> xlAltLabels = new LinkedList<RdfResource>();
 
+	private final ConceptGroups conceptGroups = new ConceptGroups();
 	/* Relations inverses vers le concept. */
 	private final List<ConceptCollection> collections = new LinkedList<ConceptCollection>();
 
@@ -220,12 +219,29 @@ public class Concept extends Entry {
 	}
 
 	public Collection<Entry> getConceptGroups() {
-		return Collections.unmodifiableCollection(this.conceptGroups);
+		return this.conceptGroups.getConceptGroups();
 	}
 
-	public void setConceptGroups(Collection<Entry> conceptGroups) {
-		this.conceptGroups.clear();
-		this.conceptGroups.addAll(conceptGroups);
+	/**
+	 * Récupère la liste des concepts groupes en supprimant les doublons qui ont
+	 * le même label.
+	 * 
+	 * @param locale
+	 *            la locale avec laquelle le label considéré pour dédoublonner
+	 *            est récupéré. Si aucun label n'est trouvé avec cette locale,
+	 *            c'est l'URI du groupe de concept qui est retournée.
+	 * @return les groupes de concept sans doublon sur leurs labels
+	 */
+	public Collection<Entry> getDistinctConceptGroups(final Locale locale) {
+		return this.conceptGroups.getDistinctConceptGroups(locale);
+	}
+	
+	public void setConceptGroups(final Collection<Entry> conceptGroups) {
+		this.conceptGroups.setConceptGroups(conceptGroups);
+	}
+	
+	public void addConceptGroup(final Entry conceptGroup) {
+		this.conceptGroups.addConceptGroup(conceptGroup);
 	}
 
 	public Collection<RdfResource> getXlPrefLabels() {

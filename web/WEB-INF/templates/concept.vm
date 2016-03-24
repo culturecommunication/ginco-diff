@@ -88,7 +88,7 @@ Paramètres:
 				
 				#linked_entries($text.property.topAncestor		$it.getTopAncestors()	$locale "right concept-topAncestor" )
 		    	
-		    	#set( $conceptGroupEntries = $it.getConceptGroups())
+		    	#set( $conceptGroupEntries = $it.getDistinctConceptGroups($locale))
 				#if(!$conceptGroupEntries.isEmpty() )
 				<div class="key-value right concept-conceptGroups">
 					<h2 class="key">$esc.html($text.property.conceptGroups)</h2>

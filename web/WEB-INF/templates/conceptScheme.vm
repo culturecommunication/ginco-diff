@@ -96,10 +96,10 @@ Paramètres:
 			#end
 		    
 		    #** Groupes de concepts *#
-		    #if(!$it.getConceptGroups($locale).isEmpty())
+			#set( $conceptGroups = $it.getDistinctConceptGroups($locale) )
+		    #if(!$conceptGroups.isEmpty())
 		   <h2 class="clear">$esc.html($text.property.conceptGroups)</h2>
 		    <ul id="conceptGroupList">
-				#set( $conceptGroups = $it.getConceptGroups($locale) )
 				#foreach ($item in $sorter.sortEntriesByLabel($conceptGroups, [$locale, null], true))
 					<li>
 						#set($filteredConceptGroupUrl = "$esc.url(${item.getLabel($locale).value})?sourceVocabulary=$resolver.getUri($it.uri)")
