@@ -537,7 +537,10 @@ public class Entries extends BaseResource {
 					    		@Context UriInfo uriInfo) {
         ResponseBuilder response = null;
         try { 
-        	conceptGroupLabel = URLDecoder.decode(conceptGroupLabel, UTF_8);//Fix replacement of " " by "+"
+        	// "PathParam" values are not fully decoded by Jersey, which leaves '+' characters in the parameter value instead of spaces
+        	// To be sure to get the correct conceptGroup's label value, we must decode one more time
+        	conceptGroupLabel = URLDecoder.decode(conceptGroupLabel, UTF_8);
+        	
             Viewable v = this.newViewable("/conceptGroup.vm", null,
             							  this.thesaurus.getConceptGroupWithLabelAndVocabulary(conceptGroupLabel, sourceVocabulary),
                                           this.getUriResolver(uriInfo));
