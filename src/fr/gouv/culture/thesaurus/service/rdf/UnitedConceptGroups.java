@@ -33,7 +33,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 
 /**
- * Cette classe regroupe des groupes de concepts qui partatent le même label.
+ * Cette classe regroupe des groupes de concepts qui partagent le même label.
  * <p>
  * Les groupes de concepts peuvent provenir de plusieurs vocabulaires
  * différents.
